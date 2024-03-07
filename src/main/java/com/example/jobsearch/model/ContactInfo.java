@@ -1,6 +1,6 @@
 package com.example.jobsearch.model;
 
-public class ContactsInfo {
+public class ContactInfo {
     private Long id;
     private Integer typeId;
     private Integer resumeId;

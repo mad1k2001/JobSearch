@@ -1,6 +1,6 @@
 package com.example.jobsearch.model;
 
-public class RespondedApplications {
+public class RespondedApplication {
     private Long id;
     private Integer resumeId;
     private Integer vacancyId;

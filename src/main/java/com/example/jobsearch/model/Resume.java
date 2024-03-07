@@ -2,7 +2,7 @@ package com.example.jobsearch.model;
 
 import java.time.LocalDate;
 
-public class Resumes {
+public class Resume {
     private Long id;
     private Integer applicantId;
     private String name;

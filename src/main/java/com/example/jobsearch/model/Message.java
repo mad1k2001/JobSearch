@@ -2,7 +2,7 @@ package com.example.jobsearch.model;
 
 import java.time.LocalDate;
 
-public class Messages {
+public class Message {
     private Long id;
     private Integer respondedAppId;
     private String content;
