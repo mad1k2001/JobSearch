@@ -16,18 +16,18 @@ CREATE TABLE IF NOT EXISTS categories (
     parentId INT
 );
 
+CREATE TABLE IF NOT EXISTS contactTypes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS contactInfos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     typeId INT,
     resumeId INT,
-    value VARCHAR(255),
+    contactValue VARCHAR(255),
     FOREIGN KEY (typeId) REFERENCES contactTypes(id),
     FOREIGN KEY (resumeId) REFERENCES resumes(id)
-);
-
-CREATE TABLE IF NOT EXISTS contactTypes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    type VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS educationInfos (
@@ -110,7 +110,7 @@ INSERT INTO contactTypes (type) VALUES
 ('Phone'),
 ('Email');
 
-INSERT INTO contactInfos (typeId, resumeId, value) VALUES
+INSERT INTO contactInfos (typeId, resumeId, contactValue) VALUES
 (1, 1, '123456789'),
 (2, 1, 'john.doe@example.com'),
 (1, 2, '987654321'),

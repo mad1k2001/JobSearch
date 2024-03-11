@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:./db/movie_review;AUTO_SERVER=TRUE
+    url: jdbc:h2:./db/job_search;AUTO_SERVER=TRUE
     username: root
     password: qwerty
     driver-class-name: org.h2.Driver
