@@ -1,18 +1,19 @@
 package com.example.jobsearch.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Vacancy {
     private Long id;
     private String name;
     private String description;
-    private Integer categoryId;
+    private Long categoryId;
     private Double salary;
     private Integer expFrom;
     private Integer expTo;
     private Boolean isActivate;
-    private Integer authorId;
-    private LocalDate createdDate;
-    private LocalDate updateTime;
+    private Long authorId;
+    private LocalDateTime createdDate;
+    private LocalDateTime updateTime;
 
 }

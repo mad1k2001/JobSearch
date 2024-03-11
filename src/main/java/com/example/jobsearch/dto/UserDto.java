@@ -1,11 +1,11 @@
-package com.example.jobsearch.model;
+package com.example.jobsearch.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
 
-@Getter
-@Setter
-public class User {
+@Data
+@Builder
+public class UserDto {
     private Long id;
     private String name;
     private String surname;

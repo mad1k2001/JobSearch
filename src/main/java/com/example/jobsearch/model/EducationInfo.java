@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public class EducationInfo {
     private Long id;
-    private Integer resumeId;
+    private Long resumeId;
     private String institution;
     private String program;
     private LocalDate startDate;

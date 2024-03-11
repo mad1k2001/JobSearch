@@ -2,7 +2,7 @@ package com.example.jobsearch.model;
 
 public class ContactInfo {
     private Long id;
-    private Integer typeId;
-    private Integer resumeId;
+    private Long typeId;
+    private Long resumeId;
     private String value;
 }
