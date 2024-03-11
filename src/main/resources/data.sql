@@ -121,19 +121,19 @@ INSERT INTO educationInfos (resumeId, institution, program, startDate, endDate, 
 (2, 'College of Example', 'Web Development', '2017-09-01', '2019-06-30', 'Diploma');
 
 INSERT INTO messages (respondedAppId, content, timestamp) VALUES
-(1, 'Hello, we are interested in your resume.', '2022-01-01');
+(1, 'Hello, we are interested in your resume.', '2022-03-05');
 
 INSERT INTO respondedApplications (resumeId, vacancyId, confirmation) VALUES
 (1, 1, true);
 
 INSERT INTO resumes (applicantId, name, categoryId, salary, isActive, createdDate, updateTime) VALUES
-(1, 'John Doe Resume', 1, 3000.0, true, '2022-01-01', '2022-01-01'),
-(2, 'Jane Smith Resume', 2, 2500.0, true, '2022-01-01', '2022-01-01');
+(1, 'John Doe Resume', 1, 3000.0, true, '2022-03-05', '2022-05-05'),
+(2, 'Jane Smith Resume', 2, 2500.0, true, '2023-11-01', '2023-11-01');
 
 INSERT INTO workExperienceInfos (resumeId, years, companyName, position, responsibility) VALUES
 (1, 5, 'Tech Company', 'Software Engineer', 'Developed web applications.'),
 (2, 3, 'Design Agency', 'Web Designer', 'Designed user interfaces.');
 
 INSERT INTO vacancies (name, description, categoryId, salary, expFrom, expTo, isActivate, authorId, createdDate, updateTime) VALUES
-('Java Developer', 'Developing Java applications', 1, 3000.0, 2, 5, true, 2, '2022-01-01', '2022-01-01'),
-('Web Designer', 'Creating user-friendly web interfaces', 2, 2500.0, 1, 3, true, 2, '2022-01-01', '2022-01-01');
+('Java Developer', 'Developing Java applications', 1, 3000.0, 2, 5, true, 2, '2022-03-05', '2022-05-05'),
+('Web Designer', 'Creating user-friendly web interfaces', 2, 2500.0, 1, 3, true, 2, '2023-11-01', '2023-11-01');
