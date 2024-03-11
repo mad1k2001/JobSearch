@@ -10,7 +10,6 @@ import com.example.jobsearch.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,16 +21,36 @@ public class ResumeServiceImpl implements ResumeService {
     public List<ResumeDto> getResume(){
         List<Resume> resumes = resumeDao.getResume();
         List<ResumeDto> dtos = new ArrayList<>();
-        resumes.forEach(e -> dtos.add(ResumeDto.builder()
-                .id(e.getId())
-                .applicantId(e.getApplicantId())
-                .name(e.getName())
-                .categoryId(e.getCategoryId())
-                .salary(e.getSalary())
-                .isActive(e.getIsActive())
-                .createdDate(e.getCreatedDate())
-                .updateTime(e.getUpdateTime())
-                .build()));
+        resumes.forEach(e -> dtos.add(mapToDo(e)));
         return dtos;
+    }
+
+    @Override
+    public List<ResumeDto> getResumeByCategory(Long categoryId){
+        List<Resume> resumes = resumeDao.getResumeByCategory(categoryId);
+        List<ResumeDto> dtos = new ArrayList<>();
+        resumes.forEach(e -> dtos.add(mapToDo(e)));
+        return dtos;
+    }
+
+    @Override
+    public List<ResumeDto> getResumeByApplicantId(Long applicantId){
+        List<Resume> resumes = resumeDao.getResumeByApplicantId(applicantId);
+        List<ResumeDto> dtos = new ArrayList<>();
+        resumes.forEach(e -> dtos.add(mapToDo(e)));
+        return dtos;
+    }
+
+    private ResumeDto mapToDo(Resume resume) {
+        return ResumeDto.builder()
+                .id(resume.getId())
+                .applicantId(resume.getApplicantId())
+                .name(resume.getName())
+                .categoryId(resume.getCategoryId())
+                .salary(resume.getSalary())
+                .isActive(resume.getIsActive())
+                .createdDate(resume.getCreatedDate())
+                .updateTime(resume.getUpdateTime())
+                .build();
     }
 }

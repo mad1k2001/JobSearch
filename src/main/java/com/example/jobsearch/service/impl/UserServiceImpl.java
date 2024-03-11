@@ -19,24 +19,16 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getUsers(){
         List<User> users = userDao.getUsers();
         List<UserDto> dtos = new ArrayList<>();
-        users.forEach(e -> dtos.add(UserDto.builder()
-                .id(e.getId())
-                .name(e.getName())
-                .surname(e.getSurname())
-                .age(e.getAge())
-                .email(e.getEmail())
-                .password(e.getPassword())
-                .phoneNumber(e.getPhoneNumber())
-                .avatar(e.getAvatar())
-                .accountType(e.getAccountType())
-                .build()));
+        users.forEach(e -> dtos.add(mapToDo(e)));
         return dtos;
     }
 
     @Override
-    public UserDto getUsersByName(String name){
-        User user = userDao.getUsersByName(name);
-        return mapToDo(user);
+    public List<UserDto> getUsersByName(String name){
+        List<User> users = userDao.getUsersByName(name);
+        List<UserDto> dtos = new ArrayList<>();
+        users.forEach(e -> dtos.add(mapToDo(e)));
+        return dtos;
     }
 
     @Override

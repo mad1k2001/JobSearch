@@ -19,11 +19,11 @@ public class UserDao {
         return template.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
-    public User getUsersByName(String name) {
+    public List<User> getUsersByName(String name) {
         String sql = """
                 select * from users WHERE name = ?
                 """;
-        return template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), name);
+        return template.query(sql, new BeanPropertyRowMapper<>(User.class), name);
     }
 
     public User getUsersByPhoneNumber(String phoneNumber) {
