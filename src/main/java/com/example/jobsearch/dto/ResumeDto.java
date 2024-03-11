@@ -1,28 +1,23 @@
-package com.example.jobsearch.model;
+package com.example.jobsearch.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vacancy {
+public class ResumeDto {
     private Long id;
+    private Long applicantId;
     private String name;
-    private String description;
     private Long categoryId;
     private Double salary;
-    private Integer expFrom;
-    private Integer expTo;
-    private Boolean isActivate;
-    private Long authorId;
+    private Boolean isActive;
     private LocalDateTime createdDate;
     private LocalDateTime updateTime;
-
 }

@@ -1,10 +1,19 @@
 package com.example.jobsearch.model;
 
-import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Message {
     private Long id;
-    private Integer respondedAppId;
+    private Long respondedAppId;
     private String content;
-    private LocalDate timestamp;
+    private LocalDateTime timestamp;
 }
