@@ -114,7 +114,11 @@ VALUES
 
 INSERT INTO respondedApplications (resumeId, vacancyId, confirmation)
 VALUES
-    ((SELECT id FROM resumes WHERE name = 'Java Developer'), (SELECT id FROM vacancies WHERE name = 'Web Designer'), TRUE);
+    ((SELECT id FROM resumes WHERE name = 'Backend Developer'), (SELECT id FROM vacancies WHERE name = 'Frontend Developer'), TRUE),
+    ((SELECT id FROM resumes WHERE name = 'Database Administrator'), (SELECT id FROM vacancies WHERE name = 'Mobile Developer'), TRUE),
+    ((SELECT id FROM resumes WHERE name = 'System Analyst'), (SELECT id FROM vacancies WHERE name = 'Network Administrator'), TRUE),
+    ((SELECT id FROM resumes WHERE name = 'UI/UX Designer'), (SELECT id FROM vacancies WHERE name = 'Web Developer'), TRUE),
+    ((SELECT id FROM resumes WHERE name = 'Graphic Designer'), (SELECT id FROM vacancies WHERE name = 'UI/UX Designer'), TRUE);
 
 INSERT INTO contactTypes (type) VALUES
     ('Telegram'),
@@ -132,9 +136,16 @@ VALUES
 
 INSERT INTO educationInfos (resumeId, institution, program, startDate, endDate, degree)
 VALUES
-    ((SELECT id FROM resumes WHERE name = 'Java Developer'), 'University of Java', 'Computer Science', '2010-09-01', '2014-06-30', 'Bachelor'),
-    ((SELECT id FROM resumes WHERE name = 'Web Designer'), 'Web Design Institute', 'Web Design', '2005-09-01', '2008-06-30', 'Diploma');
+    ((SELECT id FROM resumes WHERE name = 'Backend Developer'), 'University of Java', 'Computer Science', '2010-09-01', '2014-06-30', 'Bachelor'),
+    ((SELECT id FROM resumes WHERE name = 'Database Administrator'), 'University of SQL', 'Database Management', '2011-09-01', '2015-06-30', 'Bachelor'),
+    ((SELECT id FROM resumes WHERE name = 'System Analyst'), 'System Analysis Institute', 'Systems Engineering', '2009-09-01', '2013-06-30', 'Bachelor'),
+    ((SELECT id FROM resumes WHERE name = 'UI/UX Designer'), 'Design University', 'UI/UX Design', '2007-09-01', '2011-06-30', 'Bachelor'),
+    ((SELECT id FROM resumes WHERE name = 'Graphic Designer'), 'Graphic Design School', 'Graphic Design', '2008-09-01', '2012-06-30', 'Bachelor');
 
 INSERT INTO messages (respondedAppId, content, timestamp)
 VALUES
-    ((SELECT id FROM respondedApplications), 'Thank you for your application', NOW());
+    ((SELECT id FROM respondedApplications WHERE resumeId = (SELECT id FROM resumes WHERE name = 'Backend Developer') AND vacancyId = (SELECT id FROM vacancies WHERE name = 'Frontend Developer')), 'Thank you for your application', NOW()),
+    ((SELECT id FROM respondedApplications WHERE resumeId = (SELECT id FROM resumes WHERE name = 'Database Administrator') AND vacancyId = (SELECT id FROM vacancies WHERE name = 'Mobile Developer')), 'Thank you for your application', NOW()),
+    ((SELECT id FROM respondedApplications WHERE resumeId = (SELECT id FROM resumes WHERE name = 'System Analyst') AND vacancyId = (SELECT id FROM vacancies WHERE name = 'Network Administrator')), 'Thank you for your application', NOW()),
+    ((SELECT id FROM respondedApplications WHERE resumeId = (SELECT id FROM resumes WHERE name = 'UI/UX Designer') AND vacancyId = (SELECT id FROM vacancies WHERE name = 'Web Developer')), 'Thank you for your application', NOW()),
+    ((SELECT id FROM respondedApplications WHERE resumeId = (SELECT id FROM resumes WHERE name = 'Graphic Designer') AND vacancyId = (SELECT id FROM vacancies WHERE name = 'UI/UX Designer')), 'Thank you for your application', NOW());
