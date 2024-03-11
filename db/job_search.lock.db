@@ -1,6 +1,6 @@
 #FileLock
-#Mon Mar 11 15:33:14 KGT 2024
-hostName=172.29.177.88
-id=18e2cdbeb2d43a4749f7a62381f54a914fa6e992b71
+#Mon Mar 11 16:45:29 KGT 2024
+hostName=localhost
+id=18e2d1e11c8af9f86f563a64354a36dca8c02599ac8
 method=file
-server=172.29.177.88\:60399
+server=localhost\:61309
