@@ -28,7 +28,40 @@ public class UserServiceImpl implements UserService {
                 .password(e.getPassword())
                 .phoneNumber(e.getPhoneNumber())
                 .avatar(e.getAvatar())
-                .accountType(e.getAccountType()).build()));
+                .accountType(e.getAccountType())
+                .build()));
         return dtos;
+    }
+
+    @Override
+    public UserDto getUsersByName(String name){
+        User user = userDao.getUsersByName(name);
+        return mapToDo(user);
+    }
+
+    @Override
+    public UserDto getUsersByPhoneNumber(String phoneNumber){
+        User user = userDao.getUsersByPhoneNumber(phoneNumber);
+        return mapToDo(user);
+    }
+
+    @Override
+    public UserDto getUsersByEmail(String email){
+        User user = userDao.getUsersByEmail(email);
+        return mapToDo(user);
+    }
+
+    private UserDto mapToDo(User user){
+        return UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .age(user.getAge())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .phoneNumber(user.getPhoneNumber())
+                .avatar(user.getAvatar())
+                .accountType(user.getAccountType())
+                .build();
     }
 }

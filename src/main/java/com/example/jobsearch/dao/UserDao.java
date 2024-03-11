@@ -18,4 +18,25 @@ public class UserDao {
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
+
+    public User getUsersByName(String name) {
+        String sql = """
+                select * from users WHERE name = ?
+                """;
+        return template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), name);
+    }
+
+    public User getUsersByPhoneNumber(String phoneNumber) {
+        String sql = """
+                select * from users WHERE phoneNumber = ?
+                """;
+        return template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber);
+    }
+
+    public User getUsersByEmail(String email) {
+        String sql = """
+                select * from users WHERE email = ?
+                """;
+        return template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), email);
+    }
 }
