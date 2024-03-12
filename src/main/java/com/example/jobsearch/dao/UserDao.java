@@ -20,30 +20,38 @@ public class UserDao {
         return template.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
-    public Optional<User> getUsersByEmail(String email) {
+    public Optional<User> getUserByEmail(String email) {
         String sql = """
-                select * from users WHERE email = ?
+                select * from users where email = ?
                 """;
         return Optional.ofNullable(template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), email));
     }
 
     public List<User> getApplicantsForVacancy(Long vacancyId) {
         String sql = """
-            SELECT u.* FROM users u
-            JOIN resumes r ON u.id = r.applicantId
-            JOIN respondedApplications ra ON r.id = ra.resumeId
-            WHERE ra.vacancyId = ?
+            select u.* from users u
+            join resumes r ON u.id = r.applicantId
+            join respondedApplications ra ON r.id = ra.resumeId
+            where ra.vacancyId = ?
             """;
         return template.query(sql, new BeanPropertyRowMapper<>(User.class), vacancyId);
     }
 
     public List<User> getUsersByParams(String name, String phone) {
         String sql = """
-                select *
-                from users
-                where name ilike ? or PHONENUMBER ilike ?;
-                """;
+            select *
+            from users
+            where name ilike ? or PHONENUMBER ilike ?;
+            """;
         return template.query(sql, new BeanPropertyRowMapper<>(User.class), name, phone);
+    }
+
+    public boolean userExistsByEmail(String email) {
+        String sql = """
+            select COUNT(*) from users where email = ?
+        """;
+        Integer count = template.queryForObject(sql, Integer.class, email);
+        return count != null && count > 0;
     }
 
 }

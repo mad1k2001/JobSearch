@@ -22,12 +22,8 @@ public class UserController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<?> getUsersByEmail(@PathVariable String email) {
-//        UserDto user = userService.getUsersByEmail(email);
-//        if (user == null) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//        }
-        return userService.getUsersByEmail(email);
+    public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
+        return userService.getUserByEmail(email);
     }
 
     @GetMapping("/vacancy/{vacancyId}")
@@ -38,4 +34,10 @@ public class UserController {
         }
         return ResponseEntity.ok(applicants);
     }
+
+    @GetMapping("/exists/{email}")
+    public ResponseEntity<Boolean> userExistsByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(userService.userExistsByEmail(email));
+    }
+
 }
