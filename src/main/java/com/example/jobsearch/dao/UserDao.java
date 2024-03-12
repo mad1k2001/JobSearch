@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -19,25 +20,11 @@ public class UserDao {
         return template.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
-    public List<User> getUsersByName(String name) {
-        String sql = """
-                select * from users WHERE name = ?
-                """;
-        return template.query(sql, new BeanPropertyRowMapper<>(User.class), name);
-    }
-
-    public User getUsersByPhoneNumber(String phoneNumber) {
-        String sql = """
-                select * from users WHERE phoneNumber = ?
-                """;
-        return template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber);
-    }
-
-    public User getUsersByEmail(String email) {
+    public Optional<User> getUsersByEmail(String email) {
         String sql = """
                 select * from users WHERE email = ?
                 """;
-        return template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), email);
+        return Optional.ofNullable(template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), email));
     }
 
     public List<User> getApplicantsForVacancy(Long vacancyId) {
@@ -49,4 +36,14 @@ public class UserDao {
             """;
         return template.query(sql, new BeanPropertyRowMapper<>(User.class), vacancyId);
     }
+
+    public List<User> getUsersByParams(String name, String phone) {
+        String sql = """
+                select *
+                from users
+                where name ilike ? or PHONENUMBER ilike ?;
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(User.class), name, phone);
+    }
+
 }
