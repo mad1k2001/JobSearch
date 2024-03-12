@@ -18,16 +18,8 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
 
     @Override
-    public List<UserDto> getUsers(){
-        List<User> users = userDao.getUsers();
-        List<UserDto> dtos = new ArrayList<>();
-        users.forEach(e -> dtos.add(makeUserDto(e)));
-        return dtos;
-    }
-
-    @Override
-    public ResponseEntity<?> getUsersByEmail(String email){
-        Optional<User> mayBeUser = userDao.getUsersByEmail(email);
+    public ResponseEntity<?> getUserByEmail(String email){
+        Optional<User> mayBeUser = userDao.getUserByEmail(email);
         if (mayBeUser.isPresent()){
             return ResponseEntity.ok(mayBeUser.get());
         }
@@ -67,5 +59,10 @@ public class UserServiceImpl implements UserService {
                     .map(this::makeUserDto)
                     .toList());
         }
+    }
+
+    @Override
+    public Boolean userExistsByEmail(String email) {
+        return userDao.userExistsByEmail(email);
     }
 }
