@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUsersByPhoneNumber(String phoneNumber){
+    public UserDto getUsersByPhoneNumber(String phoneNumber) {
         User user = userDao.getUsersByPhoneNumber(phoneNumber);
         return mapToDo(user);
     }
