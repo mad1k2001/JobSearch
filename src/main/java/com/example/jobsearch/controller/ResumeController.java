@@ -28,5 +28,4 @@ public class ResumeController {
     public ResponseEntity<List<ResumeDto>> getResumeByApplicantId(@PathVariable Long applicantId){
         return ResponseEntity.ok(resumeService.getResumeByApplicantId(applicantId));
     }
-
 }
