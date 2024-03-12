@@ -114,11 +114,9 @@ VALUES
 
 INSERT INTO respondedApplications (resumeId, vacancyId, confirmation)
 VALUES
-    ((SELECT id FROM resumes WHERE name = 'Backend Developer'), (SELECT id FROM vacancies WHERE name = 'Frontend Developer'), TRUE),
-    ((SELECT id FROM resumes WHERE name = 'Database Administrator'), (SELECT id FROM vacancies WHERE name = 'Mobile Developer'), TRUE),
-    ((SELECT id FROM resumes WHERE name = 'System Analyst'), (SELECT id FROM vacancies WHERE name = 'Network Administrator'), TRUE),
-    ((SELECT id FROM resumes WHERE name = 'UI/UX Designer'), (SELECT id FROM vacancies WHERE name = 'Web Developer'), TRUE),
-    ((SELECT id FROM resumes WHERE name = 'Graphic Designer'), (SELECT id FROM vacancies WHERE name = 'UI/UX Designer'), TRUE);
+    ((SELECT id FROM resumes WHERE name = 'Backend Developer' AND applicantId = (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe')), (SELECT id FROM vacancies WHERE name = 'Frontend Developer' AND authorId = (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith')), TRUE),
+    ((SELECT id FROM resumes WHERE name = 'Database Administrator' AND applicantId = (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe')), (SELECT id FROM vacancies WHERE name = 'Mobile Developer' AND authorId = (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith')), TRUE),
+    ((SELECT id FROM resumes WHERE name = 'System Analyst' AND applicantId = (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe')), (SELECT id FROM vacancies WHERE name = 'Network Administrator' AND authorId = (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith')), TRUE);
 
 INSERT INTO contactTypes (type) VALUES
     ('Telegram'),

@@ -1,7 +1,9 @@
 package com.example.jobsearch.service.impl;
 
 import com.example.jobsearch.dao.VacancyDao;
+import com.example.jobsearch.dto.UserDto;
 import com.example.jobsearch.dto.VacancyDto;
+import com.example.jobsearch.model.User;
 import com.example.jobsearch.model.Vacancy;
 import com.example.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +33,8 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public List<VacancyDto> getVacanciesByApplicantId(Long applicantId) {
-        List<Vacancy> vacancies = vacancyDao.getVacanciesByApplicantId(applicantId);
+    public List<VacancyDto> getVacanciesForUser(Long userId) {
+        List<Vacancy> vacancies = vacancyDao.getVacanciesForUser(userId);
         List<VacancyDto> dtos = new ArrayList<>();
         vacancies.forEach(e -> dtos.add(mapToDto(e)));
         return dtos;
