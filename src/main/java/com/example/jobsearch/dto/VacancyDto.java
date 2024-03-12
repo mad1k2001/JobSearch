@@ -1,13 +1,17 @@
-package com.example.jobsearch.model;
+package com.example.jobsearch.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-public class Vacancy {
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class VacancyDto {
     private Long id;
     private String name;
     private String description;
@@ -19,5 +23,4 @@ public class Vacancy {
     private Long authorId;
     private LocalDateTime createdDate;
     private LocalDateTime updateTime;
-
 }
