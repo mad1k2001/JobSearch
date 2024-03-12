@@ -9,4 +9,5 @@ public interface UserService {
     List<UserDto> getUsersByName(String name);
     UserDto getUsersByPhoneNumber(String phoneNumber);
     UserDto getUsersByEmail(String email);
+    List<UserDto> getApplicantsForVacancy(Long vacancyId);
 }

@@ -1,5 +1,6 @@
 package com.example.jobsearch.controller;
 
+import com.example.jobsearch.dto.UserDto;
 import com.example.jobsearch.dto.VacancyDto;
 import com.example.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +24,6 @@ public class VacancyController {
     @GetMapping("vacancies/categoryId/{categoryId}")
     public ResponseEntity<List<VacancyDto>> getVacanciesByCategory(@PathVariable Long categoryId) {
         return ResponseEntity.ok(vacancyService.getVacanciesByCategory(categoryId));
-    }
-
-    @GetMapping("vacancies/applicantId/{applicantId}")
-    public ResponseEntity<List<VacancyDto>> getVacanciesByApplicantId(@PathVariable Long applicantId) {
-        return ResponseEntity.ok(vacancyService.getVacanciesByApplicantId(applicantId));
     }
 
 }

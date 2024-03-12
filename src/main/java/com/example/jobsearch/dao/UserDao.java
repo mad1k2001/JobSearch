@@ -39,4 +39,14 @@ public class UserDao {
                 """;
         return template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), email);
     }
+
+    public List<User> getApplicantsForVacancy(Long vacancyId) {
+        String sql = """
+            SELECT u.* FROM users u
+            JOIN resumes r ON u.id = r.applicantId
+            JOIN respondedApplications ra ON r.id = ra.resumeId
+            WHERE ra.vacancyId = ?
+            """;
+        return template.query(sql, new BeanPropertyRowMapper<>(User.class), vacancyId);
+    }
 }

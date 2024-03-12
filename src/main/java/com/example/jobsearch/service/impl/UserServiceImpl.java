@@ -43,6 +43,14 @@ public class UserServiceImpl implements UserService {
         return mapToDo(user);
     }
 
+    @Override
+    public List<UserDto> getApplicantsForVacancy(Long vacancyId) {
+        List<User> applicants = userDao.getApplicantsForVacancy(vacancyId);
+        List<UserDto> dtos = new ArrayList<>();
+        applicants.forEach(applicant -> dtos.add(mapToDo(applicant)));
+        return dtos;
+    }
+
     private UserDto mapToDo(User user){
         return UserDto.builder()
                 .id(user.getId())

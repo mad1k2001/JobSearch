@@ -33,4 +33,10 @@ public class UserController {
     public ResponseEntity<UserDto> getUsersByEmail(@PathVariable String email){
         return ResponseEntity.ok(userService.getUsersByEmail(email));
     }
+
+    @GetMapping("vacancies/applicants/{vacancyId}")
+    public ResponseEntity<List<UserDto>> getApplicantsForVacancy(@PathVariable Long vacancyId) {
+        List<UserDto> applicants = userService.getApplicantsForVacancy(vacancyId);
+        return ResponseEntity.ok(applicants);
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.jobsearch.dao;
 
+import com.example.jobsearch.model.User;
 import com.example.jobsearch.model.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -26,12 +27,4 @@ public class VacancyDao {
                 """;
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), categoryId);
     }
-
-    public List<Vacancy> getVacanciesByApplicantId(Long applicantId) {
-        String sql = """
-                SELECT * FROM vacancies v JOIN respondedApplications ra ON v.id = ra.vacancyId WHERE ra.resumeId = ?
-                """;
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), applicantId);
-    }
-
 }
