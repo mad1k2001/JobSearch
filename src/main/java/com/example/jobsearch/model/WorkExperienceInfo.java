@@ -1,15 +1,10 @@
 package com.example.jobsearch.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 public class WorkExperienceInfo {
     private Long id;
     private Long resumeId;
