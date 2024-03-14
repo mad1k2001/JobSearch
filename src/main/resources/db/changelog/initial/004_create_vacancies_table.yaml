@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table for Vacancies
+      author: Madina
+      changes:
+        - createTable:
+            tableName: vacancies
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: categoryId
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_category_id_id
+                    references: categories(id)
+              - column:
+                  name: salary
+                  type: double
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expFrom
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expTo
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: isActivate
+                  type: BOOLEAN
+              - column:
+                  name: authorId
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_author_id
+                    references: users(id)
+              - column:
+                  name: createdDate
+                  type: TIMESTAMP
+              - column:
+                  name: updateTime
+                  type: TIMESTAMP

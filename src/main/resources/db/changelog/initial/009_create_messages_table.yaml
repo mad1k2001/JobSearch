@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table for Messages
+      author: Madina
+      changes:
+        - createTable:
+            tableName: messages
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: respondedAppId
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_respondedApp_id
+                    references: respondedApplications(id)
+              - column:
+                  name: content
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: TIMESTAMP

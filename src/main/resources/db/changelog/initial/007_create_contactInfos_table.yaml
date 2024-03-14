@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table for ContactInfos
+      author: Madina
+      changes:
+        - createTable:
+            tableName: contactInfos
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: typeId
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_contactType_id
+                    references: contactTypes(id)
+              - column:
+                  name: resumeId
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_resumeId
+                    references: resumes(id)
+              - column:
+                  name: contactValue
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false

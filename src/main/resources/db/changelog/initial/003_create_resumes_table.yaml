@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table for Resumes
+      author: Madina
+      changes:
+        - createTable:
+            tableName: resumes
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: applicantId
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_applicant_id
+                    references: users(id)
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: categoryId
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_category_id
+                    references: categories(id)
+              - column:
+                  name: salary
+                  type: double
+                  constraints:
+                    nullable: false
+              - column:
+                  name: isActive
+                  type: boolean
+              - column:
+                  name: createdDate
+                  type: timestamp
+              - column:
+                  name: updateTime
+                  type: timestamp
