@@ -35,4 +35,10 @@ public class UserController {
         return ResponseEntity.ok(userService.userExistsByEmail(email));
     }
 
+    @PostMapping("/edit/{id}")
+    public ResponseEntity<Void> editUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        userDto.setId(id);
+        userService.editUser(userDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

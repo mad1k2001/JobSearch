@@ -1,7 +1,9 @@
 package com.example.jobsearch.service.impl;
 
 import com.example.jobsearch.dao.UserDao;
+import com.example.jobsearch.dto.ResumeDto;
 import com.example.jobsearch.dto.UserDto;
+import com.example.jobsearch.model.Resume;
 import com.example.jobsearch.model.User;
 import com.example.jobsearch.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean userExistsByEmail(String email) {
         return userDao.userExistsByEmail(email);
+    }
+
+    @Override
+    public void editUser(UserDto userDto) {
+        User user = new User();
+        user.setId(userDto.getId());
+        user.setName(userDto.getName());
+        user.setSurname(userDto.getSurname());
+        user.setAge(userDto.getAge());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setAvatar(userDto.getAvatar());
+        user.setAccountType(userDto.getAccountType());
+        userDao.editUser(user);
     }
 
     private UserDto makeUserDto(User user){
