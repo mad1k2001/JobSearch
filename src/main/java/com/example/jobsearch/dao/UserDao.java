@@ -27,31 +27,26 @@ public class UserDao {
         return Optional.ofNullable(template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), email));
     }
 
-    public List<User> getApplicantsForVacancy(Long vacancyId) {
+    public List<User> getUsersByName(String name) {
         String sql = """
-            select u.* from users u
-            join resumes r ON u.id = r.applicantId
-            join respondedApplications ra ON r.id = ra.resumeId
-            where ra.vacancyId = ?
-            """;
-        return template.query(sql, new BeanPropertyRowMapper<>(User.class), vacancyId);
+        SELECT *
+        FROM users
+        WHERE name ILIKE ?
+        """;
+        return template.query(sql, new BeanPropertyRowMapper<>(User.class), name);
     }
 
-    public List<User> getUsersByParams(String name, String phone) {
+    public Optional<User> getUsersByPhoneNumber(String phoneNumber) {
         String sql = """
-            select *
-            from users
-            where name ilike ? or PHONENUMBER ilike ?;
-            """;
-        return template.query(sql, new BeanPropertyRowMapper<>(User.class), name, phone);
+        SELECT *
+        FROM users
+        WHERE phoneNumber ILIKE ?
+        """;
+        return Optional.ofNullable(template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber));
     }
 
     public boolean userExistsByEmail(String email) {
-        String sql = """
-            select COUNT(*) from users where email = ?
-        """;
-        Integer count = template.queryForObject(sql, Integer.class, email);
-        return count != null && count > 0;
+        String sql = "select 1 from users where email = ?";
+        return template.query(sql, (rs, rowNum) -> true, email).stream().findFirst().orElse(false);
     }
-
 }

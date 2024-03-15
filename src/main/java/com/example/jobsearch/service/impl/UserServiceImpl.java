@@ -27,11 +27,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getApplicantsForVacancy(Long vacancyId) {
-        List<User> applicants = userDao.getApplicantsForVacancy(vacancyId);
-        List<UserDto> dtos = new ArrayList<>();
-        applicants.forEach(applicant -> dtos.add(makeUserDto(applicant)));
-        return dtos;
+    public ResponseEntity<List<UserDto>> getUsersByName(String name) {
+        List<User> users = userDao.getUsersByName(name);
+        return ResponseEntity.ok(users.stream()
+                .map(this::makeUserDto)
+                .toList());
+    }
+
+    @Override
+    public ResponseEntity<List<UserDto>> getUsersByPhoneNumber(String phoneNumber) {
+        Optional<User> users = userDao.getUsersByPhoneNumber(phoneNumber);
+        return ResponseEntity.ok(users.stream()
+                .map(this::makeUserDto)
+                .toList());
+    }
+
+    @Override
+    public Boolean userExistsByEmail(String email) {
+        return userDao.userExistsByEmail(email);
     }
 
     private UserDto makeUserDto(User user){
@@ -46,23 +59,5 @@ public class UserServiceImpl implements UserService {
                 .avatar(user.getAvatar())
                 .accountType(user.getAccountType())
                 .build();
-    }
-
-    public ResponseEntity<List<UserDto>> getUsersByParams(String name, String phone){
-        if (name!= null && phone != null){
-            List<User> users = userDao.getUsersByParams(name, phone);
-            return ResponseEntity.ok(users.stream()
-                    .map(this::makeUserDto)
-                    .toList());
-        } else {
-            return ResponseEntity.ok(userDao.getUsers().stream()
-                    .map(this::makeUserDto)
-                    .toList());
-        }
-    }
-
-    @Override
-    public Boolean userExistsByEmail(String email) {
-        return userDao.userExistsByEmail(email);
     }
 }

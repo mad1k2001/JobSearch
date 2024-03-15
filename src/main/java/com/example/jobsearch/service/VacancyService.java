@@ -8,5 +8,4 @@ import java.util.List;
 public interface VacancyService {
     List<VacancyDto> getVacancies();
     List<VacancyDto> getVacanciesByCategory(Long categoryId);
-    List<VacancyDto> getVacanciesForUser(Long userId);
 }
