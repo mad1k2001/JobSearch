@@ -49,13 +49,13 @@ public class ResumeServiceImpl implements ResumeService {
     public Long addResume(ResumeDto resumeDto){
         Resume resume = new Resume();
         resume.setId(resumeDto.getId());
-        resume.setApplicantId(resume.getApplicantId());
-        resume.setName(resume.getName());
-        resume.setCategoryId(resume.getCategoryId());
-        resume.setSalary(resume.getSalary());
-        resume.setIsActive(resume.getIsActive());
-        resume.setCreatedDate(resume.getCreatedDate());
-        resume.setUpdateTime(resume.getUpdateTime());
+        resume.setApplicantId(resumeDto.getApplicantId());
+        resume.setName(resumeDto.getName());
+        resume.setCategoryId(resumeDto.getCategoryId());
+        resume.setSalary(resumeDto.getSalary());
+        resume.setIsActive(resumeDto.getIsActive());
+        resume.setCreatedDate(resumeDto.getCreatedDate());
+        resume.setUpdateTime(resumeDto.getUpdateTime());
         return resumeDao.addResume(resume);
     }
 

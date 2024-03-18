@@ -1,10 +1,12 @@
-INSERT INTO users (name, surname, age, email, password, phoneNumber, avatar, accountType) VALUES
-                                                                                              ('John', 'Doe', 30, 'john@example.com', 'password', '123456789', 'avatar1.jpg', 'applicant'),
-                                                                                              ('Jane', 'Smith', 35, 'jane@example.com', 'password', '987654321', 'avatar2.jpg', 'employer');
+INSERT INTO users (name, surname, age, email, password, phoneNumber, avatar, accountType)
+VALUES
+    ('John', 'Doe', 30, 'john@example.com', 'password', '123456789', 'avatar1.jpg', 'applicant'),
+    ('Jane', 'Smith', 35, 'jane@example.com', 'password', '987654321', 'avatar2.jpg', 'employer');
 
-INSERT INTO categories (name, parentId) VALUES
-                                            ('IT', NULL),
-                                            ('Design', NULL);
+INSERT INTO categories (name, parentId)
+VALUES
+    ('IT', NULL),
+    ('Design', NULL);
 
 INSERT INTO resumes (applicantId, name, categoryId, salary, isActive, createdDate, updateTime)
 VALUES
@@ -28,12 +30,13 @@ VALUES
     ((SELECT id FROM resumes WHERE name = 'Database Administrator' AND applicantId = (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe')), (SELECT id FROM vacancies WHERE name = 'Mobile Developer' AND authorId = (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith')), TRUE),
     ((SELECT id FROM resumes WHERE name = 'System Analyst' AND applicantId = (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe')), (SELECT id FROM vacancies WHERE name = 'Network Administrator' AND authorId = (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith')), TRUE);
 
-INSERT INTO contactTypes (type) VALUES
-                                    ('Telegram'),
-                                    ('Email'),
-                                    ('Phone'),
-                                    ('Facebook'),
-                                    ('Linkedin');
+INSERT INTO contactTypes (type)
+VALUES
+    ('Telegram'),
+    ('Email'),
+    ('Phone'),
+    ('Facebook'),
+    ('Linkedin');
 
 INSERT INTO contactInfos (typeId, resumeId, contactValue)
 VALUES

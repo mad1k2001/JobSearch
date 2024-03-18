@@ -57,6 +57,7 @@ public class ResumeDao {
                 categoryId = :categoryId,
                 salary = :salary,
                 isActive = :isActive,
+                createdDate = :createdDate,
                 updateTime = :updateTime
             WHERE id = :id
             """;
@@ -73,8 +74,8 @@ public class ResumeDao {
 
     public Long addResume(Resume resume) {
         String sql = """
-        INSERT INTO resumes (applicantId, name, categoryId, salary, isActive, createdDate)
-        VALUES (?,?,?,?,?,?)
+            INSERT INTO resumes (applicantId, name, categoryId, salary, isActive, createdDate)
+            VALUES (?,?,?,?,?,?)
         """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
