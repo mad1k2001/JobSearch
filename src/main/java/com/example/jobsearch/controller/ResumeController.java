@@ -52,15 +52,15 @@ public class ResumeController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Void> editResume(@PathVariable Long id, @RequestBody ResumeDto resumeDto) {
+    public HttpStatus editResume(@PathVariable Long id, @RequestBody ResumeDto resumeDto) {
         resumeDto.setId(id);
         resumeService.editResume(resumeDto);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return HttpStatus.OK;
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteResume(@PathVariable Long id) {
+    public HttpStatus deleteResume(@PathVariable Long id) {
         resumeService.deleteResume(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return HttpStatus.OK;
     }
 }

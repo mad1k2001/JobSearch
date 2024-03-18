@@ -46,7 +46,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Long addResume(ResumeDto resumeDto){
+    public void addResume(ResumeDto resumeDto){
         Resume resume = new Resume();
         resume.setId(resumeDto.getId());
         resume.setApplicantId(resumeDto.getApplicantId());
@@ -56,7 +56,7 @@ public class ResumeServiceImpl implements ResumeService {
         resume.setIsActive(resumeDto.getIsActive());
         resume.setCreatedDate(resumeDto.getCreatedDate());
         resume.setUpdateTime(resumeDto.getUpdateTime());
-        return resumeDao.addResume(resume);
+        resumeDao.addResume(resume);
     }
 
     @Override
