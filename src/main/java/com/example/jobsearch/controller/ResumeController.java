@@ -5,10 +5,7 @@ import com.example.jobsearch.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,5 +36,31 @@ public class ResumeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         return ResponseEntity.ok(resumes);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResumeDto> getResumeById(@PathVariable Long id) {
+        return resumeService.getResumeById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("add")
+    public HttpStatus addResume(@RequestBody ResumeDto resumeDto) {
+        resumeService.addResume(resumeDto);
+        return HttpStatus.OK;
+    }
+
+    @PostMapping("/edit/{id}")
+    public ResponseEntity<Void> editResume(@PathVariable Long id, @RequestBody ResumeDto resumeDto) {
+        resumeDto.setId(id);
+        resumeService.editResume(resumeDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteResume(@PathVariable Long id) {
+        resumeService.deleteResume(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

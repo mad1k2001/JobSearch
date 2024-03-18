@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table for RespondedApplications
+      author: Madina
+      changes:
+        - createTable:
+            tableName: respondedApplications
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: resumeId
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_resumes_id
+                    references: resumes(id)
+              - column:
+                  name: vacancyId
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_vacancies_id
+                    references: vacancies(id)
+              - column:
+                  name: confirmation
+                  type: BOOLEAN

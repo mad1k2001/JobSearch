@@ -27,14 +27,4 @@ public class VacancyDao {
                 """;
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), categoryId);
     }
-
-    public List<Vacancy> getVacanciesForUser(Long userId) {
-        String sql = """       
-                SELECT v.* FROM vacancies v
-                JOIN respondedApplications ra ON v.id = ra.vacancyId
-                JOIN resumes r ON ra.resumeId = r.id
-                WHERE r.applicantId = ?
-            """;
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), userId);
-    }
 }

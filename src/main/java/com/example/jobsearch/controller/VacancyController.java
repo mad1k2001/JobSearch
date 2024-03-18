@@ -31,13 +31,4 @@ public class VacancyController {
         }
         return ResponseEntity.ok(vacancies);
     }
-
-    @GetMapping("/vacancyForApp/{userId}")
-    public ResponseEntity<List<VacancyDto>> getVacanciesForUser(@PathVariable Long userId) {
-        List<VacancyDto> vacancies = vacancyService.getVacanciesForUser(userId);
-        if (vacancies.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        return ResponseEntity.ok(vacancies);
-    }
 }

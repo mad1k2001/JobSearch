@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface UserService {
     ResponseEntity<?> getUserByEmail(String email);
-    List<UserDto> getApplicantsForVacancy(Long vacancyId);
-    ResponseEntity<List<UserDto>> getUsersByParams(String name, String phone);
+    ResponseEntity<List<UserDto>> getUsersByName(String name);
+    ResponseEntity<?> getUsersByPhoneNumber(String phone);
     Boolean userExistsByEmail(String email);
+    void editUser(UserDto userDto);
 }

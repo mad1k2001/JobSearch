@@ -15,10 +15,14 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<List<UserDto>> getUsers(@RequestParam(value = "name", required = false)String name,
-                                                  @RequestParam(value = "phone", required = false) String phone) {
-        return userService.getUsersByParams(name, phone);
+    @GetMapping(params = "name")
+    public ResponseEntity<List<UserDto>> getUsersByName(@RequestParam("name") String name) {
+        return userService.getUsersByName(name);
+    }
+
+    @GetMapping(params = "phone")
+    public ResponseEntity<?> getUserByPhoneNumber(@RequestParam("phone") String phoneNumber) {
+        return userService.getUsersByPhoneNumber(phoneNumber);
     }
 
     @GetMapping("/email/{email}")
@@ -26,18 +30,15 @@ public class UserController {
         return userService.getUserByEmail(email);
     }
 
-    @GetMapping("/vacancy/{vacancyId}")
-    public ResponseEntity<List<UserDto>> getApplicantsForVacancy(@PathVariable Long vacancyId) {
-        List<UserDto> applicants = userService.getApplicantsForVacancy(vacancyId);
-        if (applicants.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        return ResponseEntity.ok(applicants);
-    }
-
     @GetMapping("/exists/{email}")
     public ResponseEntity<Boolean> userExistsByEmail(@PathVariable String email) {
         return ResponseEntity.ok(userService.userExistsByEmail(email));
     }
 
+    @PostMapping("/edit/{id}")
+    public ResponseEntity<Void> editUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        userDto.setId(id);
+        userService.editUser(userDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

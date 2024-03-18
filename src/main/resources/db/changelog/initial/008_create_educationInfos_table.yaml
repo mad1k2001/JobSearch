@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table for EducationInfos
+      author: Madina
+      changes:
+        - createTable:
+            tableName: educationInfos
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: resumeId
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_resume_id_id
+                    references: resumes(id)
+              - column:
+                  name: institution
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: program
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: startDate
+                  type: DATE
+              - column:
+                  name: endDate
+                  type: DATE
+              - column:
+                  name: degree
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
