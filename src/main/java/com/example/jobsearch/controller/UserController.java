@@ -60,12 +60,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Can't create user");
     }
 
-    @PutMapping("/edit/{email}")
-    public ResponseEntity<?> editUser(@PathVariable String email, @RequestBody UserDto userDto) {
-        if (!userService.userExistsByEmail(email)) {
-            return ResponseEntity.notFound().build();
-        }
-        userDto.setEmail(email);
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        userDto.setId(id);
         userService.editUser(userDto);
         return ResponseEntity.ok().build();
     }
