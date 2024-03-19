@@ -1,5 +1,6 @@
 package com.example.jobsearch.controller;
 
+import com.example.jobsearch.dto.ResumeDto;
 import com.example.jobsearch.dto.UserDto;
 import com.example.jobsearch.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,12 @@ public class UserController {
     @GetMapping("/exists/{email}")
     public ResponseEntity<Boolean> userExistsByEmail(@PathVariable String email) {
         return ResponseEntity.ok(userService.userExistsByEmail(email));
+    }
+
+    @PostMapping("add")
+    public HttpStatus addUser(@RequestBody UserDto userDto) {
+        userService.addUser(userDto);
+        return HttpStatus.OK;
     }
 
     @PutMapping("/edit/{id}")

@@ -1,13 +1,19 @@
 package com.example.jobsearch.dao;
 
 import com.example.jobsearch.model.User;
+import com.example.jobsearch.model.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -49,6 +55,29 @@ public class UserDao {
     public boolean userExistsByEmail(String email) {
         String sql = "select 1 from users where email = ?";
         return template.query(sql, (rs, rowNum) -> true, email).stream().findFirst().orElse(false);
+    }
+
+    public Long addUser(User user){
+        String sql = """
+                INSERT INTO users (name, surname, age, email, password, phoneNumber, avatar, accountType)
+                VALUES (?,?,?,?,?,?,?,?)
+                """;
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        template.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getSurname());
+            ps.setInt(3, user.getAge());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getPassword());
+            ps.setString(5, user.getPhoneNumber());
+            ps.setString(5, user.getAvatar());
+            ps.setString(6, user.getAccountType().toString());
+            return ps;
+        }, keyHolder);
+
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
     public void editUser (User user) {

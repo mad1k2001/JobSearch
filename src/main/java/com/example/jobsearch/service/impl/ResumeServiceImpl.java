@@ -23,7 +23,7 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public List<ResumeDto> getResume(){
         if (user.getAccountType() != AccountType.EMPLOYER) {
-            log.error("Only employers can view resumes.");
+            log.error("Only employers can view all resumes.");
         }
         List<Resume> resumes = resumeDao.getResume();
         List<ResumeDto> dtos = new ArrayList<>();
@@ -34,7 +34,7 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public List<ResumeDto> getResumeByCategory(Long categoryId){
         if (user.getAccountType() != AccountType.EMPLOYER) {
-            log.error("Only employers can view resumes.");
+            log.error("Only employers can view resumes by category.");
         }
         List<Resume> resumes = resumeDao.getResumeByCategory(categoryId);
         List<ResumeDto> dtos = new ArrayList<>();
@@ -45,7 +45,7 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public List<ResumeDto> getResumeByApplicantId(Long applicantId){
         if (user.getAccountType() != AccountType.EMPLOYER) {
-            log.error("Only employers can view resumes.");
+            log.error("Only employers can view resumes by applicant.");
         }
         List<Resume> resumes = resumeDao.getResumeByApplicantId(applicantId);
         List<ResumeDto> dtos = new ArrayList<>();
@@ -56,7 +56,7 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public Optional<ResumeDto> getResumeById(Long id) {
         if (user.getAccountType() != AccountType.EMPLOYER) {
-            log.error("Only employers can view resumes.");
+            log.error("Only employers can view resumes by id.");
         }
         return resumeDao.getResumeById(id)
                 .map(this::mapToDto);

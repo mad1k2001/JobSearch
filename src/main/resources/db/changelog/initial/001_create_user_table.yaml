@@ -41,6 +41,7 @@ databaseChangeLog:
               - column:
                   name: avatar
                   type: varchar(255)
+                  defaultValue: "default.jpg"
               - column:
                   name: accountType
                   type: varchar(255)

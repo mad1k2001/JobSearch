@@ -10,5 +10,6 @@ public interface UserService {
     ResponseEntity<List<UserDto>> getUsersByName(String name);
     ResponseEntity<?> getUsersByPhoneNumber(String phone);
     Boolean userExistsByEmail(String email);
+    void addUser(UserDto userDto);
     void editUser(UserDto userDto);
 }
