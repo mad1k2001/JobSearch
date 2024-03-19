@@ -31,6 +31,8 @@ public class ResumeServiceImpl implements ResumeService {
         return dtos;
     }
 
+
+
     @Override
     public List<ResumeDto> getResumeByCategory(Long categoryId){
         if (user.getAccountType() != AccountType.EMPLOYER) {

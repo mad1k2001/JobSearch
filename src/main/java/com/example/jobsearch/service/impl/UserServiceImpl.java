@@ -1,17 +1,15 @@
 package com.example.jobsearch.service.impl;
 
 import com.example.jobsearch.dao.UserDao;
-import com.example.jobsearch.dto.ResumeDto;
+import com.example.jobsearch.dto.ImageDto;
 import com.example.jobsearch.dto.UserDto;
-import com.example.jobsearch.enums.AccountType;
-import com.example.jobsearch.model.Resume;
 import com.example.jobsearch.model.User;
 import com.example.jobsearch.service.UserService;
+import com.example.jobsearch.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(UserDto userDto){
+    public Long addUser(UserDto userDto){
         User user = new User();
         user.setId(userDto.getId());
         user.setName(userDto.getName());
@@ -63,6 +61,7 @@ public class UserServiceImpl implements UserService {
         user.setAvatar(userDto.getAvatar());
         user.setAccountType(userDto.getAccountType());
         userDao.addUser(user);
+        return null;
     }
 
     @Override
@@ -78,6 +77,19 @@ public class UserServiceImpl implements UserService {
         user.setAvatar(userDto.getAvatar());
         user.setAccountType(userDto.getAccountType());
         userDao.editUser(user);
+    }
+
+    @Override
+    public void upload(ImageDto imageDto, Long userId){
+        User user = new User();
+        user.setId(userId);
+        if (imageDto.getFile() != null && !imageDto.getFile().isEmpty()){
+            String filename = FileUtil.saveFile(imageDto.getFile(), "images");
+            user.setAvatar(filename);
+        } else {
+            user.setAvatar("data/images/default.png");
+        }
+        userDao.save(user);
     }
 
     private UserDto makeUserDto(User user){

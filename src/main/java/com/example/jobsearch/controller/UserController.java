@@ -1,7 +1,9 @@
 package com.example.jobsearch.controller;
 
+import com.example.jobsearch.dto.ImageDto;
 import com.example.jobsearch.dto.ResumeDto;
 import com.example.jobsearch.dto.UserDto;
+import com.example.jobsearch.model.User;
 import com.example.jobsearch.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,12 +48,16 @@ public class UserController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<?> addUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> addUser(@RequestBody UserDto userDto, ImageDto imageDto) {
         if (userService.userExistsByEmail(userDto.getEmail())) {
             return ResponseEntity.badRequest().body("User with this email already exists");
         }
-        userService.addUser(userDto);
-        return ResponseEntity.ok().build();
+        Long id = userService.addUser(userDto);
+        if (id != 0){
+            userService.upload(imageDto, id);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Can't create user");
     }
 
     @PutMapping("/edit/{email}")
@@ -63,5 +69,4 @@ public class UserController {
         userService.editUser(userDto);
         return ResponseEntity.ok().build();
     }
-
 }
