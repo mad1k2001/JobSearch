@@ -89,7 +89,7 @@ public class UserDao {
                 password = :password,
                 phoneNumber = :phoneNumber,
                 avatar = :avatar
-            WHERE id = :id;
+            WHERE email = :email;
             """;
         template.update(sql, new MapSqlParameterSource()
                 .addValue("name", user.getName())
@@ -98,7 +98,7 @@ public class UserDao {
                 .addValue ("password", user.getPassword())
                 .addValue("phoneNumber", user.getPhoneNumber())
                 .addValue ("avatar", user.getAvatar())
-                .addValue ("id",user.getId())
+                .addValue ("email",user.getEmail())
         );
     }
 }
