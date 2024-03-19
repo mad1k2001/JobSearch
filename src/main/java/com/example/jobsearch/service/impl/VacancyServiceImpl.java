@@ -49,15 +49,7 @@ public class VacancyServiceImpl implements VacancyService {
         if (user.getAccountType() != AccountType.EMPLOYER) {
             log.error("Only employers can add vacancies.");
         }
-        Vacancy vacancy = new Vacancy();
-        vacancy.setId(vacancyDto.getId());
-        vacancy.setName(vacancyDto.getName());
-        vacancy.setDescription(vacancyDto.getDescription());
-        vacancy.setCategoryId(vacancyDto.getCategoryId());
-        vacancy.setSalary(vacancyDto.getSalary());
-        vacancy.setIsActivate(vacancyDto.getIsActivate());
-        vacancy.setCreatedDate(vacancyDto.getCreatedDate());
-        vacancy.setUpdateTime(vacancyDto.getUpdateTime());
+        Vacancy vacancy = makeVacancy(vacancyDto);
         return vacancyDao.addVacancy(vacancy);
     }
 
@@ -66,15 +58,7 @@ public class VacancyServiceImpl implements VacancyService {
         if (user.getAccountType() != AccountType.EMPLOYER) {
             log.error("Only employers can edit vacancies.");
         }
-        Vacancy vacancy = new Vacancy();
-        vacancy.setId(vacancyDto.getId());
-        vacancy.setName(vacancyDto.getName());
-        vacancy.setDescription(vacancyDto.getDescription());
-        vacancy.setCategoryId(vacancyDto.getCategoryId());
-        vacancy.setSalary(vacancyDto.getSalary());
-        vacancy.setIsActivate(vacancyDto.getIsActivate());
-        vacancy.setCreatedDate(vacancyDto.getCreatedDate());
-        vacancy.setUpdateTime(vacancyDto.getUpdateTime());
+        Vacancy vacancy = makeVacancy(vacancyDto);
         vacancyDao.editVacancy(vacancy);
     }
 
@@ -99,6 +83,22 @@ public class VacancyServiceImpl implements VacancyService {
                 .authorId(vacancy.getAuthorId())
                 .createdDate(vacancy.getCreatedDate())
                 .updateTime(vacancy.getUpdateTime())
+                .build();
+    }
+
+    private Vacancy makeVacancy(VacancyDto vacancyDto){
+        return Vacancy.builder()
+                .id(vacancyDto.getId())
+                .name(vacancyDto.getName())
+                .description(vacancyDto.getDescription())
+                .categoryId(vacancyDto.getCategoryId())
+                .salary(vacancyDto.getSalary())
+                .expFrom(vacancyDto.getExpFrom())
+                .expTo(vacancyDto.getExpTo())
+                .isActivate(vacancyDto.getIsActivate())
+                .authorId(vacancyDto.getAuthorId())
+                .createdDate(vacancyDto.getCreatedDate())
+                .updateTime(vacancyDto.getUpdateTime())
                 .build();
     }
 }

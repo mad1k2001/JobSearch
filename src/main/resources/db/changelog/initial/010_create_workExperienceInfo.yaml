@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table for Work Experience Info
+      author: Madina
+      changes:
+        - createTable:
+            tableName: workExperienceInfo
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: resumeId;
+                  type: long;
+              private Long resumeId;
+              private Integer years;
+              private String companyName;
+              private String position;
+              private String responsibility;
+          }

@@ -31,8 +31,6 @@ public class ResumeServiceImpl implements ResumeService {
         return dtos;
     }
 
-
-
     @Override
     public List<ResumeDto> getResumeByCategory(Long categoryId){
         if (user.getAccountType() != AccountType.EMPLOYER) {
@@ -69,15 +67,7 @@ public class ResumeServiceImpl implements ResumeService {
         if (user.getAccountType() != AccountType.APPLICANT) {
            log.error("Only applicants can add resumes.");
         }
-        Resume resume = new Resume();
-        resume.setId(resumeDto.getId());
-        resume.setApplicantId(resumeDto.getApplicantId());
-        resume.setName(resumeDto.getName());
-        resume.setCategoryId(resumeDto.getCategoryId());
-        resume.setSalary(resumeDto.getSalary());
-        resume.setIsActive(resumeDto.getIsActive());
-        resume.setCreatedDate(resumeDto.getCreatedDate());
-        resume.setUpdateTime(resumeDto.getUpdateTime());
+        Resume resume = makeResume(resumeDto);
         resumeDao.addResume(resume);
     }
 
@@ -86,15 +76,7 @@ public class ResumeServiceImpl implements ResumeService {
         if (user.getAccountType() != AccountType.APPLICANT) {
             log.error("Only applicants can edit resumes.");
         }
-        Resume resume = new Resume();
-        resume.setId(resumeDto.getId());
-        resume.setApplicantId(resumeDto.getApplicantId());
-        resume.setName(resumeDto.getName());
-        resume.setCategoryId(resumeDto.getCategoryId());
-        resume.setSalary(resumeDto.getSalary());
-        resume.setIsActive(resumeDto.getIsActive());
-        resume.setCreatedDate(resumeDto.getCreatedDate());
-        resume.setUpdateTime(resumeDto.getUpdateTime());
+        Resume resume = makeResume(resumeDto);
         resumeDao.editResume(resume);
     }
 
@@ -115,6 +97,19 @@ public class ResumeServiceImpl implements ResumeService {
                 .isActive(resume.getIsActive())
                 .createdDate(resume.getCreatedDate())
                 .updateTime(resume.getUpdateTime())
+                .build();
+    }
+
+    private Resume makeResume(ResumeDto resumeDto){
+        return Resume.builder()
+                .id(resumeDto.getId())
+                .applicantId(resumeDto.getApplicantId())
+                .name(resumeDto.getName())
+                .categoryId(resumeDto.getCategoryId())
+                .salary(resumeDto.getSalary())
+                .isActive(resumeDto.getIsActive())
+                .createdDate(resumeDto.getCreatedDate())
+                .updateTime(resumeDto.getUpdateTime())
                 .build();
     }
 }

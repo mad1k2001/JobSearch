@@ -50,38 +50,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long addUser(UserDto userDto){
-        User user = new User();
-        user.setId(userDto.getId());
-        user.setName(userDto.getName());
-        user.setSurname(userDto.getSurname());
-        user.setAge(userDto.getAge());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setAvatar(userDto.getAvatar());
-        user.setAccountType(userDto.getAccountType());
+        User user = makeUser(userDto);
         return userDao.addUser(user);
     }
 
     @Override
     public void editUser(UserDto userDto) {
-        User user = new User();
-        user.setId(userDto.getId());
-        user.setName(userDto.getName());
-        user.setSurname(userDto.getSurname());
-        user.setAge(userDto.getAge());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setAvatar(userDto.getAvatar());
-        user.setAccountType(userDto.getAccountType());
+        User user = makeUser(userDto);
         userDao.editUser(user);
     }
 
     @Override
     public void upload(ImageDto imageDto, Long userId){
-        User user = new User();
-        user.setId(userId);
+        User user = User.builder()
+                .id(userId).build();
         if (imageDto.getFile() != null && !imageDto.getFile().isEmpty()){
             String filename = FileUtil.saveFile(imageDto.getFile(), "images");
             user.setAvatar(filename);
@@ -102,6 +84,20 @@ public class UserServiceImpl implements UserService {
                 .phoneNumber(user.getPhoneNumber())
                 .avatar(user.getAvatar())
                 .accountType(user.getAccountType())
+                .build();
+    }
+
+    private User makeUser(UserDto userDto){
+        return User.builder()
+                .id(userDto.getId())
+                .name(userDto.getName())
+                .surname(userDto.getSurname())
+                .age(userDto.getAge())
+                .email(userDto.getEmail())
+                .password(userDto.getPassword())
+                .phoneNumber(userDto.getPhoneNumber())
+                .avatar(userDto.getAvatar())
+                .accountType(userDto.getAccountType())
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.jobsearch.dao;
 
+import com.example.jobsearch.model.Resume;
 import com.example.jobsearch.model.User;
 import com.example.jobsearch.model.Vacancy;
 import lombok.RequiredArgsConstructor;
@@ -109,5 +110,12 @@ public class UserDao {
             WHERE ID = :id;
             """;
         template.update(sql, new MapSqlParameterSource().addValue("id", user.getId()).addValue("avatar", user.getAvatar()));
+    }
+
+    public Optional<User> getUserById(Long id) {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        return template.query(sql, new BeanPropertyRowMapper<>(User.class), id)
+                .stream()
+                .findFirst();
     }
 }
