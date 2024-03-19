@@ -57,7 +57,6 @@ public class ResumeDao {
                 categoryId = :categoryId,
                 salary = :salary,
                 isActive = :isActive,
-                createdDate = :createdDate,
                 updateTime = :updateTime
             WHERE id = :id
             """;
@@ -67,8 +66,7 @@ public class ResumeDao {
                 .addValue("categoryId", resume.getCategoryId())
                 .addValue("salary", resume.getSalary())
                 .addValue("isActive", resume.getIsActive())
-                .addValue("createdDate", resume.getCreatedDate())
-                .addValue("updateTime", LocalDateTime.now())
+                .addValue("updateTime", resume.getUpdateTime())
                 .addValue("id", resume.getId()));
     }
 
