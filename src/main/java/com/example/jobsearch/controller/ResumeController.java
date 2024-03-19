@@ -51,16 +51,16 @@ public class ResumeController {
         return HttpStatus.OK;
     }
 
-    @PutMapping("/edit/{id}")
-    public HttpStatus editResume(@PathVariable Long id, @RequestBody ResumeDto resumeDto) {
+    @PutMapping("edit/{id}")
+    public ResponseEntity<Void> editResume(@PathVariable Long id, @RequestBody ResumeDto resumeDto) {
         resumeDto.setId(id);
         resumeService.editResume(resumeDto);
-        return HttpStatus.OK;
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public HttpStatus deleteResume(@PathVariable Long id) {
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Void> deleteResume(@PathVariable Long id) {
         resumeService.deleteResume(id);
-        return HttpStatus.OK;
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

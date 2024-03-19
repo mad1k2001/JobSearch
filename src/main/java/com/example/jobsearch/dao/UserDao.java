@@ -57,22 +57,18 @@ public class UserDao {
                 SET NAME = : name,
                 SURNAME = : surname,
                 AGE = :age,
-                email = :email,
                 password = :password,
                 phoneNumber = :phoneNumber,
-                avatar = :avatar,
-                accountType = :accountType
+                avatar = :avatar
             WHERE id = :id;
             """;
         template.update(sql, new MapSqlParameterSource()
                 .addValue("name", user.getName())
                 .addValue("surname", user.getSurname())
                 .addValue("age", user .getAge())
-                .addValue("email", user.getEmail())
                 .addValue ("password", user.getPassword())
                 .addValue("phoneNumber", user.getPhoneNumber())
                 .addValue ("avatar", user.getAvatar())
-                .addValue ("accountType", user.getAccountType())
                 .addValue ("id",user.getId())
         );
     }

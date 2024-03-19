@@ -36,9 +36,9 @@ public class UserController {
     }
 
     @PutMapping("/edit/{id}")
-    public HttpStatus editUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+    public ResponseEntity<Void> editUser(@PathVariable Long id, @RequestBody UserDto userDto) {
         userDto.setId(id);
         userService.editUser(userDto);
-        return HttpStatus.OK;
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.jobsearch.model;
 
+import com.example.jobsearch.enums.AccountType;
 import lombok.*;
 
 @Getter
@@ -13,5 +14,5 @@ public class User {
     private String password;
     private String phoneNumber;
     private String avatar;
-    private String accountType;
+    private AccountType accountType;
 }

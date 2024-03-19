@@ -1,5 +1,6 @@
 package com.example.jobsearch.dto;
 
+import com.example.jobsearch.enums.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +19,5 @@ public class UserDto {
     private String password;
     private String phoneNumber;
     private String avatar;
-    private String accountType;
+    private AccountType accountType;
 }

@@ -36,15 +36,15 @@ public class VacancyController {
     }
 
     @PutMapping("/edit/{id}")
-    public HttpStatus editResume(@PathVariable Long id, @RequestBody VacancyDto vacancyDto) {
+    public ResponseEntity<Void> editResume(@PathVariable Long id, @RequestBody VacancyDto vacancyDto) {
         vacancyDto.setId(id);
         vacancyService.editVacancy(vacancyDto);
-        return HttpStatus.OK;
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/delete/{id}")
-    public HttpStatus deleteResume(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteResume(@PathVariable Long id) {
         vacancyService.deleteVacancy(id);
-        return HttpStatus.OK;
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
