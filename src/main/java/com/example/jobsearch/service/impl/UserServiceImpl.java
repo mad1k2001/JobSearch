@@ -60,8 +60,7 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(userDto.getPhoneNumber());
         user.setAvatar(userDto.getAvatar());
         user.setAccountType(userDto.getAccountType());
-        userDao.addUser(user);
-        return null;
+        return userDao.addUser(user);
     }
 
     @Override
