@@ -6,9 +6,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
+@Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Resume {
     private Long id;
     private Long applicantId;

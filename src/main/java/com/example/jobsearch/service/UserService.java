@@ -1,5 +1,6 @@
 package com.example.jobsearch.service;
 
+import com.example.jobsearch.dto.ImageDto;
 import com.example.jobsearch.dto.UserDto;
 import org.springframework.http.ResponseEntity;
 
@@ -10,5 +11,7 @@ public interface UserService {
     ResponseEntity<List<UserDto>> getUsersByName(String name);
     ResponseEntity<?> getUsersByPhoneNumber(String phone);
     Boolean userExistsByEmail(String email);
+    Long addUser(UserDto userDto);
     void editUser(UserDto userDto);
+    void upload(ImageDto imageDto, Long id);
 }

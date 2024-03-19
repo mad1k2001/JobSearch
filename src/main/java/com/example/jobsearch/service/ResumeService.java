@@ -11,6 +11,6 @@ public interface ResumeService {
     List<ResumeDto> getResumeByApplicantId(Long applicantId);
     Optional<ResumeDto> getResumeById(Long id);
     void editResume(ResumeDto resume);
-    Long addResume(ResumeDto resume);
+    void addResume(ResumeDto resume);
     void deleteResume(Long id);
 }

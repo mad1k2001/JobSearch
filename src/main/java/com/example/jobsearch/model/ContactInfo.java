@@ -4,6 +4,9 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ContactInfo {
     private Long id;
     private Long typeId;
