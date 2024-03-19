@@ -14,11 +14,29 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: resumeId;
-                  type: long;
-              private Long resumeId;
-              private Integer years;
-              private String companyName;
-              private String position;
-              private String responsibility;
-          }
+                  name: resumeId
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fkResume_id_id
+                    references: resumes(id)
+              - column:
+                  name: years
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: companyName
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: position
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: responsibility
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false

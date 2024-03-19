@@ -58,3 +58,9 @@ VALUES
     ((SELECT id FROM respondedApplications WHERE resumeId = (SELECT id FROM resumes WHERE name = 'Backend Developer') AND vacancyId = (SELECT id FROM vacancies WHERE name = 'Frontend Developer')), 'Thank you for your application', NOW()),
     ((SELECT id FROM respondedApplications WHERE resumeId = (SELECT id FROM resumes WHERE name = 'Database Administrator') AND vacancyId = (SELECT id FROM vacancies WHERE name = 'Mobile Developer')), 'Thank you for your application', NOW()),
     ((SELECT id FROM respondedApplications WHERE resumeId = (SELECT id FROM resumes WHERE name = 'System Analyst') AND vacancyId = (SELECT id FROM vacancies WHERE name = 'Network Administrator')), 'Thank you for your application', NOW());
+
+INSERT INTO workExperienceInfo (resumeId, years, companyName, position, responsibility)
+VALUES
+    ((SELECT id FROM resumes WHERE name = 'Backend Developer'), 3, 'ABC Company', 'Software Engineer', 'Developed and maintained software applications'),
+    ((SELECT id FROM resumes WHERE name = 'UI/UX Designer'), 2, 'XYZ Corporation', 'Web Developer', 'Designed and implemented web applications'),
+    ((SELECT id FROM resumes WHERE name = 'Database Administrator'), 4, 'DEF Industries', 'Database Administrator', 'Managed and optimized databases');
