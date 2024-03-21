@@ -18,13 +18,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RespondedApplicationImpl implements RespondedApplicationService {
     private final RespondedApplicationDao respondedApplicationDao;
-    private User user;
 
     @Override
     public List<RespondedApplicationDto> getRespondedVacanciesForApplicant(Long applicantId) {
-        if (user.getAccountType() != AccountType.EMPLOYER) {
-            log.error("Only employers can view vacancies by applicants.");
-        }
         List<RespondedApplication> respondedApplications = respondedApplicationDao.getRespondedVacanciesForApplicant(applicantId);
         return respondedApplications.stream()
                 .map(this::mapToDto)
@@ -33,9 +29,6 @@ public class RespondedApplicationImpl implements RespondedApplicationService {
 
     @Override
     public List<RespondedApplicationDto> getApplicationsByVacancy(Long vacancyId) {
-        if (user.getAccountType() != AccountType.EMPLOYER) {
-            log.error("Only employers can view applicants by vacancies.");
-        }
         List<RespondedApplication> respondedApplications = respondedApplicationDao.getApplicationsByVacancy(vacancyId);
         return respondedApplications.stream()
                 .map(this::mapToDto)

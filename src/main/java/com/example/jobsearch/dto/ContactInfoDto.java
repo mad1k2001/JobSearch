@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ContactInfoDto {
     private Long id;
-    private Integer typeId;
+    private Long typeId;
     private Long resumeId;
     private String contactValue;
 }

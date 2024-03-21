@@ -1,5 +1,6 @@
 package com.example.jobsearch.dao;
 
+import com.example.jobsearch.enums.AccountType;
 import com.example.jobsearch.model.Resume;
 import com.example.jobsearch.model.User;
 import com.example.jobsearch.model.Vacancy;
@@ -120,10 +121,11 @@ public class UserDao {
         template.update(sql, new MapSqlParameterSource().addValue("id", user.getId()).addValue("avatar", user.getAvatar()));
     }
 
-    public boolean isAuthor(Long userId) {
+    public AccountType getUserAccountTypeById(Long userId) {
         String sql = """
-                SELECT COUNT(*) FROM USERS WHERE ID = ? AND ACCOUNTTYPE = 'работодатель'
+                SELECT accountType FROM users WHERE id = ?
                 """;
-        return template.query(sql, (rs, rowNum) -> true, userId).isEmpty();
+        return template.queryForObject(sql, AccountType.class, userId);
     }
+
 }

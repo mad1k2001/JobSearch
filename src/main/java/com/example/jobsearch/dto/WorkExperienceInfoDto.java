@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 public class WorkExperienceInfoDto {
     private Long id;
     private Long resumeId;
-    private Byte years;
+    private Integer years;
     private String companyName;
     private String position;
-    private String responsibilities;
+    private String responsibility;
 }

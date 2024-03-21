@@ -1,90 +1,249 @@
 package com.example.jobsearch.service.impl;
 
-import com.example.jobsearch.dao.ResumeDao;
-import com.example.jobsearch.dto.ResumeDto;
+import com.example.jobsearch.dao.*;
+import com.example.jobsearch.dto.*;
 import com.example.jobsearch.enums.AccountType;
-import com.example.jobsearch.model.Resume;
-import com.example.jobsearch.model.User;
+import com.example.jobsearch.exeptions.ResumeNotFoundException;
+import com.example.jobsearch.model.*;
 import com.example.jobsearch.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
-    private User user;
     private final ResumeDao resumeDao;
+    private final UserDao userDao;
+    private final WorkExperienceInfoDao workExperienceInfoDao;
+    private final EducationInfoDao educationInfoDao;
+    private final ContactInfoDao contactInfoDao;
+
     @Override
     public List<ResumeDto> getResume(){
-        if (user.getAccountType() != AccountType.EMPLOYER) {
-            log.error("Only employers can view all resumes.");
-        }
         List<Resume> resumes = resumeDao.getResume();
-        List<ResumeDto> dtos = new ArrayList<>();
-        resumes.forEach(e -> dtos.add(mapToDto(e)));
-        return dtos;
+        return getResumeDto(resumes);
     }
 
     @Override
     public List<ResumeDto> getResumeByCategory(Long categoryId){
-        if (user.getAccountType() != AccountType.EMPLOYER) {
-            log.error("Only employers can view resumes by category.");
-        }
-        List<Resume> resumes = resumeDao.getResumeByCategory(categoryId);
-        List<ResumeDto> dtos = new ArrayList<>();
-        resumes.forEach(e -> dtos.add(mapToDto(e)));
-        return dtos;
+        List<Resume> foundResumes = resumeDao.getResumeByCategory(categoryId);
+        return getResumeDto(foundResumes);
     }
 
     @Override
     public List<ResumeDto> getResumeByApplicantId(Long applicantId){
-        if (user.getAccountType() != AccountType.EMPLOYER) {
-            log.error("Only employers can view resumes by applicant.");
-        }
-        List<Resume> resumes = resumeDao.getResumeByApplicantId(applicantId);
-        List<ResumeDto> dtos = new ArrayList<>();
-        resumes.forEach(e -> dtos.add(mapToDto(e)));
-        return dtos;
+        List<Resume> foundResumes = resumeDao.getResumeByApplicantId(applicantId);
+        return getResumeDto(foundResumes);
     }
 
     @Override
-    public Optional<ResumeDto> getResumeById(Long id) {
-        if (user.getAccountType() != AccountType.EMPLOYER) {
-            log.error("Only employers can view resumes by id.");
-        }
+    public Optional<ResumeDto> getResumeById(Long id) throws ResumeNotFoundException {
         return resumeDao.getResumeById(id)
-                .map(this::mapToDto);
+                .map(this::mapToDto)
+                .map(Optional::of)
+                .orElseThrow(() -> new ResumeNotFoundException("Can't find resume with id: " + id));
     }
 
     @Override
-    public void addResume(ResumeDto resumeDto){
-        if (user.getAccountType() != AccountType.APPLICANT) {
-           log.error("Only applicants can add resumes.");
+    public List<ResumeDto> findResumeByPosition(String position) {
+        List<Resume> foundResumes = resumeDao.findResumesByPosition(position);
+        if (foundResumes.isEmpty()){
+            log.error("null");
         }
+        return getResumeDto(foundResumes);
+    }
+
+    @Override
+    public void addResume(ResumeDto resumeDto, Long applicantId){
+        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
+
+        Optional<User> userOptional = userDao.getUserById(applicantId);
+        if (userOptional.isEmpty()) {
+            log.error("There's no user with id " + applicantId);
+            return;
+        }
+
+        User user = userOptional.get();
+
+        if (accountType != AccountType.APPLICANT) {
+            log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
+            return;
+        }
+
         Resume resume = makeResume(resumeDto);
         resumeDao.addResume(resume);
+
+        if (resumeDto.getWorkExperienceList() != null) {
+            for (WorkExperienceInfoDto workExperienceDto : resumeDto.getWorkExperienceList()) {
+                if (workExperienceDto.getYears() > user.getAge()) {
+                    log.error("Work experience years exceed user's age!");
+                    return;
+                }
+
+                WorkExperienceInfo workExperience = makeWorkExperienceInfo(workExperienceDto);
+                workExperienceInfoDao.create(workExperience);
+            }
+        }
+
+        if (resumeDto.getEducationList() != null) {
+            for (EducationInfoDto educationDto : resumeDto.getEducationList()) {
+                long years = ChronoUnit.YEARS.between(educationDto.getStartDate(), educationDto.getEndDate());
+                int yearsAsInt = (int) years;
+
+                if (educationDto.getStartDate().isAfter(educationDto.getEndDate()) || yearsAsInt > user.getAge()) {
+                    log.error("Incorrect date for education");
+                    return;
+                }
+
+                EducationInfo education = makeEducationInfo(educationDto);
+                educationInfoDao.create(education);
+            }
+        }
+
+        if (resumeDto.getContactInfo() != null) {
+            for (ContactInfoDto contactInfoDto : resumeDto.getContactInfo()) {
+                ContactInfo contactInfo = makeContactInfo(contactInfoDto);
+                contactInfoDao.create(contactInfo);
+            }
+        }
     }
 
     @Override
-    public void editResume(ResumeDto resumeDto) {
-        if (user.getAccountType() != AccountType.APPLICANT) {
-            log.error("Only applicants can edit resumes.");
+    public void editResume(ResumeDto resumeDto, Long applicantId, Long resumeId) {
+        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
+
+        Optional<User> userOptional = userDao.getUserById(applicantId);
+        if (userOptional.isEmpty()) {
+            log.error("There's no user by id " + applicantId);
+            return;
         }
+        User user = userOptional.get();
+
+        if (accountType != AccountType.APPLICANT) {
+            log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
+            return;
+        }
+
+        Optional<Resume> resumeOptional = resumeDao.getResumeById(resumeId);
+        if (resumeOptional.isEmpty()) {
+            log.error("There's no resume by id " + resumeId);
+            return;
+        }
+
         Resume resume = makeResume(resumeDto);
         resumeDao.editResume(resume);
+
+        updateContactInfo(resumeDto.getContactInfo(), resumeId);
+        updateEducationInfo(resumeDto.getEducationList(), user, resumeId);
+        updateWorkExperienceInfo(resumeDto.getWorkExperienceList(), user, resumeId);
+    }
+
+    private void updateContactInfo(List<ContactInfoDto> newContactInfoList, Long resumeId) {
+        if (newContactInfoList == null) return;
+
+        List<ContactInfo> existingContactInfoList = contactInfoDao.getContactInfoByResumeId(resumeId);
+
+        for (ContactInfoDto newContactInfo : newContactInfoList) {
+            existingContactInfoList.stream()
+                    .filter(existingContactInfo -> existingContactInfo.getId().equals(newContactInfo.getId()))
+                    .forEach(existingContactInfo -> {
+                        existingContactInfo.setContactValue(newContactInfo.getContactValue());
+                        contactInfoDao.update(existingContactInfo);
+                    });
+        }
+    }
+
+    private void updateEducationInfo(List<EducationInfoDto> newEducationList, User user, Long resumeId) {
+        if (newEducationList == null) return;
+
+        List<EducationInfo> existingEducationList = educationInfoDao.getEducationInfoByResumeId(resumeId);
+
+        for (EducationInfoDto newEducation : newEducationList) {
+            existingEducationList.stream()
+                    .filter(existingEducation -> existingEducation.getId().equals(newEducation.getId()))
+                    .forEach(existingEducation -> {
+                        long years = ChronoUnit.YEARS.between(newEducation.getStartDate(), newEducation.getEndDate());
+                        int yearsAsInt = (int) years;
+
+                        existingEducation.setInstitution(newEducation.getInstitution());
+                        existingEducation.setProgram(newEducation.getProgram());
+                        existingEducation.setStartDate(newEducation.getStartDate());
+                        existingEducation.setEndDate(newEducation.getEndDate());
+                        existingEducation.setDegree(newEducation.getDegree());
+
+                        if (newEducation.getStartDate().isAfter(newEducation.getEndDate()) || yearsAsInt > user.getAge()) {
+                            log.error("Incorrect date for education");
+                            return;
+                        }
+
+                        educationInfoDao.update(existingEducation);
+                    });
+        }
+    }
+
+    private void updateWorkExperienceInfo(List<WorkExperienceInfoDto> newWorkExperienceList, User user, Long resumeId) {
+        if (newWorkExperienceList == null) return;
+
+        List<WorkExperienceInfo> existingWorkExperienceList = workExperienceInfoDao.getWorkExperienceInfoByResumeId(resumeId);
+
+        for (WorkExperienceInfoDto newWorkExperience : newWorkExperienceList) {
+            existingWorkExperienceList.stream()
+                    .filter(existingWorkExperience -> existingWorkExperience.getId().equals(newWorkExperience.getId()))
+                    .forEach(existingWorkExperience -> {
+                        if (newWorkExperience.getYears() > user.getAge() || newWorkExperience.getYears() < 0) {
+                            log.error("Work experience years exceed user's age!");
+                            return;
+                        }
+
+                        existingWorkExperience.setYears(newWorkExperience.getYears());
+                        existingWorkExperience.setCompanyName(newWorkExperience.getCompanyName());
+                        existingWorkExperience.setPosition(newWorkExperience.getPosition());
+                        existingWorkExperience.setResponsibility(newWorkExperience.getResponsibility());
+
+                        workExperienceInfoDao.update(existingWorkExperience);
+                    });
+        }
     }
 
     @Override
-    public void deleteResume(Long id) {
-        if (user.getAccountType() != AccountType.APPLICANT) {
-            log.error("Only applicants can delete resumes.");
-        }resumeDao.deleteResume(id);
+    public void deleteResume(Long applicantId, Long resumeId) {
+        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
+
+        Optional<User> userOptional = userDao.getUserById(applicantId);
+        if (userOptional.isEmpty()) {
+            log.error("There's no user by id " + applicantId);
+            return;
+        }
+
+        if (accountType != AccountType.APPLICANT) {
+            log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
+            return;
+        }
+
+        Optional<Resume> resumeOptional = resumeDao.getResumeById(resumeId);
+        if (resumeOptional.isEmpty()){
+            log.error("There's no resume with id " + resumeId);
+            return;
+        }
+
+        if (!resumeDao.isResumeDeletable(resumeId)) {
+            log.error("There are responded applicants for this resume, cannot delete!");
+            return;
+        }
+
+        workExperienceInfoDao.delete(resumeId);
+        educationInfoDao.delete(resumeId);
+        contactInfoDao.delete(resumeId);
+
+        resumeDao.deleteResume(resumeId);
     }
 
     private ResumeDto mapToDto(Resume resume) {
@@ -110,6 +269,106 @@ public class ResumeServiceImpl implements ResumeService {
                 .isActive(resumeDto.getIsActive())
                 .createdDate(resumeDto.getCreatedDate())
                 .updateTime(resumeDto.getUpdateTime())
+                .build();
+    }
+
+    private List<ResumeDto> getResumeDto(List<Resume> foundResumes) {
+        List<ResumeDto> dto = new ArrayList<>();
+        for (Resume resume : foundResumes) {
+            ResumeDto resumeDto = ResumeDto.builder()
+                    .id(resume.getId())
+                    .applicantId(resume.getApplicantId())
+                    .categoryId(resume.getCategoryId())
+                    .name(resume.getName())
+                    .isActive(resume.getIsActive())
+                    .createdDate(resume.getCreatedDate())
+                    .updateTime(resume.getUpdateTime())
+                    .salary(resume.getSalary())
+                    .build();
+
+            List<ContactInfoDto> contactInfoList = contactInfoDao.getContactInfoByResumeId(resume.getId()).stream()
+                    .map(this::mapToContactInfoDto)
+                    .collect(Collectors.toList());
+
+            List<EducationInfoDto> educationList = educationInfoDao.getEducationInfoByResumeId(resume.getId()).stream()
+                    .map(this::mapToEducationInfoDto)
+                    .collect(Collectors.toList());
+
+            List<WorkExperienceInfoDto> workExperienceList = workExperienceInfoDao.getWorkExperienceInfoByResumeId(resume.getId()).stream()
+                    .map(this::mapToWorkExperienceInfoDto)
+                    .collect(Collectors.toList());
+
+            resumeDto.setContactInfo(contactInfoList);
+            resumeDto.setEducationList(educationList);
+            resumeDto.setWorkExperienceList(workExperienceList);
+
+            dto.add(resumeDto);
+        }
+
+        return dto;
+    }
+
+    private ContactInfoDto mapToContactInfoDto(ContactInfo contactInfo) {
+        return ContactInfoDto.builder()
+                .id(contactInfo.getId())
+                .typeId(contactInfo.getTypeId())
+                .resumeId(contactInfo.getResumeId())
+                .contactValue(contactInfo.getContactValue())
+                .build();
+    }
+
+    private EducationInfoDto mapToEducationInfoDto(EducationInfo educationInfo) {
+        return EducationInfoDto.builder()
+                .id(educationInfo.getId())
+                .resumeId(educationInfo.getResumeId())
+                .institution(educationInfo.getInstitution())
+                .program(educationInfo.getProgram())
+                .startDate(educationInfo.getStartDate())
+                .endDate(educationInfo.getEndDate())
+                .degree(educationInfo.getDegree())
+                .build();
+    }
+
+    private WorkExperienceInfoDto mapToWorkExperienceInfoDto(WorkExperienceInfo workExperienceInfo) {
+        return WorkExperienceInfoDto.builder()
+                .id(workExperienceInfo.getId())
+                .resumeId(workExperienceInfo.getResumeId())
+                .years(workExperienceInfo.getYears())
+                .companyName(workExperienceInfo.getCompanyName())
+                .position(workExperienceInfo.getPosition())
+                .responsibility(workExperienceInfo.getResponsibility())
+                .build();
+    }
+
+    private WorkExperienceInfo makeWorkExperienceInfo(WorkExperienceInfoDto workExperienceInfoDto) {
+        return WorkExperienceInfo.builder()
+                .id(workExperienceInfoDto.getId())
+                .resumeId(workExperienceInfoDto.getResumeId())
+                .years(workExperienceInfoDto.getYears())
+                .companyName(workExperienceInfoDto.getCompanyName())
+                .position(workExperienceInfoDto.getPosition())
+                .responsibility(workExperienceInfoDto.getResponsibility())
+                .build();
+    }
+
+    private EducationInfo makeEducationInfo(EducationInfoDto educationInfoDto){
+        return EducationInfo.builder()
+                .id(educationInfoDto.getId())
+                .resumeId(educationInfoDto.getResumeId())
+                .institution(educationInfoDto.getInstitution())
+                .program(educationInfoDto.getProgram())
+                .startDate(educationInfoDto.getStartDate())
+                .endDate(educationInfoDto.getEndDate())
+                .degree(educationInfoDto.getDegree())
+                .build();
+    }
+
+    private ContactInfo makeContactInfo(ContactInfoDto contactInfoDto){
+        return ContactInfo.builder()
+                .id(contactInfoDto.getId())
+                .typeId(contactInfoDto.getTypeId())
+                .resumeId(contactInfoDto.getResumeId())
+                .contactValue(contactInfoDto.getContactValue())
                 .build();
     }
 }
