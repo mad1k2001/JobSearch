@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -20,4 +21,7 @@ public class ResumeDto {
     private Boolean isActive;
     private LocalDateTime createdDate;
     private LocalDateTime updateTime;
+    private List<WorkExperienceInfoDto> workExperienceList;
+    private List<EducationInfoDto> educationList;
+    private List<ContactInfoDto> contactInfo;
 }
