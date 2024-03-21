@@ -37,25 +37,33 @@ public class UserDao {
 
     public List<User> getUsersByName(String name) {
         String sql = """
-        SELECT *
-        FROM users
-        WHERE name ILIKE ?
-        """;
+                SELECT *
+                FROM users
+                WHERE name ILIKE ?
+                """;
         return template.query(sql, new BeanPropertyRowMapper<>(User.class), name);
     }
 
     public Optional<User> getUsersByPhoneNumber(String phoneNumber) {
-        String sql = """
-        SELECT *
-        FROM users
-        WHERE phoneNumber ILIKE ?
-        """;
+                String sql = """
+                SELECT *
+                FROM users
+                WHERE phoneNumber ILIKE ?
+                """;
         return Optional.ofNullable(template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber));
     }
 
+    public Optional<User> getUserById(Long id) {
+        String sql = """
+                SELECT * FROM users WHERE id = ?
+                """;
+        return template.query(sql, new BeanPropertyRowMapper<>(User.class), id)
+                .stream()
+                .findFirst();
+    }
+
     public boolean userExistsByEmail(String email) {
-        String sql = "select 1 from users where email = ?";
-        return template.query(sql, (rs, rowNum) -> true, email).stream().findFirst().orElse(false);
+        return getUserByEmail(email).isPresent();
     }
 
     public Long addUser(User user){
@@ -83,15 +91,15 @@ public class UserDao {
 
     public void editUser (User user) {
         String sql = """
-                UPDATE USERS
-                SET NAME = : name,
-                SURNAME = : surname,
-                AGE = :age,
-                password = :password,
-                phoneNumber = :phoneNumber,
-                avatar = :avatar
-            WHERE id = :id;
-            """;
+                    UPDATE USERS
+                    SET NAME = : name,
+                    SURNAME = : surname,
+                    AGE = :age,
+                    password = :password,
+                    phoneNumber = :phoneNumber,
+                    avatar = :avatar
+                WHERE id = :id;
+                """;
         template.update(sql, new MapSqlParameterSource()
                 .addValue("name", user.getName())
                 .addValue("surname", user.getSurname())
@@ -105,17 +113,17 @@ public class UserDao {
 
     public void save(User user) {
         String sql = """
-            UPDATE USERS
-            SET AVATAR = :avatar
-            WHERE ID = :id;
-            """;
+                UPDATE USERS
+                SET AVATAR = :avatar
+                WHERE ID = :id;
+                """;
         template.update(sql, new MapSqlParameterSource().addValue("id", user.getId()).addValue("avatar", user.getAvatar()));
     }
 
-    public Optional<User> getUserById(Long id) {
-        String sql = "SELECT * FROM users WHERE id = ?";
-        return template.query(sql, new BeanPropertyRowMapper<>(User.class), id)
-                .stream()
-                .findFirst();
+    public boolean isAuthor(Long userId) {
+        String sql = """
+                SELECT COUNT(*) FROM USERS WHERE ID = ? AND ACCOUNTTYPE = 'работодатель'
+                """;
+        return template.query(sql, (rs, rowNum) -> true, userId).isEmpty();
     }
 }
