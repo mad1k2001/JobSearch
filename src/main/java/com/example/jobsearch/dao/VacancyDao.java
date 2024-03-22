@@ -56,10 +56,10 @@ public class VacancyDao {
 
     public void setActive(Long vacancyId, boolean isActivate) {
         String sql = """
-            update vacancies
-            set isActivate = :isActivate
-            where id = :resumeId;
-            """;
+                update vacancies
+                set isActivate = :isActivate
+                where id = :resumeId;
+                """;
         template.update(sql, new MapSqlParameterSource()
                 .addValue("isActivate", isActivate)
                 .addValue("vacancyId", vacancyId));
@@ -71,22 +71,6 @@ public class VacancyDao {
                 where v.categoryId = ? and v.isActivate = true;
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), categoryId);
-    }
-
-    public List<Vacancy> getAuthorsVacancies(Long authorId){
-        String sql = """
-                select * from vacancies
-                where authorId = ?;
-                """;
-        return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), authorId);
-    }
-
-    public List<Vacancy> getAuthorsActiveVacancies(Long authorId){
-        String sql = """
-                select * from vacancies
-                where authorId = ? and isActivate = true;
-                """;
-        return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), authorId);
     }
 
     public Long addVacancy(Vacancy vacancy) {
