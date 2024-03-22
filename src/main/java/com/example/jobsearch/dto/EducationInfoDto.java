@@ -1,5 +1,6 @@
 package com.example.jobsearch.dto;
 
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,8 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@NotBlank
+@NotNull
 public class EducationInfoDto {
     private Long id;
     private Long resumeId;

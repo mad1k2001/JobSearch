@@ -58,7 +58,7 @@ public class VacancyDao {
         String sql = """
                 update vacancies
                 set isActivate = :isActivate
-                where id = :resumeId;
+                where id = :vacancyId;
                 """;
         template.update(sql, new MapSqlParameterSource()
                 .addValue("isActivate", isActivate)
