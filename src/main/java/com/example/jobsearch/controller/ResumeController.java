@@ -6,9 +6,11 @@ import com.example.jobsearch.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,29 +43,25 @@ public class ResumeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(resumeService.getResumeById(id));
-        } catch (ResumeNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+         return ResponseEntity.ok(resumeService.getResumeById(id));
     }
 
     @PostMapping("add/{applicantId}/resumes")
-    public ResponseEntity<?> addResume(@PathVariable Long applicantId, @RequestBody ResumeDto resumeDto) {
+    public HttpStatus addResume(@PathVariable Long applicantId, @RequestBody ResumeDto resumeDto) {
         resumeService.addResume(resumeDto, applicantId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return HttpStatus.OK;
     }
 
     @PutMapping("edit/{applicantId}/resumes/{resumeId}")
-    public ResponseEntity<?> update(@PathVariable Long applicantId, @PathVariable Long resumeId, @RequestBody ResumeDto resumeDto) {
+    public HttpStatus update(@PathVariable Long applicantId, @PathVariable Long resumeId, @RequestBody ResumeDto resumeDto) {
         resumeService.editResume(resumeDto, applicantId, resumeId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return HttpStatus.OK;
     }
 
 
     @DeleteMapping("delete/{applicantId}/resumes/{resumeId}")
-    public ResponseEntity<?> delete(@PathVariable Long applicantId, @PathVariable Long resumeId) {
+    public HttpStatus delete(@PathVariable Long applicantId, @PathVariable Long resumeId) {
         resumeService.deleteResume(applicantId, resumeId);
-        return ResponseEntity.noContent().build();
+        return HttpStatus.NO_CONTENT;
     }
 }

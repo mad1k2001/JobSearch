@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -26,13 +28,11 @@ public class UserDto {
     @Min(18)
     @Max(120)
     private Integer age;
-    @NotNull
     @NotBlank
-    @Email
-    private String email;
-    @NotNull
+    private @Email String email;
     @NotBlank
-    @Size(min = 6, max = 255)
+    @Size(min = 4, max = 24)
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]) (?=.*[a-zA-Z]).+$")
     private String password;
     @Pattern(regexp="\\+\\d{11}")
     private String phoneNumber;

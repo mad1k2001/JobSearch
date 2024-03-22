@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,11 +46,11 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Optional<ResumeDto> getResumeById(Long id) throws ResumeNotFoundException {
+    public Optional<ResumeDto> getResumeById(Long id) throws NoSuchElementException {
         return resumeDao.getResumeById(id)
                 .map(this::mapToDto)
                 .map(Optional::of)
-                .orElseThrow(() -> new ResumeNotFoundException("Can't find resume with id: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Can't find resume with id: " + id));
     }
 
     @Override

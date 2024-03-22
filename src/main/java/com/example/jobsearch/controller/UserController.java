@@ -5,12 +5,15 @@ import com.example.jobsearch.dto.ResumeDto;
 import com.example.jobsearch.dto.UserDto;
 import com.example.jobsearch.model.User;
 import com.example.jobsearch.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<?> addUser(@RequestBody UserDto userDto, ImageDto imageDto) {
+    public ResponseEntity<?> addUser(@RequestBody @Valid UserDto userDto, ImageDto imageDto) {
         if (userService.userExistsByEmail(userDto.getEmail())) {
             return ResponseEntity.badRequest().body("User with this email already exists");
         }
