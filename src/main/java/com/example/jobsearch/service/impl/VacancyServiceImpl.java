@@ -104,7 +104,7 @@ public class VacancyServiceImpl implements VacancyService {
         if (accountType != AccountType.EMPLOYER) {
             log.error("User with id " + authorId + " is not an employer and cannot create a vacancy.");
         }
-        if (!vacancyDao.deletable(vacancyId)){
+        if (!vacancyDao.isVacancyDeletable(vacancyId)){
             log.error("Can't delete this vacancy ");
         }
         if (!vacancyDao.getVacancyById(vacancyId).isPresent()){

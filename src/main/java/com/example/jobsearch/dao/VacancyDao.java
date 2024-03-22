@@ -125,7 +125,7 @@ public class VacancyDao {
         template.update(sql, id);
     }
 
-    public boolean deletable(Long vacancyId) {
+    public boolean isVacancyDeletable(Long vacancyId) {
         String sql = """
                 SELECT COUNT(*) FROM respondedApplications WHERE vacancyId = ?
                 """;
