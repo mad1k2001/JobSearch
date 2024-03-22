@@ -11,9 +11,8 @@ public interface ResumeService {
     List<ResumeDto> getResumeByCategory(Long categoryId);
     List<ResumeDto> getResumeByApplicantId(Long applicantId);
     Optional<ResumeDto> getResumeById(Long id) throws ResumeNotFoundException;
-    List<ResumeDto> findResumeByPosition(String position);
     void editResume(ResumeDto resumeDto, Long applicantId, Long resumeId);
-    void addResume(ResumeDto resume, Long applicantId);
+    Long addResume(ResumeDto resume, Long applicantId);
     void deleteResume(Long applicantId, Long resumeId);
 
 }

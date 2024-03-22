@@ -53,67 +53,50 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<ResumeDto> findResumeByPosition(String position) {
-        List<Resume> foundResumes = resumeDao.findResumesByPosition(position);
-        if (foundResumes.isEmpty()){
-            log.error("null");
-        }
-        return getResumeDto(foundResumes);
-    }
-
-    @Override
-    public void addResume(ResumeDto resumeDto, Long applicantId){
-        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
-
+    public Long addResume(ResumeDto resumeDto, Long applicantId) {
         Optional<User> userOptional = userDao.getUserById(applicantId);
         if (userOptional.isEmpty()) {
-            log.error("There's no user with id " + applicantId);
-            return;
+            log.error("Can't find user with id: " + applicantId);
+            return null;
         }
 
         User user = userOptional.get();
+        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
 
         if (accountType != AccountType.APPLICANT) {
             log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
-            return;
+            return null;
         }
 
         Resume resume = makeResume(resumeDto);
-        resumeDao.addResume(resume);
 
         if (resumeDto.getWorkExperienceList() != null) {
             for (WorkExperienceInfoDto workExperienceDto : resumeDto.getWorkExperienceList()) {
                 if (workExperienceDto.getYears() > user.getAge()) {
                     log.error("Work experience years exceed user's age!");
-                    return;
+                    return null;
                 }
-
-                WorkExperienceInfo workExperience = makeWorkExperienceInfo(workExperienceDto);
-                workExperienceInfoDao.create(workExperience);
+                workExperienceInfoDao.create(makeWorkExperienceInfo(workExperienceDto));
             }
         }
 
         if (resumeDto.getEducationList() != null) {
             for (EducationInfoDto educationDto : resumeDto.getEducationList()) {
                 long years = ChronoUnit.YEARS.between(educationDto.getStartDate(), educationDto.getEndDate());
-                int yearsAsInt = (int) years;
-
-                if (educationDto.getStartDate().isAfter(educationDto.getEndDate()) || yearsAsInt > user.getAge()) {
+                if (educationDto.getStartDate().isAfter(educationDto.getEndDate()) || years > user.getAge()) {
                     log.error("Incorrect date for education");
-                    return;
+                    return null;
                 }
-
-                EducationInfo education = makeEducationInfo(educationDto);
-                educationInfoDao.create(education);
+                educationInfoDao.create(makeEducationInfo(educationDto));
             }
         }
 
         if (resumeDto.getContactInfo() != null) {
             for (ContactInfoDto contactInfoDto : resumeDto.getContactInfo()) {
-                ContactInfo contactInfo = makeContactInfo(contactInfoDto);
-                contactInfoDao.create(contactInfo);
+                contactInfoDao.create(makeContactInfo(contactInfoDto));
             }
         }
+        return resumeDao.addResume(resume);
     }
 
     @Override
@@ -122,7 +105,7 @@ public class ResumeServiceImpl implements ResumeService {
 
         Optional<User> userOptional = userDao.getUserById(applicantId);
         if (userOptional.isEmpty()) {
-            log.error("There's no user by id " + applicantId);
+            log.error("Can't find user whit id: " + applicantId);
             return;
         }
         User user = userOptional.get();

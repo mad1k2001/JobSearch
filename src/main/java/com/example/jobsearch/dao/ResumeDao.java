@@ -67,22 +67,12 @@ public class ResumeDao {
                 .addValue("resumeId", resumeId));
     }
 
-    public List<Resume> findActiveResumesByCategory(Integer categoryId) {
+    public List<Resume> getActiveResumesByCategory(Long categoryId) {
         String sql = """
                 select * from resumes
                 where resumes.categoryId = ? and isActive = true;
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), categoryId);
-    }
-
-    public List<Resume> findResumesByPosition(String position) {
-        String sql = """ 
-                     SELECT * FROM resumes r
-                     join categories c on c.id = r.categoryId
-                     WHERE c.name LIKE ?;
-                     """;
-        String searchTerm = "%" + position + "%";
-        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), searchTerm);
     }
 
     public Long addResume(Resume resume) {
@@ -139,12 +129,5 @@ public class ResumeDao {
                 SELECT COUNT(*) FROM respondedApplications WHERE resumeId = ?
                 """;
         return template.query(sql, (rs, rowNum) -> true, resumeId).isEmpty();
-    }
-
-    public boolean isApplicantResume(Long applicantId, Long resumeId) {
-        String sql = """
-                SELECT COUNT(*) FROM resumes WHERE ID = ? AND applicantId = ?
-                """;
-        return template.query(sql, (rs, rowNum) -> true, resumeId, applicantId).isEmpty();
     }
 }

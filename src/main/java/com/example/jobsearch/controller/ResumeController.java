@@ -48,20 +48,20 @@ public class ResumeController {
         }
     }
 
-    @PostMapping("applicants/{applicantId}/resumes")
+    @PostMapping("add/{applicantId}/resumes")
     public ResponseEntity<?> addResume(@PathVariable Long applicantId, @RequestBody ResumeDto resumeDto) {
         resumeService.addResume(resumeDto, applicantId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping("applicants/{applicantId}/resumes/{resumeId}")
+    @PutMapping("edit/{applicantId}/resumes/{resumeId}")
     public ResponseEntity<?> update(@PathVariable Long applicantId, @PathVariable Long resumeId, @RequestBody ResumeDto resumeDto) {
         resumeService.editResume(resumeDto, applicantId, resumeId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 
-    @DeleteMapping("applicants/{applicantId}/resumes/{resumeId}")
+    @DeleteMapping("delete/{applicantId}/resumes/{resumeId}")
     public ResponseEntity<?> delete(@PathVariable Long applicantId, @PathVariable Long resumeId) {
         resumeService.deleteResume(applicantId, resumeId);
         return ResponseEntity.noContent().build();

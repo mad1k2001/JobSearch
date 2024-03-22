@@ -39,7 +39,7 @@ public class VacancyDao {
 
     public Optional<Vacancy>  getVacancyById(Long id){
         String sql = """
-                SELECT * FROM resumes WHERE id = ?
+                SELECT * FROM vacancies WHERE id = ?
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), id)
                 .stream()
@@ -63,17 +63,6 @@ public class VacancyDao {
         template.update(sql, new MapSqlParameterSource()
                 .addValue("isActivate", isActivate)
                 .addValue("vacancyId", vacancyId));
-    }
-
-    public List<Vacancy> findVacanciesByCategory(String category){
-        String sql = """ 
-                     SELECT * FROM vacancies v
-                     join categories c on c.ID = v.categoryId
-                     WHERE c.name LIKE ?;
-                     """;
-        String searchTerm = "%" + category + "%";
-        return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), searchTerm);
-
     }
 
     public List<Vacancy> getActiveVacanciesByCategory(Integer categoryId) {
