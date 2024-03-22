@@ -52,18 +52,17 @@ public class UserController {
         if (userService.userExistsByEmail(userDto.getEmail())) {
             return ResponseEntity.badRequest().body("User with this email already exists");
         }
-        Long id = userService.addUser(userDto);
-        if (id != 0){
-            userService.upload(imageDto, id);
-            return ResponseEntity.status(HttpStatus.OK).build();
+        if (userService.addUser(userDto) != 0) {
+            userService.upload(imageDto, userService.addUser(userDto));
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("Can't create user");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Can't create user");
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-        userDto.setId(id);
-        userService.editUser(userDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDto userDto, ImageDto imageDto) {
+        userService.upload(imageDto, id);
+        return  ResponseEntity.status(HttpStatus.OK).build();
     }
 }

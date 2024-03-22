@@ -1,6 +1,7 @@
 package com.example.jobsearch.controller;
 
 import com.example.jobsearch.dto.ResumeDto;
+import com.example.jobsearch.exeptions.ResumeNotFoundException;
 import com.example.jobsearch.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,28 +40,30 @@ public class ResumeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResumeDto> getResumeById(@PathVariable Long id) {
-        return resumeService.getResumeById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(resumeService.getResumeById(id));
+        } catch (ResumeNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
-    @PostMapping("add")
-    public HttpStatus addResume(@RequestBody ResumeDto resumeDto) {
-        resumeService.addResume(resumeDto);
-        return HttpStatus.OK;
+    @PostMapping("add/{applicantId}/resumes")
+    public ResponseEntity<?> addResume(@PathVariable Long applicantId, @RequestBody ResumeDto resumeDto) {
+        resumeService.addResume(resumeDto, applicantId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping("edit/{id}")
-    public ResponseEntity<Void> editResume(@PathVariable Long id, @RequestBody ResumeDto resumeDto) {
-        resumeDto.setId(id);
-        resumeService.editResume(resumeDto);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping("edit/{applicantId}/resumes/{resumeId}")
+    public ResponseEntity<?> update(@PathVariable Long applicantId, @PathVariable Long resumeId, @RequestBody ResumeDto resumeDto) {
+        resumeService.editResume(resumeDto, applicantId, resumeId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> deleteResume(@PathVariable Long id) {
-        resumeService.deleteResume(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    @DeleteMapping("delete/{applicantId}/resumes/{resumeId}")
+    public ResponseEntity<?> delete(@PathVariable Long applicantId, @PathVariable Long resumeId) {
+        resumeService.deleteResume(applicantId, resumeId);
+        return ResponseEntity.noContent().build();
     }
 }

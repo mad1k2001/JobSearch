@@ -4,6 +4,7 @@ import com.example.jobsearch.model.RespondedApplication;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -30,5 +31,16 @@ public class RespondedApplicationDao {
                 WHERE ra.vacancyId = ?
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(RespondedApplication.class), vacancyId);
+    }
+
+    public void create(Long resumeId, Long vacancyId) {
+        String sql = """
+                insert into respondedApplications (resumeId, vacancyId)
+                values (:resumeId, :vacancyId);
+                """;
+        template.update(sql, new MapSqlParameterSource()
+                .addValue("resumeId", resumeId)
+                .addValue("vacancyId", vacancyId)
+        );
     }
 }

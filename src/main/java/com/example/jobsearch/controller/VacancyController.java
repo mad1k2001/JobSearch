@@ -2,6 +2,7 @@ package com.example.jobsearch.controller;
 
 import com.example.jobsearch.dto.ResumeDto;
 import com.example.jobsearch.dto.VacancyDto;
+import com.example.jobsearch.exeptions.VacancyNotFoundException;
 import com.example.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,22 +30,31 @@ public class VacancyController {
         }
         return ResponseEntity.ok(vacancies);
     }
-    @PostMapping("add")
-    public HttpStatus addResume(@RequestBody VacancyDto vacancyDto) {
-        vacancyService.addVacancy(vacancyDto);
-        return HttpStatus.OK;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(vacancyService.getVacancyById(id));
+        } catch (VacancyNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<Void> editResume(@PathVariable Long id, @RequestBody VacancyDto vacancyDto) {
-        vacancyDto.setId(id);
-        vacancyService.editVacancy(vacancyDto);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PostMapping("add/{authorId}/vacancies")
+    public ResponseEntity<?> addResume(@PathVariable Long authorId, VacancyDto vacancyDto) {
+        vacancyService.addVacancy(vacancyDto, authorId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteResume(@PathVariable Long id) {
-        vacancyService.deleteVacancy(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping("edit/{authorId}/vacancies/{vacancyId}")
+    public ResponseEntity<?> editVacancy(@PathVariable Long authorId, @PathVariable Long vacancyId, VacancyDto vacancyDto ){
+        vacancyService.editVacancy(authorId, vacancyId, vacancyDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @DeleteMapping("delete/{authorId}/vacancies/{vacancyId}")
+    public ResponseEntity<?> delete(@PathVariable Long authorId, @PathVariable Long vacancyId){
+        vacancyService.deleteVacancy(authorId, vacancyId);
+        return ResponseEntity.noContent().build();
     }
 }
