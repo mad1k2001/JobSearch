@@ -58,7 +58,7 @@ public class VacancyDao {
         String sql = """
                 update vacancies
                 set isActivate = :isActivate
-                where id = :resumeId;
+                where id = :vacancyId;
                 """;
         template.update(sql, new MapSqlParameterSource()
                 .addValue("isActivate", isActivate)
@@ -125,7 +125,7 @@ public class VacancyDao {
         template.update(sql, id);
     }
 
-    public boolean deletable(Long vacancyId) {
+    public boolean isVacancyDeletable(Long vacancyId) {
         String sql = """
                 SELECT COUNT(*) FROM respondedApplications WHERE vacancyId = ?
                 """;

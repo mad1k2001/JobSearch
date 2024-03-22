@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,11 +46,11 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Optional<ResumeDto> getResumeById(Long id) throws ResumeNotFoundException {
+    public Optional<ResumeDto> getResumeById(Long id) throws NoSuchElementException {
         return resumeDao.getResumeById(id)
                 .map(this::mapToDto)
                 .map(Optional::of)
-                .orElseThrow(() -> new ResumeNotFoundException("Can't find resume with id: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Can't find resume with id: " + id));
     }
 
     @Override
@@ -76,7 +77,7 @@ public class ResumeServiceImpl implements ResumeService {
                     log.error("Work experience years exceed user's age!");
                     return null;
                 }
-                workExperienceInfoDao.create(makeWorkExperienceInfo(workExperienceDto));
+                workExperienceInfoDao.addWorkExp(makeWorkExperienceInfo(workExperienceDto));
             }
         }
 
@@ -87,13 +88,13 @@ public class ResumeServiceImpl implements ResumeService {
                     log.error("Incorrect date for education");
                     return null;
                 }
-                educationInfoDao.create(makeEducationInfo(educationDto));
+                educationInfoDao.addEducation(makeEducationInfo(educationDto));
             }
         }
 
         if (resumeDto.getContactInfo() != null) {
             for (ContactInfoDto contactInfoDto : resumeDto.getContactInfo()) {
-                contactInfoDao.create(makeContactInfo(contactInfoDto));
+                contactInfoDao.addContact(makeContactInfo(contactInfoDto));
             }
         }
         return resumeDao.addResume(resume);
@@ -139,7 +140,7 @@ public class ResumeServiceImpl implements ResumeService {
                     .filter(existingContactInfo -> existingContactInfo.getId().equals(newContactInfo.getId()))
                     .forEach(existingContactInfo -> {
                         existingContactInfo.setContactValue(newContactInfo.getContactValue());
-                        contactInfoDao.update(existingContactInfo);
+                        contactInfoDao.editContact(existingContactInfo);
                     });
         }
     }
@@ -167,7 +168,7 @@ public class ResumeServiceImpl implements ResumeService {
                             return;
                         }
 
-                        educationInfoDao.update(existingEducation);
+                        educationInfoDao.editEducation(existingEducation);
                     });
         }
     }
@@ -191,7 +192,7 @@ public class ResumeServiceImpl implements ResumeService {
                         existingWorkExperience.setPosition(newWorkExperience.getPosition());
                         existingWorkExperience.setResponsibility(newWorkExperience.getResponsibility());
 
-                        workExperienceInfoDao.update(existingWorkExperience);
+                        workExperienceInfoDao.editWorkExp(existingWorkExperience);
                     });
         }
     }
@@ -222,9 +223,9 @@ public class ResumeServiceImpl implements ResumeService {
             return;
         }
 
-        workExperienceInfoDao.delete(resumeId);
-        educationInfoDao.delete(resumeId);
-        contactInfoDao.delete(resumeId);
+        workExperienceInfoDao.deleteWorkExp(resumeId);
+        educationInfoDao.deleteEducation(resumeId);
+        contactInfoDao.deleteContact(resumeId);
 
         resumeDao.deleteResume(resumeId);
     }

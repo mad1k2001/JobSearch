@@ -33,11 +33,8 @@ public class VacancyController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(vacancyService.getVacancyById(id));
-        } catch (VacancyNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        return ResponseEntity.ok(vacancyService.getVacancyById(id));
+
     }
 
     @PostMapping("add/{authorId}/vacancies")

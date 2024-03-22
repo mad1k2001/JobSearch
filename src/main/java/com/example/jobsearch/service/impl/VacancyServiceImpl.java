@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -41,11 +42,11 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public Optional<VacancyDto> getVacancyById(Long id) throws VacancyNotFoundException {
+    public Optional<VacancyDto> getVacancyById(Long id) throws NoSuchElementException {
         return vacancyDao.getVacancyById(id)
                 .map(this::mapToDto)
                 .map(Optional::of)
-                .orElseThrow(() -> new ValidationException("Can't find vacancy with id: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Can't find vacancy with id: " + id));
     }
 
     @Override
@@ -104,7 +105,7 @@ public class VacancyServiceImpl implements VacancyService {
         if (accountType != AccountType.EMPLOYER) {
             log.error("User with id " + authorId + " is not an employer and cannot create a vacancy.");
         }
-        if (!vacancyDao.deletable(vacancyId)){
+        if (!vacancyDao.isVacancyDeletable(vacancyId)){
             log.error("Can't delete this vacancy ");
         }
         if (!vacancyDao.getVacancyById(vacancyId).isPresent()){

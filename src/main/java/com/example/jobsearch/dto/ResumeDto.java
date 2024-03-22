@@ -1,5 +1,7 @@
 package com.example.jobsearch.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,16 +14,22 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@NotBlank
+@NotNull
 public class ResumeDto {
     private Long id;
     private Long applicantId;
     private String name;
     private Long categoryId;
+    @DecimalMin(value = "0.0")
     private Double salary;
     private Boolean isActive;
     private LocalDateTime createdDate;
     private LocalDateTime updateTime;
-    private List<WorkExperienceInfoDto> workExperienceList;
-    private List<EducationInfoDto> educationList;
-    private List<ContactInfoDto> contactInfo;
+    @Valid
+    private List<@Valid WorkExperienceInfoDto> workExperienceList;
+    @Valid
+    private List<@Valid EducationInfoDto> educationList;
+    @Valid
+    private List<@Valid ContactInfoDto> contactInfo;
 }
