@@ -77,10 +77,10 @@ public class UserDao {
             ps.setInt(3, user.getAge());
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getPassword());
-            ps.setString(5, user.getPhoneNumber());
-            ps.setString(5, user.getAvatar());
-            ps.setBoolean(6, user.getEnabled());
-            ps.setLong(7, user.getAccountType());
+            ps.setString(6, user.getPhoneNumber());
+            ps.setString(7, user.getAvatar());
+            ps.setBoolean(8, user.getEnabled());
+            ps.setLong(9, user.getAccountType());
             return ps;
         }, keyHolder);
 
