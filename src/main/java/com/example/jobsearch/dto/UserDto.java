@@ -1,6 +1,5 @@
 package com.example.jobsearch.dto;
 
-import com.example.jobsearch.enums.AccountType;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,5 +40,8 @@ public class UserDto {
     private String avatar;
     @NotNull
     @NotBlank
-    private AccountType accountType;
+    private Boolean enabled;
+    @NotNull
+    @NotBlank
+    private Long accountType;
 }

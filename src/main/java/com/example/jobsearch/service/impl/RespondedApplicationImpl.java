@@ -2,9 +2,7 @@ package com.example.jobsearch.service.impl;
 
 import com.example.jobsearch.dao.RespondedApplicationDao;
 import com.example.jobsearch.dto.RespondedApplicationDto;
-import com.example.jobsearch.enums.AccountType;
 import com.example.jobsearch.model.RespondedApplication;
-import com.example.jobsearch.model.User;
 import com.example.jobsearch.service.RespondedApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

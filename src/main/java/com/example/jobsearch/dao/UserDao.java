@@ -1,9 +1,6 @@
 package com.example.jobsearch.dao;
 
-import com.example.jobsearch.enums.AccountType;
-import com.example.jobsearch.model.Resume;
 import com.example.jobsearch.model.User;
-import com.example.jobsearch.model.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +10,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -69,8 +65,8 @@ public class UserDao {
 
     public Long addUser(User user){
         String sql = """
-                INSERT INTO users (name, surname, age, email, password, phoneNumber, avatar, accountType)
-                VALUES (?,?,?,?,?,?,?,?)
+                INSERT INTO users (name, surname, age, email, password, phoneNumber, avatar, enabled, accountType)
+                VALUES (?,?,?,?,?,?,?,?,?)
                 """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -83,7 +79,8 @@ public class UserDao {
             ps.setString(5, user.getPassword());
             ps.setString(5, user.getPhoneNumber());
             ps.setString(5, user.getAvatar());
-            ps.setString(6, user.getAccountType().toString());
+            ps.setBoolean(6, user.getEnabled());
+            ps.setLong(7, user.getAccountType());
             return ps;
         }, keyHolder);
 
@@ -98,7 +95,7 @@ public class UserDao {
                     AGE = :age,
                     password = :password,
                     phoneNumber = :phoneNumber,
-                    avatar = :avatar
+                    avatar = :avatar                
                 WHERE id = :id;
                 """;
         template.update(sql, new MapSqlParameterSource()
@@ -121,11 +118,10 @@ public class UserDao {
         template.update(sql, new MapSqlParameterSource().addValue("id", user.getId()).addValue("avatar", user.getAvatar()));
     }
 
-    public AccountType getUserAccountTypeById(Long userId) {
+    public void getUserAccountTypeById(Long userId) {
         String sql = """
                 SELECT accountType FROM users WHERE id = ?
                 """;
-        return template.queryForObject(sql, AccountType.class, userId);
+        template.queryForObject(sql, User.class, userId);
     }
-
 }

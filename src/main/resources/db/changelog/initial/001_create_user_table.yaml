@@ -15,18 +15,18 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: name
-                  type: varchar(255)
+                  type: varchar(50)
                   constraints:
                     nullable: false
               - column:
                   name: surname
-                  type: varchar(255)
+                  type: varchar(50)
               - column:
                   name: age
                   type: int
               - column:
                   name: email
-                  type: varchar(255)
+                  type: varchar(50)
                   constraints:
                     unique: true
                     nullable: false
@@ -37,10 +37,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: phoneNumber
-                  type: varchar(255)
+                  type: varchar(50)
               - column:
                   name: avatar
-                  type: varchar(255)
-              - column:
-                  name: accountType
                   type: varchar(255)
