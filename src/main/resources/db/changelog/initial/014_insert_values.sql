@@ -12,7 +12,7 @@ VALUES
     ('John', 'Doe', 30, 'john@example.com', '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2', '123456789', 'avatar1.jpg', TRUE, (select id from accountType where accountType = 'EMPLOYER')),
     ('Jane', 'Smith', 35, 'jane@example.com', '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2', '987654321', 'avatar2.jpg', TRUE, (select id from accountType where accountType = 'APPLICANT')),
     ('qqwe', 'qwe', 24, 'qwe@qwe', '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2', '999999999','avatar3.jpg', TRUE, (select id from accountType where accountType = 'ADMIN')),
-    ('ewqq', 'ewq', 24, 'ewq@ewq.com', '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2', '999999991','avatar4.jpg', TRUE, (select id from accountType where accountType = 'ADMIN'));
+    ('ewqq', 'ewq', 24, 'ewq@ewq.com', '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2', '999999991','avatar4.jpg', TRUE, (select id from accountType where accountType = 'GUEST'));
 
 INSERT INTO categories (name, parentId)
 VALUES

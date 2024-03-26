@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
@@ -20,37 +21,25 @@ public class SecurityConfig {
     private final PasswordEncoder encoder;
     private final DataSource dataSource;
 
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailsManager(){
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password(encoder.encode("123"))
-//                .roles("ADMIN")
-//                .authorities("FULL")
-//                .build();
-//
-//        UserDetails guest =User.builder()
-//                .username("guest")
-//                .password(encoder.encode("qwe"))
-//                .roles("GUEST")
-//                .authorities("READ_ONLY")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(admin,guest);
-//    }
+    private static final String UsersQuery = """
+            select email, password, enabled
+            from users
+            where email = ?
+            """;
+
+    private static final String RolesQuery = """
+            SELECT u.email, a.accountType
+            FROM users u, accountType a
+            WHERE u.email = ?
+            AND u.accountType = a.id;
+            """;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        String fetchUsersQuery = "select email, password, enabled\n" +
-                "from users\n" +
-                "where email = ?;";
-
-        String fetchRolesQuery = "select email, accountType\n" +
-                "from users u,\n" +
-                "     accountType a\n" +
-                "where u.email = ?\n" +
-                "  and u.accountType_id = a.id;";
         auth.jdbcAuthentication()
-                .dataSource(dataSource);
+                .dataSource(dataSource)
+                .usersByUsernameQuery(UsersQuery)
+                .authoritiesByUsernameQuery(RolesQuery)
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 }
