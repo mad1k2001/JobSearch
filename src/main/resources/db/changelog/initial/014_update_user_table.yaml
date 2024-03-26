@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: modify user table
+      author: Madina
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: enabled
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: accountType
+                  type: long
+                  constraints:
+                    foreignKeyName: fk_accountType_id
+                    nullable: false
+                    references: accountType(id)

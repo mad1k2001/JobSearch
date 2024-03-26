@@ -1,7 +1,7 @@
-INSERT INTO users (name, surname, age, email, password, phoneNumber, avatar, accountType)
+INSERT INTO users (name, surname, age, email, password, phoneNumber, avatar)
 VALUES
-    ('John', 'Doe', 30, 'john@example.com', 'password', '123456789', 'avatar1.jpg', 'APPLICANT'),
-    ('Jane', 'Smith', 35, 'jane@example.com', 'password', '987654321', 'avatar2.jpg', 'EMPLOYER');
+    ('John', 'Doe', 30, 'john@example.com', 'password', '123456789', 'avatar1.jpg'),
+    ('Jane', 'Smith', 35, 'jane@example.com', 'password', '987654321', 'avatar2.jpg');
 
 INSERT INTO categories (name, parentId)
 VALUES
