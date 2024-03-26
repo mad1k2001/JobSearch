@@ -5,7 +5,6 @@ import com.example.jobsearch.dao.UserDao;
 import com.example.jobsearch.dao.VacancyDao;
 import com.example.jobsearch.dto.ImageDto;
 import com.example.jobsearch.dto.UserDto;
-import com.example.jobsearch.enums.AccountType;
 import com.example.jobsearch.model.User;
 import com.example.jobsearch.service.UserService;
 import com.example.jobsearch.util.FileUtil;
@@ -67,9 +66,9 @@ public class UserServiceImpl implements UserService {
             log.error("Invalid age");
         }
 
-        if (userDto.getAccountType() != AccountType.APPLICANT && userDto.getAccountType() != AccountType.EMPLOYER) {
-            log.error("Incorrect account type");
-        }
+//        if (userDto.getAccountType() != User.APPLICANT && userDto.getAccountType() != AccountType.EMPLOYER) {
+//            log.error("Incorrect account type");
+//        }
         User user = makeUser(userDto);
         return userDao.addUser(user);
     }
@@ -87,9 +86,9 @@ public class UserServiceImpl implements UserService {
             log.error("User with email " + userDto.getEmail() + " already exists");
         }
 
-        if (userDto.getAccountType() != AccountType.APPLICANT && userDto.getAccountType() != AccountType.EMPLOYER) {
-            log.error("Incorrect account type");
-        }
+//        if (userDto.getAccountType() != AccountType.APPLICANT && userDto.getAccountType() != AccountType.EMPLOYER) {
+//            log.error("Incorrect account type");
+//        }
         User user = makeUser(userDto);
         userDao.editUser(user);
     }
@@ -117,6 +116,7 @@ public class UserServiceImpl implements UserService {
                 .password(user.getPassword())
                 .phoneNumber(user.getPhoneNumber())
                 .avatar(user.getAvatar())
+                .enabled(user.getEnabled())
                 .accountType(user.getAccountType())
                 .build();
     }
@@ -131,6 +131,7 @@ public class UserServiceImpl implements UserService {
                 .password(userDto.getPassword())
                 .phoneNumber(userDto.getPhoneNumber())
                 .avatar(userDto.getAvatar())
+                .enabled(userDto.getEnabled())
                 .accountType(userDto.getAccountType())
                 .build();
     }

@@ -10,11 +10,11 @@ databaseChangeLog:
                   name: enabled
                   type: boolean
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: accountType
                   type: long
                   constraints:
                     foreignKeyName: fk_accountType_id
-                    nullable: false
+                    nullable: true
                     references: accountType(id)

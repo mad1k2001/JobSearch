@@ -41,6 +41,15 @@ public class SecurityConfig {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+        String fetchUsersQuery = "select email, password, enabled\n" +
+                "from users\n" +
+                "where email = ?;";
+
+        String fetchRolesQuery = "select email, accountType\n" +
+                "from users u,\n" +
+                "     accountType a\n" +
+                "where u.email = ?\n" +
+                "  and u.accountType_id = a.id;";
         auth.jdbcAuthentication()
                 .dataSource(dataSource);
     }

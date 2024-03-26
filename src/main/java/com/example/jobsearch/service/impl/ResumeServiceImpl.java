@@ -2,8 +2,6 @@ package com.example.jobsearch.service.impl;
 
 import com.example.jobsearch.dao.*;
 import com.example.jobsearch.dto.*;
-import com.example.jobsearch.enums.AccountType;
-import com.example.jobsearch.exeptions.ResumeNotFoundException;
 import com.example.jobsearch.model.*;
 import com.example.jobsearch.service.ResumeService;
 import lombok.RequiredArgsConstructor;
@@ -62,12 +60,12 @@ public class ResumeServiceImpl implements ResumeService {
         }
 
         User user = userOptional.get();
-        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
-
-        if (accountType != AccountType.APPLICANT) {
-            log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
-            return null;
-        }
+//        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
+//
+//        if (accountType != AccountType.APPLICANT) {
+//            log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
+//            return null;
+//        }
 
         Resume resume = makeResume(resumeDto);
 
@@ -102,7 +100,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public void editResume(ResumeDto resumeDto, Long applicantId, Long resumeId) {
-        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
+//        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
 
         Optional<User> userOptional = userDao.getUserById(applicantId);
         if (userOptional.isEmpty()) {
@@ -111,10 +109,10 @@ public class ResumeServiceImpl implements ResumeService {
         }
         User user = userOptional.get();
 
-        if (accountType != AccountType.APPLICANT) {
-            log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
-            return;
-        }
+//        if (accountType != AccountType.APPLICANT) {
+//            log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
+//            return;
+//        }
 
         Optional<Resume> resumeOptional = resumeDao.getResumeById(resumeId);
         if (resumeOptional.isEmpty()) {
@@ -199,7 +197,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public void deleteResume(Long applicantId, Long resumeId) {
-        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
+//        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
 
         Optional<User> userOptional = userDao.getUserById(applicantId);
         if (userOptional.isEmpty()) {
@@ -207,10 +205,10 @@ public class ResumeServiceImpl implements ResumeService {
             return;
         }
 
-        if (accountType != AccountType.APPLICANT) {
-            log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
-            return;
-        }
+//        if (accountType != AccountType.APPLICANT) {
+//            log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
+//            return;
+//        }
 
         Optional<Resume> resumeOptional = resumeDao.getResumeById(resumeId);
         if (resumeOptional.isEmpty()){
