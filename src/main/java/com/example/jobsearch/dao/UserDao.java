@@ -2,6 +2,7 @@ package com.example.jobsearch.dao;
 
 import com.example.jobsearch.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -29,7 +30,11 @@ public class UserDao {
         String sql = """
                 select * from users where email = ?
                 """;
-        return Optional.ofNullable(template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), email));
+        return Optional.ofNullable(
+                DataAccessUtils.singleResult(
+                        template.query(sql, new BeanPropertyRowMapper<>(User.class), email)
+                )
+        );
     }
 
     public List<User> getUsersByName(String name) {
@@ -79,7 +84,7 @@ public class UserDao {
             ps.setString(5, user.getPassword());
             ps.setString(6, user.getPhoneNumber());
             ps.setString(7, user.getAvatar());
-            ps.setBoolean(8, user.getEnabled());
+            ps.setBoolean(8, user.getEnabled() != null ? user.getEnabled() : false);
             ps.setLong(9, user.getAccountType());
             return ps;
         }, keyHolder);
@@ -118,10 +123,14 @@ public class UserDao {
         template.update(sql, new MapSqlParameterSource().addValue("id", user.getId()).addValue("avatar", user.getAvatar()));
     }
 
-    public void getUserAccountTypeById(Long userId) {
-        String sql = """
-                SELECT accountType FROM users WHERE id = ?
-                """;
-        template.queryForObject(sql, User.class, userId);
+    public List<User> getUsersByAccountType(String accountType) {
+        String sql = "SELECT * FROM users WHERE enabled = ?";
+        return template.query(sql, new BeanPropertyRowMapper<>(User.class), true);
+    }
+
+    public List<User> getEmployersByAccountType(String accountType) {
+        long employerRoleId = 2;
+        String sql = "SELECT * FROM users WHERE role_id = ?";
+        return template.query(sql, new BeanPropertyRowMapper<>(User.class), employerRoleId);
     }
 }

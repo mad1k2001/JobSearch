@@ -19,44 +19,50 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+
 public class SecurityConfig {
+
     private final PasswordEncoder encoder;
+
     private final DataSource dataSource;
 
-    private static final String UsersQuery = """
-            select email, password, enabled
-            from users
-            where email = ?
-            """;
+    @Autowired
+    public SecurityConfig(DataSource source, PasswordEncoder encoder) {
+        this.dataSource = source;
+        this.encoder = encoder;
+    }
 
-    private static final String RolesQuery = """
-            SELECT u.email, a.accountType
-            FROM users u, accountType a
-            WHERE u.email = ?
-            AND u.accountType = a.id;
+    private static final String USER_QUERY = "select EMAIL, PASSWORD, ENABLED from USERS where EMAIL =?;";
+    private static final String AUTHORITIES_QUERY = """
+            select ua.EMAIL, a.role from USER_AUTHORITY ua, AUTHORITIES a
+            where ua.AUTHORITY_ID = a.ID
+            and ua.EMAIL = ?;
             """;
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                .usersByUsernameQuery(UsersQuery)
-                .authoritiesByUsernameQuery(RolesQuery)
+                .usersByUsernameQuery(USER_QUERY)
+                .authoritiesByUsernameQuery(AUTHORITIES_QUERY)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("/reviews/**").fullyAuthenticated()
-                            .anyRequest().permitAll();
-                });
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/users/create").permitAll()
+                        .requestMatchers("/vacancies").permitAll()
+                        .requestMatchers("/resumes/**").hasAuthority("EMPLOYER")
+                        .requestMatchers("/vacancies/**").hasAuthority("APPLICANT")
+                        .anyRequest().permitAll()
+                );
         return http.build();
     }
 }

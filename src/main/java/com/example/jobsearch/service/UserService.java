@@ -12,6 +12,7 @@ public interface UserService {
     ResponseEntity<?> getUsersByPhoneNumber(String phone);
     Boolean userExistsByEmail(String email);
     Long addUser(UserDto userDto);
-    void editUser(UserDto userDto, Long id, ImageDto imageDto);
-    void upload(ImageDto imageDto, Long id);
+    void editUser(UserDto userDto);
+    List<UserDto> getApplicantsByAccountType(String accountType);
+    List<UserDto> getEmployersByAccountType(String accountType);
 }

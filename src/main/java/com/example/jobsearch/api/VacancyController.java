@@ -1,8 +1,6 @@
-package com.example.jobsearch.controller;
+package com.example.jobsearch.api;
 
-import com.example.jobsearch.dto.ResumeDto;
 import com.example.jobsearch.dto.VacancyDto;
-import com.example.jobsearch.exeptions.VacancyNotFoundException;
 import com.example.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,13 +35,13 @@ public class VacancyController {
 
     }
 
-    @PostMapping("add/{authorId}/vacancies")
-    public ResponseEntity<?> addResume(@PathVariable Long authorId, VacancyDto vacancyDto) {
+    @PostMapping("add/{authorId}")
+    public ResponseEntity<?> addVacancy(@PathVariable Long authorId, VacancyDto vacancyDto) {
         vacancyService.addVacancy(vacancyDto, authorId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping("edit/{authorId}/vacancies/{vacancyId}")
+    @PutMapping("edit/{authorId}/{vacancyId}")
     public ResponseEntity<?> editVacancy(@PathVariable Long authorId, @PathVariable Long vacancyId, VacancyDto vacancyDto ){
         vacancyService.editVacancy(authorId, vacancyId, vacancyDto);
         return ResponseEntity.status(HttpStatus.OK).build();

@@ -1,16 +1,13 @@
-package com.example.jobsearch.controller;
+package com.example.jobsearch.api;
 
 import com.example.jobsearch.dto.ResumeDto;
-import com.example.jobsearch.exeptions.ResumeNotFoundException;
 import com.example.jobsearch.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,7 +40,7 @@ public class ResumeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-         return ResponseEntity.ok(resumeService.getResumeById(id));
+        return ResponseEntity.ok(resumeService.getResumeById(id));
     }
 
     @PostMapping("add/{applicantId}/resumes")
