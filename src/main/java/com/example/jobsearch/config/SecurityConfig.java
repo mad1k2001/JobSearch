@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .logout(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/users/create").permitAll()
+                        .requestMatchers("/register").permitAll()
                         .requestMatchers("/vacancies").permitAll()
                         .requestMatchers("/resumes/**").hasAuthority("EMPLOYER")
                         .requestMatchers("/vacancies/**").hasAuthority("APPLICANT")

@@ -1,5 +1,6 @@
 package com.example.jobsearch.mvc;
 
+import com.example.jobsearch.dto.UserDto;
 import com.example.jobsearch.model.User;
 import com.example.jobsearch.service.ResumeService;
 import com.example.jobsearch.service.UserService;
@@ -9,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -26,4 +29,11 @@ public class ProfileController {
         model.addAttribute("vacancies", vacancyService.getVacanciesByEmployer(authentication));
         return "profile";
     }
+
+    @PutMapping("/profile")
+    public String updateProfile(@ModelAttribute("updatedUser") UserDto updatedUser) {
+        userService.editUser(updatedUser);
+        return "redirect:/profile";
+    }
+
 }

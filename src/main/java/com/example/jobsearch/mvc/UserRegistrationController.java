@@ -32,7 +32,7 @@ public class UserRegistrationController {
         } else if (user.getAccountType().equals("EMPLOYER")) {
             return "redirect:/employer/dashboard";
         } else {
-            return "redirect:/login";
+            return "redirect:/profile";
         }
     }
 }

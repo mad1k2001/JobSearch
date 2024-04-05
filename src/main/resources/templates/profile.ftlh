@@ -43,11 +43,34 @@
         <div class="col-md-9">
             <p><strong>Name:</strong> ${user.name} ${user.surName}</p>
             <p><strong>Age:</strong> ${user.age}</p>
-            <p><strong>Email:</strong> ${user.email}</p>
-            <p><strong>Phone Number:</strong> ${user.phoneNumber}</p>
-            <p><strong>Account Type:</strong> ${user.accountType}</p>
+        </div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editUserModal">
+            Edit User
+        </button>
+    </div>
+
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/profile" method="post">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" value="${user.name}" required>
+                        <label for="surName">Surname:</label>
+                        <input type="text" id="surName" name="surName" value="${user.surName}" required>
+                        <label for="surName">Age:</label>
+                        <input type="text" id="surName" name="surName" value="${user.age}" required>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+
 
     <h2 class="mt-5">Resumes</h2>
     <table class="table">

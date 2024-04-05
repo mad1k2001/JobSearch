@@ -24,9 +24,6 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Vacancies</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="/register">Register</a>
                 </li>
                 <li class="nav-item">
@@ -37,9 +34,27 @@
     </div>
 </nav>
 
-<div class="container">
-
+<div class="container mt-5">
+    <h1>Vacancies</h1>
+    <div class="row">
+        <#list vacancies as vacancy>
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">${vacancy.name}</h5>
+                        <p class="card-text">${vacancy.description}</p>
+                        <p class="card-text">Salary: ${vacancy.salary}</p>
+                        <p class="card-text">Experience: ${vacancy.expFrom} - ${vacancy.expTo} years</p>
+                        <p class="card-text">Author: ${vacancy.authorId}</p>
+                        <p class="card-text">Created Date: ${vacancy.createdDate}</p>
+                        <p class="card-text">Update Time: ${vacancy.updateTime}</p>
+                    </div>
+                </div>
+            </div>
+        </#list>
+    </div>
 </div>
+
 
 <!-- Подключение скриптов Bootstrap (необходимо для работы некоторых компонентов) -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
