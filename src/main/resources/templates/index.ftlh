@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Index</title>
+    <title>Home</title>
     <!-- Подключение стилей Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
@@ -35,11 +35,11 @@
 </nav>
 
 <div class="container mt-5">
-    <h1>Vacancies</h1>
-    <div class="row">
+    <h1 class="text-center  mt-5 mb-4">Vacancies</h1>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
         <#list vacancies as vacancy>
-            <div class="col-md-6">
-                <div class="card mb-3">
+            <div class="col">
+                <div class="card shadow">
                     <div class="card-body">
                         <h5 class="card-title">${vacancy.name}</h5>
                         <p class="card-text">${vacancy.description}</p>
@@ -54,7 +54,6 @@
         </#list>
     </div>
 </div>
-
 
 <!-- Подключение скриптов Bootstrap (необходимо для работы некоторых компонентов) -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

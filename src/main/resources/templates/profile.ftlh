@@ -32,10 +32,10 @@
 </nav>
 <div class="container">
     <h2 class="h2 text-center p-4">User profile
-        <#if user.accountType == "Applicant">
-            applicant
-        <#elseif user.accountType == "Employer">
-            employer
+        <#if user.accountType == "APPLICANT">
+            Applicant
+        <#elseif user.accountType == "EMPLOYER">
+            Employer
         </#if>
     </h2>
     <div class="row gx-4">
@@ -55,7 +55,7 @@
         <div class="more row col-5 gx-2">
             <div class="create col-5 bg-danger border bg-opacity-25 rounded h-50 pt-2">
                 <h4 class="text-center">+</h4>
-                <h6 class="text-center p-auto">Create <#if user.accountType == "Applicant">resume<#else>vacancy</#if></h6>
+                <h6 class="text-center p-auto">Create <#if user.accountType == "APPLICANT">resume<#else>vacancy</#if></h6>
             </div>
             <div class="col-1"></div>
             <div class="responds col-5 bg-secondary bg-opacity-25 rounded h-50 d-flex justify-content-center align-items-center">
@@ -64,8 +64,8 @@
         </div>
     </div>
     <div class="extra-info row">
-        <#if user.accountType == "Applicant">
-            <h3 class="h3 my-3">Resumes:</h3>
+        <#if user.accountType == "APPLICANT">
+            <h3 class="h3 my-3 text-center">Resumes:</h3>
             <#if resumes??>
                 <#if resumes?size != 0>
                     <#list resumes as resume>
@@ -92,12 +92,14 @@
                         <div class="col-2"></div>
                     </#list>
                 <#else>
-                    You have no resumes yet
+                    <div class="alert alert-info" role="alert">
+                        You have no resumes yet
+                    </div>
                 </#if>
             <#else>
             </#if>
         <#else>
-            <h3 class="h3 my-3">Vacancies:</h3>
+            <h3 class="h3 my-3 text-center">Vacancies:</h3>
             <#if vacancies??>
                 <#if vacancies?size != 0>
                     <#list vacancies as vacancy>
@@ -126,7 +128,9 @@
                         <div class="col-2"></div>
                     </#list>
                 <#else>
-                    You have no vacancies yet
+                    <div class="alert alert-info" role="alert">
+                        You have no vacancies yet
+                    </div>
                 </#if>
             <#else>
             </#if>
@@ -158,7 +162,7 @@
                         <label for="avatar" class="form-label">Avatar:</label>
                         <input type="file" id="avatar" name="avatar" accept="image/*" class="form-control">
                     </div>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-success">Save Changes</button>
                 </form>
             </div>
         </div>
