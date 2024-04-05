@@ -131,4 +131,14 @@ public class VacancyDao {
                 """;
         return template.query(sql, (rs, rowNum) -> true, vacancyId).isEmpty();
     }
+
+    public List<Vacancy> getVacanciesByEmployer(String email) {
+        String sql = """
+        SELECT v.* 
+        FROM VACANCIES v
+        JOIN USERS u ON v.AUTHORID = u.ID
+        WHERE u.EMAIL = ?
+        """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Vacancy.class), email);
+    }
 }

@@ -1,8 +1,9 @@
 package com.example.jobsearch.service;
 
-import com.example.jobsearch.dto.ImageDto;
 import com.example.jobsearch.dto.UserDto;
+import com.example.jobsearch.dto.UserProfileDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface UserService {
     void editUser(UserDto userDto);
     List<UserDto> getApplicantsByAccountType(String accountType);
     List<UserDto> getEmployersByAccountType(String accountType);
+    UserProfileDto getUser(Authentication authentication);
 }

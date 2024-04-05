@@ -9,12 +9,10 @@ import com.example.jobsearch.model.*;
 import com.example.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -51,10 +49,6 @@ public class VacancyServiceImpl implements VacancyService {
             log.error("Can't find user with id: " + authorId);
             return null;
         }
-//        if (accountType != AccountType.EMPLOYER) {
-//            log.error("User with id " + authorId + " is not an employer and cannot create a vacancy.");
-//            return null;
-//        }
 
         if (vacancyDto.getExpFrom() < 0 || vacancyDto.getExpFrom() > 60) {
             log.error("Impossible case. Can't create vacancy with exp. from " + vacancyDto.getExpFrom());
@@ -73,14 +67,10 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public void editVacancy(Long authorId, Long vacancyId, VacancyDto vacancyDto) {
-//        AccountType accountType = userDao.getUserAccountTypeById(authorId);
         Optional<User> userOptional = userDao.getUserById(authorId);
         if (userOptional.isEmpty()) {
             log.error("Can't find user with id: " + authorId);
         }
-//        if (accountType != AccountType.EMPLOYER) {
-//            log.error("User with id " + authorId + " is not an employer and cannot create a vacancy.");
-//        }
         if (!userDao.getUserById(authorId).isPresent()){
             log.error("No user with id " +vacancyId);
         }
@@ -94,10 +84,7 @@ public class VacancyServiceImpl implements VacancyService {
         if (userOptional.isEmpty()) {
             log.error("Can't find user with id: " + authorId);
         }
-//        AccountType accountType = userDao.getUserAccountTypeById(authorId);
-//        if (accountType != AccountType.EMPLOYER) {
-//            log.error("User with id " + authorId + " is not an employer and cannot create a vacancy.");
-//        }
+
         if (!vacancyDao.isVacancyDeletable(vacancyId)){
             log.error("Can't delete this vacancy ");
         }
@@ -106,6 +93,16 @@ public class VacancyServiceImpl implements VacancyService {
         }
         vacancyDao.deleteVacancy(authorId);
     }
+
+    public List<Vacancy> getVacanciesByEmployer(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return Collections.emptyList();
+        }
+
+        String userEmail = authentication.getName();
+        return vacancyDao.getVacanciesByEmployer(userEmail);
+    }
+
 
     private VacancyDto mapToDto(Vacancy vacancy) {
         return VacancyDto.builder()

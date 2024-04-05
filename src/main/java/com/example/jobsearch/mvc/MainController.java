@@ -6,15 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("main")
+@RequestMapping("/")
 
 public class MainController {
 
-    @GetMapping("hi")
+    @GetMapping
     public String index(Model model){
         String str = "world!";
         model.addAttribute("world", str );
-
         return "index";
     }
 }

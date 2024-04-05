@@ -17,7 +17,7 @@ public class UserRegistrationController {
 
     private final UserService userService;
 
-    @GetMapping("/create")
+    @GetMapping
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
         return "register";
@@ -27,9 +27,9 @@ public class UserRegistrationController {
     public String registerUser(UserDto user) {
         userService.addUser(user);
 
-        if (user.getAccountType().equals("employee")) {
-            return "redirect:/employee/dashboard";
-        } else if (user.getAccountType().equals("employer")) {
+        if (user.getAccountType().equals("APPLICANT")) {
+            return "redirect:/applicant/dashboard";
+        } else if (user.getAccountType().equals("EMPLOYER")) {
             return "redirect:/employer/dashboard";
         } else {
             return "redirect:/login";

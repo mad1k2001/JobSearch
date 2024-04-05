@@ -1,6 +1,7 @@
 package com.example.jobsearch.dao;
 
 import com.example.jobsearch.model.Resume;
+import com.example.jobsearch.model.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -129,5 +130,15 @@ public class ResumeDao {
                 SELECT COUNT(*) FROM respondedApplications WHERE resumeId = ?
                 """;
         return template.query(sql, (rs, rowNum) -> true, resumeId).isEmpty();
+    }
+
+    public List<Resume> getResumesByApplicant(String email) {
+        String sql = """
+        SELECT r.* 
+        FROM RESUMES r
+        JOIN USERS u ON r.APPLICANTID = u.ID
+        WHERE u.EMAIL = ?
+        """;
+        return template.query(sql, new BeanPropertyRowMapper<>(Resume.class), email);
     }
 }

@@ -1,12 +1,15 @@
 package com.example.jobsearch.service.impl;
 
 import com.example.jobsearch.dao.UserDao;
+import com.example.jobsearch.dao.VacancyDao;
 import com.example.jobsearch.dto.UserDto;
+import com.example.jobsearch.dto.UserProfileDto;
 import com.example.jobsearch.model.User;
 import com.example.jobsearch.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
+    private final VacancyDao vacancyDao;
 
     @Override
     public ResponseEntity<?> getUserByEmail(String email){
@@ -89,6 +93,27 @@ public class UserServiceImpl implements UserService {
         List<UserDto> employerDtos = new ArrayList<>();
         employers.forEach(employer -> employerDtos.add(makeUserDto(employer)));
         return employerDtos;
+    }
+
+    @Override
+    public UserProfileDto getUser(Authentication authentication) {
+        User user = userDao.getUserByEmail(authentication.getName()).get();
+        String accountType = "Employer";
+        if (user.getAccountType()==4){
+            accountType = "Applicant";
+        }
+
+        return UserProfileDto.builder()
+                .id(user.getId())
+                .age(user.getAge())
+                .phoneNumber(user.getPhoneNumber())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .accountType(accountType)
+                .avatar(user.getAvatar())
+                .surName(user.getSurname())
+                .name(user.getName())
+                .build();
     }
 
     private UserDto makeUserDto(User user){

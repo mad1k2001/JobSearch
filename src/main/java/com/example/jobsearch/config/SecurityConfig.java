@@ -34,9 +34,9 @@ public class SecurityConfig {
 
     private static final String USER_QUERY = "select EMAIL, PASSWORD, ENABLED from USERS where EMAIL =?;";
     private static final String AUTHORITIES_QUERY = """
-            select ua.EMAIL, a.role from USER_AUTHORITY ua, AUTHORITIES a
-            where ua.AUTHORITY_ID = a.ID
-            and ua.EMAIL = ?;
+            SELECT u.email, a.accountType
+            FROM users u, accountType a
+            WHERE u.email = ? AND u.accountType = a.id;
             """;
 
     @Autowired
@@ -61,7 +61,7 @@ public class SecurityConfig {
                         .requestMatchers("/vacancies").permitAll()
                         .requestMatchers("/resumes/**").hasAuthority("EMPLOYER")
                         .requestMatchers("/vacancies/**").hasAuthority("APPLICANT")
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 );
         return http.build();
     }

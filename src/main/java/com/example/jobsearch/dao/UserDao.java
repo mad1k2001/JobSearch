@@ -84,7 +84,7 @@ public class UserDao {
             ps.setString(5, user.getPassword());
             ps.setString(6, user.getPhoneNumber());
             ps.setString(7, user.getAvatar());
-            ps.setBoolean(8, user.getEnabled() != null ? user.getEnabled() : false);
+            ps.setBoolean(8, user.getEnabled() != null ? user.getEnabled() : true);
             ps.setLong(9, user.getAccountType());
             return ps;
         }, keyHolder);
