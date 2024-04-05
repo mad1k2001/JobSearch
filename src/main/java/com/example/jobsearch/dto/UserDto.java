@@ -38,8 +38,6 @@ public class UserDto {
     @Pattern(regexp=".+\\.jpg$")
     @Size(max = 2097152)
     private String avatar;
-    @NotNull
-    @NotBlank
     private Boolean enabled;
     @NotNull
     @NotBlank

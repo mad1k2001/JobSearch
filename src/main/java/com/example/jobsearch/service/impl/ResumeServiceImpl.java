@@ -6,13 +6,11 @@ import com.example.jobsearch.model.*;
 import com.example.jobsearch.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,12 +58,6 @@ public class ResumeServiceImpl implements ResumeService {
         }
 
         User user = userOptional.get();
-//        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
-//
-//        if (accountType != AccountType.APPLICANT) {
-//            log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
-//            return null;
-//        }
 
         Resume resume = makeResume(resumeDto);
 
@@ -100,19 +92,12 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public void editResume(ResumeDto resumeDto, Long applicantId, Long resumeId) {
-//        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
-
         Optional<User> userOptional = userDao.getUserById(applicantId);
         if (userOptional.isEmpty()) {
             log.error("Can't find user whit id: " + applicantId);
             return;
         }
         User user = userOptional.get();
-
-//        if (accountType != AccountType.APPLICANT) {
-//            log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
-//            return;
-//        }
 
         Optional<Resume> resumeOptional = resumeDao.getResumeById(resumeId);
         if (resumeOptional.isEmpty()) {
@@ -197,18 +182,11 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public void deleteResume(Long applicantId, Long resumeId) {
-//        AccountType accountType = userDao.getUserAccountTypeById(applicantId);
-
         Optional<User> userOptional = userDao.getUserById(applicantId);
         if (userOptional.isEmpty()) {
             log.error("There's no user by id " + applicantId);
             return;
         }
-
-//        if (accountType != AccountType.APPLICANT) {
-//            log.error("User with id " + applicantId + " is not an applicant and cannot create a resume.");
-//            return;
-//        }
 
         Optional<Resume> resumeOptional = resumeDao.getResumeById(resumeId);
         if (resumeOptional.isEmpty()){
@@ -227,6 +205,16 @@ public class ResumeServiceImpl implements ResumeService {
 
         resumeDao.deleteResume(resumeId);
     }
+
+    public List<Resume> getResumesByApplicant(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return Collections.emptyList();
+        }
+
+        String userEmail = authentication.getName();
+        return resumeDao.getResumesByApplicant(userEmail);
+    }
+
 
     private ResumeDto mapToDto(Resume resume) {
         return ResumeDto.builder()

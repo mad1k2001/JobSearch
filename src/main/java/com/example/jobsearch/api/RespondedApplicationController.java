@@ -1,4 +1,4 @@
-package com.example.jobsearch.controller;
+package com.example.jobsearch.api;
 
 import com.example.jobsearch.dto.RespondedApplicationDto;
 import com.example.jobsearch.service.RespondedApplicationService;

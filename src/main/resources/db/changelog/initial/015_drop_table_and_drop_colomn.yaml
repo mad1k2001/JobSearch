@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: drop authorities and remove authority_id column
+      author: Madina
+      changes:
+        - dropColumn:
+            tableName: accountType
+            columnName: authority_id
+        - dropTable:
+            tableName: authorities
