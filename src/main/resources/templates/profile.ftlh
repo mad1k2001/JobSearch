@@ -10,7 +10,7 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous"></head>
 <body>
-<!-- Навигационная панель Bootstrap -->
+<!-- Bootstrap Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="#">Job Search</a>
@@ -24,94 +24,147 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Vacancies</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="/register">Register</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-
 <div class="container">
-    <h1 class="mt-5">User Profile</h1>
-    <div class="row">
-        <div class="col-md-3">
-            <img src="${user.avatar}" alt="User Avatar" class="img-fluid rounded-circle mb-3">
+    <h2 class="h2 text-center p-4">User profile
+        <#if user.accountType == "Applicant">
+            applicant
+        <#elseif user.accountType == "Employer">
+            employer
+        </#if>
+    </h2>
+    <div class="row gx-4">
+        <div class="user-info col-6 bg-secondary bg-opacity-25 rounded row p-4">
+            <div class="avatar border rounded-circle col-6">
+                <img src="${user.avatar}" alt="avatar">
+            </div>
+            <div class="bg-gray bg-opacity-25 col-6">
+                <h4>${user.name} ${user.surName}</h4>
+                <p>Age: ${user.age}</p>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editUserModal">
+                    Edit User
+                </button>
+            </div>
         </div>
-        <div class="col-md-9">
-            <p><strong>Name:</strong> ${user.name} ${user.surName}</p>
-            <p><strong>Age:</strong> ${user.age}</p>
-        </div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editUserModal">
-            Edit User
-        </button>
-    </div>
-
-    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="/profile" method="post">
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" value="${user.name}" required>
-                        <label for="surName">Surname:</label>
-                        <input type="text" id="surName" name="surName" value="${user.surName}" required>
-                        <label for="surName">Age:</label>
-                        <input type="text" id="surName" name="surName" value="${user.age}" required>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </form>
-                </div>
+        <div class="col-1"></div>
+        <div class="more row col-5 gx-2">
+            <div class="create col-5 bg-danger border bg-opacity-25 rounded h-50 pt-2">
+                <h4 class="text-center">+</h4>
+                <h6 class="text-center p-auto">Create <#if user.accountType == "Applicant">resume<#else>vacancy</#if></h6>
+            </div>
+            <div class="col-1"></div>
+            <div class="responds col-5 bg-secondary bg-opacity-25 rounded h-50 d-flex justify-content-center align-items-center">
+                <h6 class="text-center p-auto">Responses</h6>
             </div>
         </div>
     </div>
-
-
-    <h2 class="mt-5">Resumes</h2>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Resume Name</th>
-            <th>Last Updated</th>
-        </tr>
-        </thead>
-        <tbody>
-        <#list resumes as resume>
-            <tr>
-                <td>${resume.name}</td>
-                <td>${resume.updateTime}</td>
-                <button type="button" class="btn btn-primary">Update</button>
-                <button type="button" class="btn btn-secondary">Edit</button>
-            </tr>
-        </#list>
-        </tbody>
-    </table>
-
-    <h2 class="mt-5">Vacancies</h2>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Vacancy Name</th>
-            <th>Last Updated</th>
-        </tr>
-        </thead>
-        <tbody>
-        <#list vacancies as vacancy>
-            <tr>
-                <td>${vacancy.name}</td>
-                <td>${vacancy.updateTime}</td>
-                <button type="button" class="btn btn-primary">Update</button>
-                <button type="button" class="btn btn-secondary">Edit</button>
-            </tr>
-        </#list>
-        </tbody>
-    </table>
+    <div class="extra-info row">
+        <#if user.accountType == "Applicant">
+            <h3 class="h3 my-3">Resumes:</h3>
+            <#if resumes??>
+                <#if resumes?size != 0>
+                    <#list resumes as resume>
+                        <div class="col-5">
+                            <a href="/resumes/${resume.id}" class="text-decoration-none text-dark">
+                                <div class="card bg-secondary bg-opacity-25 mb-3">
+                                    <div class="card-header">
+                                        <h5 class="card-title">${resume.name}</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"><#if resume.updatedDate??>
+                                        <h6>Updated Date: ${resume.updatedDate}</h6>
+                                        <#else><h6> Created Date: ${resume.createdDate}</h6>
+                                        </#if>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="#" class="btn btn-success bg-opacity-25">Update</a>
+                                        <a href="#" class="btn btn-warning bg-opacity-25">Edit</a>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-2"></div>
+                    </#list>
+                <#else>
+                    You have no resumes yet
+                </#if>
+            <#else>
+            </#if>
+        <#else>
+            <h3 class="h3 my-3">Vacancies:</h3>
+            <#if vacancies??>
+                <#if vacancies?size != 0>
+                    <#list vacancies as vacancy>
+                        <div class="col-5 ">
+                            <a href="/vacancies/${vacancy.id}" class="text-decoration-none text-dark">
+                                <div class="card bg-secondary bg-opacity-25 mb-3">
+                                    <div class="card-header">
+                                        <h5 class="card-title">${vacancy.name}</h5>
+                                    </div>
+                                    <div class="card-body h-100">
+                                        <p class="card-text">
+                                            <#if vacancy.updatedTime??>
+                                        <h6>Updated Date: ${vacancy.updatedTime}</h6>
+                                        <#else>
+                                            <h6>Created Date: ${vacancy.createdDate}</h6>
+                                        </#if>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="#" class="btn btn-success bg-opacity-25">Update</a>
+                                        <a href="#" class="btn btn-warning bg-opacity-25">Edit</a>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-2"></div>
+                    </#list>
+                <#else>
+                    You have no vacancies yet
+                </#if>
+            <#else>
+            </#if>
+        </#if>
+    </div>
 </div>
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/profile" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name:</label>
+                        <input type="text" id="name" name="name" value="${user.name}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="surName" class="form-label">Surname:</label>
+                        <input type="text" id="surName" name="surName" value="${user.surName}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="age" class="form-label">Age:</label>
+                        <input type="text" id="age" name="age" value="${user.age}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="avatar" class="form-label">Avatar:</label>
+                        <input type="file" id="avatar" name="avatar" accept="image/*" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Bootstrap JS (optional) -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
