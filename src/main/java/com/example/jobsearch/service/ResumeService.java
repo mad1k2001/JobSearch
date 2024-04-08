@@ -19,5 +19,4 @@ public interface ResumeService {
     Long addResume(ResumeDto resume, Long applicantId);
     void deleteResume(Long applicantId, Long resumeId);
     List<Resume> getResumesByApplicant(Authentication authentication);
-    List<Category> getAllCategories();
 }

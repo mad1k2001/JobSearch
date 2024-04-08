@@ -216,12 +216,6 @@ public class ResumeServiceImpl implements ResumeService {
         return resumeDao.getResumesByApplicant(userEmail);
     }
 
-    public  List<Category> getAllCategories(){
-        List<Category> categories = categoryDao.getCategories();
-        return categories;
-    }
-
-
     private ResumeDto mapToDto(Resume resume) {
         return ResumeDto.builder()
                 .id(resume.getId())
