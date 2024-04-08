@@ -2,6 +2,7 @@ package com.example.jobsearch.service;
 
 import com.example.jobsearch.dto.ResumeDto;
 import com.example.jobsearch.exeptions.ResumeNotFoundException;
+import com.example.jobsearch.model.Category;
 import com.example.jobsearch.model.Resume;
 import org.springframework.security.core.Authentication;
 
@@ -18,4 +19,5 @@ public interface ResumeService {
     Long addResume(ResumeDto resume, Long applicantId);
     void deleteResume(Long applicantId, Long resumeId);
     List<Resume> getResumesByApplicant(Authentication authentication);
+    List<Category> getAllCategories();
 }

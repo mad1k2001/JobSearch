@@ -1,5 +1,6 @@
 package com.example.jobsearch.dao;
 
+import com.example.jobsearch.model.Category;
 import com.example.jobsearch.model.Resume;
 import com.example.jobsearch.model.Vacancy;
 import lombok.RequiredArgsConstructor;

@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
     public UserProfileDto getUser(Authentication authentication) {
         User user = userDao.getUserByEmail(authentication.getName()).get();
         String accountType = "Employer";
-        if (user.getAccountType()==4){
+        if (user.getAccountType()==2){
             accountType = "Applicant";
         }
 

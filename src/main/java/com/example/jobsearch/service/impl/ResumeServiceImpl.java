@@ -22,6 +22,7 @@ public class ResumeServiceImpl implements ResumeService {
     private final WorkExperienceInfoDao workExperienceInfoDao;
     private final EducationInfoDao educationInfoDao;
     private final ContactInfoDao contactInfoDao;
+    private final CategoryDao categoryDao;
 
     @Override
     public List<ResumeDto> getResume(){
@@ -213,6 +214,11 @@ public class ResumeServiceImpl implements ResumeService {
 
         String userEmail = authentication.getName();
         return resumeDao.getResumesByApplicant(userEmail);
+    }
+
+    public  List<Category> getAllCategories(){
+        List<Category> categories = categoryDao.getCategories();
+        return categories;
     }
 
 
