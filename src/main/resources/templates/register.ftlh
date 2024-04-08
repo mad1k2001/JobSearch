@@ -7,8 +7,27 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">Job Search</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile">Profile</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="container">
-    <h2>User Registration</h2>
+    <h2 class="text-center mt-5">User Registration</h2>
     <form action="/register" method="post">
         <div class="form-group">
             <label for="name">Name:</label>
@@ -38,7 +57,7 @@
             <label for="accountType">AccountType ID:</label>
             <input type="number" class="form-control" id="accountType" name="accountType" required>
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary btn-block mb-3">Register</button>
     </form>
 </div>
 </body>
