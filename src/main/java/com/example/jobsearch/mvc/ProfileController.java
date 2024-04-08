@@ -30,10 +30,10 @@ public class ProfileController {
         return "profile";
     }
 
-    @PutMapping("/profile")
+    @PutMapping
     public String updateProfile(@ModelAttribute("updatedUser") UserDto updatedUser) {
         userService.editUser(updatedUser);
-        return "redirect:/profile";
+        return "profile";
     }
 
 }

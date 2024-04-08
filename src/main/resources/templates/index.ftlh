@@ -36,23 +36,29 @@
 
 <div class="container mt-5">
     <h1 class="text-center  mt-5 mb-4">Vacancies</h1>
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-        <#list vacancies as vacancy>
-            <div class="col">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h5 class="card-title">${vacancy.name}</h5>
-                        <p class="card-text">${vacancy.description}</p>
-                        <p class="card-text">Salary: ${vacancy.salary}</p>
-                        <p class="card-text">Experience: ${vacancy.expFrom} - ${vacancy.expTo} years</p>
-                        <p class="card-text">Author: ${vacancy.authorId}</p>
-                        <p class="card-text">Created Date: ${vacancy.createdDate}</p>
-                        <p class="card-text">Update Time: ${vacancy.updateTime}</p>
+    <#if vacancies??>
+        <#if vacancies?size != 0>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                <#list vacancies as vacancy>
+                    <div class="col">
+                        <a href="/vacancies/${vacancy.id}" class="text-decoration-none text-dark">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <h5 class="card-title">${vacancy.name}</h5>
+                                    <p class="card-text">${vacancy.description}</p>
+                                    <p class="card-text">Salary: ${vacancy.salary}</p>
+                                    <p class="card-text">Experience: ${vacancy.expFrom} - ${vacancy.expTo} years</p>
+                                    <p class="card-text">Author: ${vacancy.authorId}</p>
+                                    <p class="card-text">Created Date: ${vacancy.createdDate}</p>
+                                    <p class="card-text">Update Time: ${vacancy.updateTime}</p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                </div>
+                </#list>
             </div>
-        </#list>
-    </div>
+        </#if>
+    </#if>
 </div>
 
 <!-- Подключение скриптов Bootstrap (необходимо для работы некоторых компонентов) -->

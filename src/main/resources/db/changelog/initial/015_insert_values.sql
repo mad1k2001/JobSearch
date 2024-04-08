@@ -1,11 +1,8 @@
-INSERT INTO authorities (authority)
-values('FULL'), ('READ_ONLY'), ('EDITOR');
-
-INSERT INTO accountType (accountType, authority_id)
-values ('ADMIN', (select id from authorities where authority = 'FULL')),
-       ('GUEST', (select id from authorities where authority = 'READ_ONLY')),
-       ('EMPLOYER', (select id from authorities where authority = 'EDITOR')),
-       ('APPLICANT', (select id from authorities where authority = 'EDITOR'));
+INSERT INTO accountType (accountType)
+values ('EMPLOYER'),
+       ('APPLICANT'),
+       ('ADMIN'),
+       ('GUEST');
 
 INSERT INTO users (name, surname, age, email, password, phoneNumber, avatar, enabled, accountType)
 VALUES
@@ -21,25 +18,25 @@ VALUES
 
 INSERT INTO resumes (applicantId, name, categoryId, salary, isActive, createdDate, updateTime)
 VALUES
-    ((SELECT id FROM users WHERE name = 'John' AND surname = 'Doe'), 'Backend Developer', (SELECT id FROM categories WHERE name = 'IT'), 3500.0, TRUE, NOW(), NOW()),
-    ((SELECT id FROM users WHERE name = 'John' AND surname = 'Doe'), 'Database Administrator', (SELECT id FROM categories WHERE name = 'IT'), 3200.0, TRUE, NOW(), NOW()),
-    ((SELECT id FROM users WHERE name = 'John' AND surname = 'Doe'), 'System Analyst', (SELECT id FROM categories WHERE name = 'IT'), 3800.0, TRUE, NOW(), NOW()),
-    ((SELECT id FROM users WHERE name = 'John' AND surname = 'Doe'), 'UI/UX Designer', (SELECT id FROM categories WHERE name = 'Design'), 2800.0, TRUE, NOW(), NOW()),
-    ((SELECT id FROM users WHERE name = 'John' AND surname = 'Doe'), 'Graphic Designer', (SELECT id FROM categories WHERE name = 'Design'), 2600.0, TRUE, NOW(), NOW());
+    ((SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith'), 'Backend Developer', (SELECT id FROM categories WHERE name = 'IT'), 3500.0, TRUE, NOW(), NOW()),
+    ((SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith'), 'Database Administrator', (SELECT id FROM categories WHERE name = 'IT'), 3200.0, TRUE, NOW(), NOW()),
+    ((SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith'), 'System Analyst', (SELECT id FROM categories WHERE name = 'IT'), 3800.0, TRUE, NOW(), NOW()),
+    ((SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith'), 'UI/UX Designer', (SELECT id FROM categories WHERE name = 'Design'), 2800.0, TRUE, NOW(), NOW()),
+    ((SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith'), 'Graphic Designer', (SELECT id FROM categories WHERE name = 'Design'), 2600.0, TRUE, NOW(), NOW());
 
 INSERT INTO vacancies (name, description, categoryId, salary, expFrom, expTo, isActivate, authorId, createdDate, updateTime)
 VALUES
-    ('Frontend Developer', 'Developing user interfaces', (SELECT id FROM categories WHERE name = 'IT'), 3500.0, 2, 5, TRUE, (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith'), NOW(), NOW()),
-    ('Mobile Developer', 'Developing mobile applications', (SELECT id FROM categories WHERE name = 'IT'), 3800.0, 3, 6, TRUE, (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith'), NOW(), NOW()),
-    ('Network Administrator', 'Managing network infrastructure', (SELECT id FROM categories WHERE name = 'IT'), 3200.0, 1, 4, TRUE, (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith'), NOW(), NOW()),
-    ('Web Developer', 'Creating websites', (SELECT id FROM categories WHERE name = 'Design'), 3000.0, 2, 5, TRUE, (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith'), NOW(), NOW()),
-    ('UI/UX Designer', 'Designing user interfaces and experiences', (SELECT id FROM categories WHERE name = 'Design'), 2800.0, 1, 3, TRUE, (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith'), NOW(), NOW());
+    ('Frontend Developer', 'Developing user interfaces', (SELECT id FROM categories WHERE name = 'IT'), 3500.0, 2, 5, TRUE, (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe'), NOW(), NOW()),
+    ('Mobile Developer', 'Developing mobile applications', (SELECT id FROM categories WHERE name = 'IT'), 3800.0, 3, 6, TRUE, (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe'), NOW(), NOW()),
+    ('Network Administrator', 'Managing network infrastructure', (SELECT id FROM categories WHERE name = 'IT'), 3200.0, 1, 4, TRUE, (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe'), NOW(), NOW()),
+    ('Web Developer', 'Creating websites', (SELECT id FROM categories WHERE name = 'Design'), 3000.0, 2, 5, TRUE, (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe'), NOW(), NOW()),
+    ('UI/UX Designer', 'Designing user interfaces and experiences', (SELECT id FROM categories WHERE name = 'Design'), 2800.0, 1, 3, TRUE, (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe'), NOW(), NOW());
 
 INSERT INTO respondedApplications (resumeId, vacancyId, confirmation)
 VALUES
-    ((SELECT id FROM resumes WHERE name = 'Backend Developer' AND applicantId = (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe')), (SELECT id FROM vacancies WHERE name = 'Frontend Developer' AND authorId = (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith')), TRUE),
-    ((SELECT id FROM resumes WHERE name = 'Database Administrator' AND applicantId = (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe')), (SELECT id FROM vacancies WHERE name = 'Mobile Developer' AND authorId = (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith')), TRUE),
-    ((SELECT id FROM resumes WHERE name = 'System Analyst' AND applicantId = (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe')), (SELECT id FROM vacancies WHERE name = 'Network Administrator' AND authorId = (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith')), TRUE);
+    ((SELECT id FROM resumes WHERE name = 'Backend Developer' AND applicantId = (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith')), (SELECT id FROM vacancies WHERE name = 'Frontend Developer' AND authorId = (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe')), TRUE),
+    ((SELECT id FROM resumes WHERE name = 'Database Administrator' AND applicantId = (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith')), (SELECT id FROM vacancies WHERE name = 'Mobile Developer' AND authorId = (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe')), TRUE),
+    ((SELECT id FROM resumes WHERE name = 'System Analyst' AND applicantId = (SELECT id FROM users WHERE name = 'Jane' AND surname = 'Smith')), (SELECT id FROM vacancies WHERE name = 'Network Administrator' AND authorId = (SELECT id FROM users WHERE name = 'John' AND surname = 'Doe')), TRUE);
 
 INSERT INTO contactTypes (type)
 VALUES
