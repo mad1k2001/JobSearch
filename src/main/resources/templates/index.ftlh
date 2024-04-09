@@ -34,7 +34,7 @@
     </div>
 </nav>
 
-<div class="container mt-5">
+<div class="container m-5">
     <#if user.accountType == "Applicant">
         <h1 class="text-center mt-5 mb-4">Vacancies</h1>
         <#assign vacanciesList = vacancies.content>
@@ -89,6 +89,29 @@
         </#if>
     </#if>
 </div>
+
+<#if vacancies.totalPages?is_number && vacancies.totalPages?number gt 1>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item <#if vacancies.number == 0>disabled</#if>">
+                <a class="page-link" href="?page=${vacancies.number - 1}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <#list 0..vacancies.totalPages - 1 as i>
+                <li class="page-item <#if vacancies.number == i>active</#if>">
+                    <a class="page-link" href="?page=${i}">${i + 1}</a>
+                </li>
+            </#list>
+            <li class="page-item <#if vacancies.number == vacancies.totalPages - 1>disabled</#if>">
+                <a class="page-link" href="?page=${vacancies.number + 1}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</#if>
+
 
 <!-- Подключение скриптов Bootstrap (необходимо для работы некоторых компонентов) -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
