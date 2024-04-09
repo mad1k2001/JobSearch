@@ -3,6 +3,7 @@ package com.example.jobsearch.mvc;
 import com.example.jobsearch.dto.ResumeDto;
 import com.example.jobsearch.dto.VacancyDto;
 import com.example.jobsearch.model.Category;
+import com.example.jobsearch.model.Vacancy;
 import com.example.jobsearch.service.CategoryService;
 import com.example.jobsearch.service.ResumeService;
 import com.example.jobsearch.service.UserService;
@@ -11,12 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/create-vacancy")
@@ -40,4 +39,14 @@ public class CreateVacancyController {
         vacancyService.addVacancy(vacancyDto, authorId);
         return "redirect:/profile";
     }
+    @GetMapping("/{id}")
+    public String showVacancy(@PathVariable Long id, Model model) {
+        Optional<VacancyDto> vacancyOptional = vacancyService.getVacancyById(id);
+        if (vacancyOptional.isPresent()) {
+            VacancyDto vacancy = vacancyOptional.get();
+            model.addAttribute("vacancy", vacancy);
+        }
+        return "vacancies";
+    }
+
 }

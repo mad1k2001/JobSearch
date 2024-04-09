@@ -78,7 +78,7 @@
                     <div class="row row-cols-2">
                         <#list resumes as resume>
                             <div class="col">
-                                <a href="/resumes/${resume.id}" class="text-decoration-none text-dark">
+                                <a href="/create-resume/${resume.id}" class="text-decoration-none text-dark">
                                     <div class="card bg-secondary bg-opacity-25 mb-3">
                                         <div class="card-header">
                                             <h5 class="card-title">${resume.name}</h5>
@@ -112,7 +112,7 @@
                     <div class="row row-cols-2">
                         <#list vacancies as vacancy>
                             <div class="col">
-                                <a href="/vacancies/${vacancy.id}" class="text-decoration-none text-dark">
+                                <a href="/create-vacancy/${vacancy.id}" class="text-decoration-none text-dark">
                                     <div class="card bg-secondary bg-opacity-25 mb-3">
                                         <div class="card-header">
                                             <h5 class="card-title">${vacancy.name}</h5>

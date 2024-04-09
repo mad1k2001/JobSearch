@@ -1,6 +1,7 @@
 package com.example.jobsearch.mvc;
 
 import com.example.jobsearch.dto.ResumeDto;
+import com.example.jobsearch.dto.VacancyDto;
 import com.example.jobsearch.model.Category;
 import com.example.jobsearch.service.CategoryService;
 import com.example.jobsearch.service.ResumeService;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/create-resume")
@@ -28,5 +30,14 @@ public class CreateResumeController {
         model.addAttribute("categories", categories);
         model.addAttribute("resume", new ResumeDto());
         return "createResume";
+    }
+    @GetMapping("/{id}")
+    public String showVacancy(@PathVariable Long id, Model model) {
+        Optional<ResumeDto> resumeOptional = resumeService.getResumeById(id);
+        if (resumeOptional.isPresent()) {
+            ResumeDto resume = resumeOptional.get();
+            model.addAttribute("resume", resume);
+        }
+        return "resumes";
     }
 }
