@@ -4,6 +4,7 @@ import com.example.jobsearch.dto.ResumeDto;
 import com.example.jobsearch.dto.VacancyDto;
 import com.example.jobsearch.exeptions.VacancyNotFoundException;
 import com.example.jobsearch.model.Vacancy;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public interface VacancyService {
     Long addVacancy(VacancyDto vacancy, Long authorId);
     void deleteVacancy(Long authorId, Long vacancyId);
     List<Vacancy> getVacanciesByEmployer(Authentication authentication);
+    Page<VacancyDto> getActiveVacancies(int pageNumber);
 }
