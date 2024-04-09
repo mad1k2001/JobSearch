@@ -1,18 +1,20 @@
 package com.example.jobsearch.service.impl;
 
+import com.example.jobsearch.dao.ResumeDao;
 import com.example.jobsearch.dao.UserDao;
 import com.example.jobsearch.dao.VacancyDao;
+import com.example.jobsearch.dto.ImageDto;
 import com.example.jobsearch.dto.UserDto;
 import com.example.jobsearch.dto.UserProfileDto;
 import com.example.jobsearch.model.User;
 import com.example.jobsearch.service.UserService;
+import com.example.jobsearch.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +23,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
+    private final FileUtil fileUtil;
     private final VacancyDao vacancyDao;
+    private final ResumeDao resumeDao;
+
 
     @Override
     public ResponseEntity<?> getUserByEmail(String email){
@@ -62,44 +67,38 @@ public class UserServiceImpl implements UserService {
         if (userDto.getAge() < 18 || userDto.getAge() > 126){
             log.error("Invalid age");
         }
+
         User user = makeUser(userDto);
         return userDao.addUser(user);
     }
 
     @Override
-    public void editUser(UserDto userDto) {
-        if (userDao.getUserById(userDto.getId()).isEmpty()){
-            log.error("No user by id " + userDto.getId() + " was found");
+    public void editUser(UserDto updatedUser, ImageDto imageDto, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new IllegalArgumentException("Authentication is invalid");
         }
-        if (userDto.getAge() < 0 || userDto.getAge() > 126) {
-            log.error("Impossible age value");
-        }
-
-        User user = makeUser(userDto);
+        User user = makeUser(updatedUser);
         userDao.editUser(user);
     }
 
     @Override
-    public List<UserDto> getApplicantsByAccountType(String accountType) {
-        List<User> applicants = userDao.getUsersByAccountType(accountType);
-        List<UserDto> applicantDtos = new ArrayList<>();
-        applicants.forEach(applicant -> applicantDtos.add(makeUserDto(applicant)));
-        return applicantDtos;
-    }
-
-    @Override
-    public List<UserDto> getEmployersByAccountType(String accountType) {
-        List<User> employers = userDao.getEmployersByAccountType(accountType);
-        List<UserDto> employerDtos = new ArrayList<>();
-        employers.forEach(employer -> employerDtos.add(makeUserDto(employer)));
-        return employerDtos;
+    public void upload(ImageDto imageDto, Long userId){
+        User user = User.builder()
+                .id(userId).build();
+        if (imageDto.getFile() != null && !imageDto.getFile().isEmpty()){
+            String filename = FileUtil.saveFile(imageDto.getFile(), "images");
+            user.setAvatar(filename);
+        } else {
+            user.setAvatar("data/images/default.png");
+        }
+        userDao.save(user);
     }
 
     @Override
     public UserProfileDto getUser(Authentication authentication) {
         User user = userDao.getUserByEmail(authentication.getName()).get();
         String accountType = "Employer";
-        if (user.getAccountType()==4){
+        if (user.getAccountType()==2){
             accountType = "Applicant";
         }
 

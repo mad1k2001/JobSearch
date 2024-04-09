@@ -9,6 +9,10 @@ import com.example.jobsearch.model.*;
 import com.example.jobsearch.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -101,6 +105,22 @@ public class VacancyServiceImpl implements VacancyService {
 
         String userEmail = authentication.getName();
         return vacancyDao.getVacanciesByEmployer(userEmail);
+    }
+
+    public Page<VacancyDto> getActiveVacancies(int pageNumber) {
+        List<VacancyDto> vacancies = getVacancyDto(vacancyDao.getActiveVacancies());
+        return toPage(vacancies, PageRequest.of(pageNumber, 5));
+    }
+
+    private Page<VacancyDto> toPage(List<VacancyDto> vacancies, Pageable pageable){
+        if (pageable.getOffset() >= vacancies.size()){
+            return Page.empty();
+        }
+        int startIndex = (int) pageable.getOffset();
+        int endIndex = (int) ((pageable.getOffset() + pageable.getPageSize() > vacancies.size() ?
+                vacancies.size() : pageable.getOffset() + pageable.getPageSize()));
+        List<VacancyDto> subList = vacancies.subList(startIndex, endIndex);
+        return new PageImpl<>(subList, pageable, vacancies.size());
     }
 
 

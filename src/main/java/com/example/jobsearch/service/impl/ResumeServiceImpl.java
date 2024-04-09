@@ -6,6 +6,10 @@ import com.example.jobsearch.model.*;
 import com.example.jobsearch.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +26,7 @@ public class ResumeServiceImpl implements ResumeService {
     private final WorkExperienceInfoDao workExperienceInfoDao;
     private final EducationInfoDao educationInfoDao;
     private final ContactInfoDao contactInfoDao;
+    private final CategoryDao categoryDao;
 
     @Override
     public List<ResumeDto> getResume(){
@@ -215,6 +220,21 @@ public class ResumeServiceImpl implements ResumeService {
         return resumeDao.getResumesByApplicant(userEmail);
     }
 
+    public Page<ResumeDto> getActiveResumes(int pageNumber) {
+        List<ResumeDto> resumes = getResumeDto(resumeDao.getActiveResumes());
+        return toPage(resumes, PageRequest.of(pageNumber, 5));
+    }
+
+    private Page<ResumeDto> toPage(List<ResumeDto> resumes, Pageable pageable){
+        if (pageable.getOffset() >= resumes.size()){
+            return Page.empty();
+        }
+        int startIndex = (int) pageable.getOffset();
+        int endIndex = (int) ((pageable.getOffset() + pageable.getPageSize() > resumes.size() ?
+                resumes.size() : pageable.getOffset() + pageable.getPageSize()));
+        List<ResumeDto> subList = resumes.subList(startIndex, endIndex);
+        return new PageImpl<>(subList, pageable, resumes.size());
+    }
 
     private ResumeDto mapToDto(Resume resume) {
         return ResumeDto.builder()

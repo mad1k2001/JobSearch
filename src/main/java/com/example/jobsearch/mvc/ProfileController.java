@@ -1,7 +1,8 @@
 package com.example.jobsearch.mvc;
 
+import com.example.jobsearch.dto.ImageDto;
 import com.example.jobsearch.dto.UserDto;
-import com.example.jobsearch.model.User;
+import com.example.jobsearch.dto.UserProfileDto;
 import com.example.jobsearch.service.ResumeService;
 import com.example.jobsearch.service.UserService;
 import com.example.jobsearch.service.VacancyService;
@@ -9,10 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/profile")
@@ -30,10 +29,9 @@ public class ProfileController {
         return "profile";
     }
 
-    @PutMapping("/profile")
-    public String updateProfile(@ModelAttribute("updatedUser") UserDto updatedUser) {
-        userService.editUser(updatedUser);
-        return "redirect:/profile";
+    @PostMapping
+    public String updateProfile(UserDto updatedUser, ImageDto imageDto, Authentication authentication) {
+        userService.editUser(updatedUser, imageDto, authentication);
+        return "profile";
     }
-
 }
