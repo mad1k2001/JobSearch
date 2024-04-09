@@ -13,6 +13,7 @@
 </head>
 <body>
 
+
 <!-- Навигационная панель Bootstrap -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
@@ -35,8 +36,17 @@
 </nav>
 
 <div class="container m-5">
+    <form class="d-flex align-items-center my-3" action="/" method="GET">
+        <select class="form-select me-2" aria-label="Select Category" name="categoryId">
+            <option value="" selected>All Categories</option>
+            <#list categories as category>
+                <option value="${category.id}">${category.name}</option>
+            </#list>
+        </select>
+        <button class="btn btn-outline-dark text-dark" type="submit">Apply</button>
+    </form>
     <#if user.accountType == "Applicant">
-        <h1 class="text-center mt-5 mb-4">Vacancies</h1>
+        <h1 class="text-center m-4">Vacancies</h1>
         <#assign vacanciesList = vacancies.content>
         <#if vacanciesList?size != 0>
             <div class="row row-cols-1 row-cols-md-2 g-4">
@@ -47,6 +57,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">${vacancy.name}</h5>
                                     <p class="card-text">${vacancy.description}</p>
+                                    <p class="card-text">СategoryId: ${vacancy.categoryId}</p>
                                     <p class="card-text">Salary: ${vacancy.salary}</p>
                                     <p class="card-text">Experience: ${vacancy.expFrom} - ${vacancy.expTo} years</p>
                                     <p class="card-text">Author: ${vacancy.authorId}</p>
