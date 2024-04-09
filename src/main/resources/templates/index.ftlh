@@ -35,28 +35,59 @@
 </nav>
 
 <div class="container mt-5">
-    <h1 class="text-center  mt-5 mb-4">Vacancies</h1>
-    <#if vacancies??>
-        <#if vacancies?size != 0>
-            <div class="row row-cols-1 row-cols-md-2 g-4">
-                <#list vacancies as vacancy>
-                    <div class="col">
-                        <a href="/vacancies/${vacancy.id}" class="text-decoration-none text-dark">
-                            <div class="card shadow">
-                                <div class="card-body">
-                                    <h5 class="card-title">${vacancy.name}</h5>
-                                    <p class="card-text">${vacancy.description}</p>
-                                    <p class="card-text">Salary: ${vacancy.salary}</p>
-                                    <p class="card-text">Experience: ${vacancy.expFrom} - ${vacancy.expTo} years</p>
-                                    <p class="card-text">Author: ${vacancy.authorId}</p>
-                                    <p class="card-text">Created Date: ${vacancy.createdDate}</p>
-                                    <p class="card-text">Update Time: ${vacancy.updateTime}</p>
+    <#if user.accountType == "Applicant">
+        <h1 class="text-center  mt-5 mb-4">Vacancies</h1>
+        <#if vacancies??>
+            <#if vacancies?size != 0>
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    <#list vacancies as vacancy>
+                        <div class="col">
+                            <a href="/vacancies/${vacancy.id}" class="text-decoration-none text-dark">
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${vacancy.name}</h5>
+                                        <p class="card-text">${vacancy.description}</p>
+                                        <p class="card-text">Salary: ${vacancy.salary}</p>
+                                        <p class="card-text">Experience: ${vacancy.expFrom} - ${vacancy.expTo} years</p>
+                                        <p class="card-text">Author: ${vacancy.authorId}</p>
+                                        <p class="card-text">Created Date: ${vacancy.createdDate}</p>
+                                        <p class="card-text">Update Time: ${vacancy.updateTime}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
-                </#list>
-            </div>
+                            </a>
+                        </div>
+                    </#list>
+                </div>
+            <#else>
+                <p class="text-center mt-5">No vacancy found.</p>
+            </#if>
+        </#if>
+    <#else>
+        <h1 class="text-center mt-5 mb-4">Resumes</h1>
+        <#if resumes??>
+            <#if resumes?size != 0>
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    <#list resumes as resume>
+                        <div class="col">
+                            <a href="/resumes/${resume.id}" class="text-decoration-none text-dark">
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${resume.name}</h5>
+                                        <p class="card-text">Category: ${resume.categoryId}</p>
+                                        <p class="card-text">Salary: ${resume.salary}</p>
+                                        <p class="card-text">Active: ${resume.isActive?string('Yes', 'No')}</p>
+                                        <p class="card-text">Author: ${resume.applicantId}</p>
+                                        <p class="card-text">Created Date: ${resume.createdDate}</p>
+                                        <p class="card-text">Update Time: ${resume.updateTime}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </#list>
+                </div>
+            <#else>
+                <p class="text-center mt-5">No resumes found.</p>
+            </#if>
         </#if>
     </#if>
 </div>

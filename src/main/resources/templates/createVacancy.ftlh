@@ -49,13 +49,6 @@
             <input type="hidden" id="categoryId" name="categoryId">
         </div>
 
-        <script>
-            function updateCategoryId(select) {
-                var categoryIdField = document.getElementById("categoryId");
-                categoryIdField.value = select.value;
-            }
-        </script>
-
         <div class="form-group">
             <label for="salary">Salary:</label>
             <input placeholder="Enter the salary" type="number" class="form-control" id="salary" name="salary" required min="0.0" step="0.01">
@@ -83,14 +76,6 @@
             </div>
         </div>
         <input type="hidden" id="isActivateHidden" name="isActivate">
-
-        <script>
-            function updateIsActivate() {
-                const isActiveCheckbox = document.getElementById('isActive');
-                const isActivateHiddenInput = document.getElementById('isActivateHidden');
-                isActivateHiddenInput.value = isActiveCheckbox.checked ? 'true' : 'false';
-            }
-        </script>
 
         <button type="submit" class="btn btn-primary btn-block mb-3">Submit</button>
     </form>

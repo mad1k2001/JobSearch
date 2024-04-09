@@ -1,7 +1,6 @@
 package com.example.jobsearch.dao;
 
 import com.example.jobsearch.model.Category;
-import com.example.jobsearch.model.Resume;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

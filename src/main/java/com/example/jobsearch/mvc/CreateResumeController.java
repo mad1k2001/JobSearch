@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping("/create-resume")
 @RequiredArgsConstructor
 public class CreateResumeController {
-    private final UserService userService;
     private final ResumeService resumeService;
     private final CategoryService categoryService;
 
@@ -27,4 +26,13 @@ public class CreateResumeController {
         model.addAttribute("resume", new ResumeDto());
         return "createResume";
     }
+
+//    @GetMapping()
+//    public String resumesGet(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+//        model.addAttribute(PAGE_TITLE, "Резюме");
+//        model.addAttribute("page", page);
+//        model.addAttribute("resumes", resumeService.getActiveResumes(page));
+//        model.addAttribute("categories",  categoryService.getCategoriesList());
+//        return "resume/resumes";
+//    }
 }

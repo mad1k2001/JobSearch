@@ -41,7 +41,7 @@ public class UserDao {
         String sql = """
                 SELECT *
                 FROM users
-                WHERE name ILIKE ?
+                WHERE name = ?
                 """;
         return template.query(sql, new BeanPropertyRowMapper<>(User.class), name);
     }
@@ -50,7 +50,7 @@ public class UserDao {
                 String sql = """
                 SELECT *
                 FROM users
-                WHERE phoneNumber ILIKE ?
+                WHERE phoneNumber = ?
                 """;
         return Optional.ofNullable(template.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), phoneNumber));
     }
@@ -92,25 +92,22 @@ public class UserDao {
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
-    public void editUser (User user) {
+    public void editUser(User user) {
         String sql = """
-                    UPDATE USERS
-                    SET NAME = : name,
-                    SURNAME = : surname,
-                    AGE = :age,
-                    password = :password,
-                    phoneNumber = :phoneNumber,
-                    avatar = :avatar                
-                WHERE id = :id;
-                """;
+            UPDATE USERS
+            SET NAME = :name, SURNAME = :surname, AGE = :age, email = :email, password = :password, 
+            phone_number = :phoneNumber, avatar = :avatar
+            WHERE id = :id;
+            """;
         template.update(sql, new MapSqlParameterSource()
                 .addValue("name", user.getName())
                 .addValue("surname", user.getSurname())
-                .addValue("age", user .getAge())
-                .addValue ("password", user.getPassword())
+                .addValue("age", user.getAge())
+                .addValue("email", user.getEmail())
+                .addValue("password", user.getPassword())
                 .addValue("phoneNumber", user.getPhoneNumber())
-                .addValue ("avatar", user.getAvatar())
-                .addValue ("id",user.getId())
+                .addValue("avatar", user.getAvatar())
+                .addValue("id", user.getId())
         );
     }
 
@@ -121,16 +118,5 @@ public class UserDao {
                 WHERE ID = :id;
                 """;
         template.update(sql, new MapSqlParameterSource().addValue("id", user.getId()).addValue("avatar", user.getAvatar()));
-    }
-
-    public List<User> getUsersByAccountType(String accountType) {
-        String sql = "SELECT * FROM users WHERE enabled = ?";
-        return template.query(sql, new BeanPropertyRowMapper<>(User.class), true);
-    }
-
-    public List<User> getEmployersByAccountType(String accountType) {
-        long employerRoleId = 2;
-        String sql = "SELECT * FROM users WHERE role_id = ?";
-        return template.query(sql, new BeanPropertyRowMapper<>(User.class), employerRoleId);
     }
 }
