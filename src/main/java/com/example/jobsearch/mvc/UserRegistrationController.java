@@ -26,14 +26,7 @@ public class UserRegistrationController {
     @PostMapping
     public String registerUser(UserDto user) {
         userService.addUser(user);
-
-        if (user.getAccountType().equals("APPLICANT")) {
-            return "redirect:/applicant/dashboard";
-        } else if (user.getAccountType().equals("EMPLOYER")) {
-            return "redirect:/employer/dashboard";
-        } else {
-            return "redirect:/profile";
-        }
+        return "redirect:/profile";
     }
 }
 
