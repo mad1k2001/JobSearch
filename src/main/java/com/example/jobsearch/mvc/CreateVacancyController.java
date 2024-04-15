@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/create-vacancy")
+@RequestMapping("/vacancy")
 @RequiredArgsConstructor
 public class CreateVacancyController {
     private final UserService userService;
@@ -48,5 +48,4 @@ public class CreateVacancyController {
         }
         return "vacancies";
     }
-
 }

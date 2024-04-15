@@ -12,7 +12,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">Job Search</a>
+        <a class="navbar-brand" href="/">Job Search</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -26,14 +26,14 @@
                     <a class="nav-link" href="/register">Register</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile">Register</a>
+                    <a class="nav-link" href="/profile">Profile</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 <div class="container">
-    <h1 class="mt-4 mb-4">Vacancy Details</h1>
+    <h1 class="mt-4 mb-4">Vacancy Detail</h1>
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">${vacancy.name}</h5>

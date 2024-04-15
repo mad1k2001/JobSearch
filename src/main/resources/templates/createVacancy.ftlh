@@ -33,7 +33,7 @@
 </nav>
 <div class="container">
     <h2 class="text-center mt-5">Create Vacancy</h2>
-    <form method="post" action="/create-vacancy">
+    <form method="post" action="/vacancy">
         <div class="form-group">
             <label for="name">Name:</label>
             <input placeholder="Enter the name" type="text" class="form-control" id="name" name="name" required minlength="2" maxlength="50">

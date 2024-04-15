@@ -114,7 +114,6 @@ public class UserServiceImpl implements UserService {
                 throw new DuplicateKeyException("Email already exists");
             }
         }
-
         userDao.editUser(u);
     }
 

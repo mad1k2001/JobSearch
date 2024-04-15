@@ -52,7 +52,7 @@
             <div class="row row-cols-1 row-cols-md-2 g-4">
                 <#list vacanciesList as vacancy>
                     <div class="col">
-                        <a href="/create-vacancy/${vacancy.id}" class="text-decoration-none text-dark">
+                        <a href="/vacancy/${vacancy.id}" class="text-decoration-none text-dark">
                             <div class="card shadow">
                                 <div class="card-body">
                                     <h5 class="card-title">${vacancy.name}</h5>
@@ -79,7 +79,7 @@
             <div class="row row-cols-1 row-cols-md-2 g-4">
                 <#list resumesList as resume>
                     <div class="col">
-                        <a href="/create-resume/${resume.id}" class="text-decoration-none text-dark">
+                        <a href="/resume/${resume.id}" class="text-decoration-none text-dark">
                             <div class="card shadow">
                                 <div class="card-body">
                                     <h5 class="card-title">${resume.name}</h5>

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/create-resume")
+@RequestMapping("/resume")
 @RequiredArgsConstructor
 public class CreateResumeController {
     private final ResumeService resumeService;
@@ -31,6 +31,7 @@ public class CreateResumeController {
         model.addAttribute("resume", new ResumeDto());
         return "createResume";
     }
+
     @GetMapping("/{id}")
     public String showVacancy(@PathVariable Long id, Model model) {
         Optional<ResumeDto> resumeOptional = resumeService.getResumeById(id);

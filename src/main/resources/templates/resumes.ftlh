@@ -12,7 +12,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">Job Search</a>
+        <a class="navbar-brand" href="/">Job Search</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -33,28 +33,18 @@
     </div>
 </nav>
 <div class="container">
-    <h1 class="mt-4 mb-4">Resumes</h1>
-    <#if resumes?size != 0>
-        <div class="row row-cols-1 row-cols-md-2 g-4">
-            <#list resumes as resume>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">${resume.name}</h5>
-                            <p class="card-text">Category: ${resume.categoryId}</p>
-                            <p class="card-text">Salary: ${resume.salary}</p>
-                            <p class="card-text">Active: ${resume.isActive?string('Yes', 'No')}</p>
-                            <p class="card-text">Author: ${resume.applicantId}</p>
-                            <p class="card-text">Created Date: ${resume.createdDate}</p>
-                            <p class="card-text">Update Time: ${resume.updateTime}</p>
-                        </div>
-                    </div>
-                </div>
-            </#list>
+    <h1 class="mt-4 mb-4">Resume Detail</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">${resume.name}</h5>
+            <p class="card-text">Category: ${resume.categoryId}</p>
+            <p class="card-text">Salary: ${resume.salary}</p>
+            <p class="card-text">Active: ${resume.isActive?string('Yes', 'No')}</p>
+            <p class="card-text">Author: ${resume.applicantId}</p>
+            <p class="card-text">Created Date: ${resume.createdDate}</p>
+            <p class="card-text">Update Time: ${resume.updateTime}</p>
         </div>
-    <#else>
-        <p class="text-center mt-5">No resumes found.</p>
-    </#if>
+    </div>
 </div>
 <!-- Подключение скриптов Bootstrap (необходимо для работы некоторых компонентов) -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
