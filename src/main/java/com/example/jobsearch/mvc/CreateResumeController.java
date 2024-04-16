@@ -29,7 +29,7 @@ public class CreateResumeController {
         List<Category> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
         model.addAttribute("resume", new ResumeDto());
-        return "createResume";
+        return "resume/createResume";
     }
 
     @GetMapping("/{id}")
@@ -39,6 +39,6 @@ public class CreateResumeController {
             ResumeDto resume = resumeOptional.get();
             model.addAttribute("resume", resume);
         }
-        return "resumes";
+        return "resume/resumes";
     }
 }
