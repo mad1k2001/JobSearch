@@ -39,6 +39,7 @@ public class CreateVacancyController {
         vacancyService.addVacancy(vacancyDto, authorId);
         return "redirect:/profile";
     }
+
     @GetMapping("/{id}")
     public String showVacancy(@PathVariable Long id, Model model) {
         Optional<VacancyDto> vacancyOptional = vacancyService.getVacancyById(id);
@@ -48,4 +49,5 @@ public class CreateVacancyController {
         }
         return "vacancies";
     }
+
 }

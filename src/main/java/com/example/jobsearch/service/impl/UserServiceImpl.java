@@ -77,7 +77,6 @@ public class UserServiceImpl implements UserService {
         return userDao.addUser(user);
     }
 
-    @SneakyThrows
     @Override
     public void editUser(UserDto userDto, Long id, ImageDto imageDto, Authentication auth) {
         User userAuth = userDao.getUserByEmail(auth.getName()).get();
@@ -85,14 +84,18 @@ public class UserServiceImpl implements UserService {
             throw new ForbiddenException("Can't change profile because this profile doesn't belong to User");
         }
         if (userDao.getUserById(id).isEmpty()){
-            throw new NoSuchFieldException("Can't find user by id " + id);
+            try {
+                throw new NoSuchFieldException("Can't find user by id " + id);
+            } catch (NoSuchFieldException e) {
+                throw new RuntimeException(e);
+            }
         }
         User u = userDao.getUserById(id).get();
         if (userDto.getName() != null){
             u.setName(userDto.getName());
         }
-        if (userDto.getSurname() != null){
-            u.setSurname(userDto.getSurname());
+        if (userDto.getSurName() != null){
+            u.setSurname(userDto.getSurName());
         }
         if (userDto.getPhoneNumber() != null){
             u.setPhoneNumber(userDto.getPhoneNumber());
@@ -123,17 +126,16 @@ public class UserServiceImpl implements UserService {
             UserDto userDto = (UserDto) authentication.getPrincipal();
             User user = userDao.getUserByEmail(userDto.getName()).get();
             if (user != null) {
-                if (imageDto.getFile() != null && !imageDto.getFile().isEmpty()) {
-                    String filename = FileUtil.saveFile(imageDto.getFile(), "images");
-                    user.setAvatar(filename);
+                if (imageDto.getAvatar() != null && !imageDto.getAvatar().isEmpty()) {
+                    String filename = FileUtil.saveFile(imageDto.getAvatar(), "images");
+                    userDto.setAvatar(filename);
                 } else {
-                    user.setAvatar("data/images/default.jpg");
+                    userDto.setAvatar("data/images/default.jpg");
                 }
                 userDao.save(user);
             }
         }
     }
-
 
     @Override
     public UserProfileDto getUser(Authentication authentication) {
@@ -160,7 +162,7 @@ public class UserServiceImpl implements UserService {
         return UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
-                .surname(user.getSurname())
+                .surName(user.getSurname())
                 .age(user.getAge())
                 .email(user.getEmail())
                 .password(user.getPassword())
@@ -175,7 +177,7 @@ public class UserServiceImpl implements UserService {
         return User.builder()
                 .id(userDto.getId())
                 .name(userDto.getName())
-                .surname(userDto.getSurname())
+                .surname(userDto.getSurName())
                 .age(userDto.getAge())
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())

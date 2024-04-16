@@ -21,7 +21,7 @@ public class UserDto {
     @NotNull
     @NotBlank
     @Size(min = 2, max = 50)
-    private String surname;
+    private String surName;
     @NotNull
     @NotBlank
     @Min(18)

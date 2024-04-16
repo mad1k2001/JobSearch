@@ -166,7 +166,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="age" class="form-label">Age:</label>
-                        <input type="text" id="age" name="age" value="${user.age}" class="form-control" required>
+                        <input type="number" id="age" name="age" value="${user.age}" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <label for="phoneNumber" class="form-label">PhoneNumber:</label>
@@ -174,7 +174,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="avatar" class="form-label">Avatar:</label>
-                        <input type="file" name="avatarFile" accept="image/jpg">
+                        <input type="file" name="avatar" accept="image/jpg">
                     </div>
                     <button type="submit" class="btn btn-success">Save Changes</button>
                 </form>
