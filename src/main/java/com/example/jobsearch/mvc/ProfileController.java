@@ -30,8 +30,9 @@ public class ProfileController {
     }
 
     @PostMapping
-    public String updateProfile(UserDto updatedUser, ImageDto imageDto, Authentication authentication) {
-        userService.editUser(updatedUser, imageDto, authentication);
-        return "profile";
+    public String updateProfile(UserDto userDto, Long id, ImageDto imageDto, Authentication auth) {
+        userService.editUser(userDto, id, imageDto, auth);
+        userService.upload(imageDto, auth);
+        return "redirect:/profile";
     }
 }

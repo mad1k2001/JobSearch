@@ -1,8 +1,6 @@
 package com.example.jobsearch.service;
 
-import com.example.jobsearch.dto.ResumeDto;
 import com.example.jobsearch.dto.VacancyDto;
-import com.example.jobsearch.exeptions.VacancyNotFoundException;
 import com.example.jobsearch.model.Vacancy;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;

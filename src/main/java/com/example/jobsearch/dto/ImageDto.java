@@ -12,5 +12,5 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class ImageDto {
     private Long userId;
-    private MultipartFile file;
+    private MultipartFile avatar;
 }

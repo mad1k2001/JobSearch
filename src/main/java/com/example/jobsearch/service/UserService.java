@@ -14,7 +14,7 @@ public interface UserService {
     ResponseEntity<?> getUsersByPhoneNumber(String phone);
     Boolean userExistsByEmail(String email);
     Long addUser(UserDto userDto);
-    void editUser(UserDto updatedUser, ImageDto imageDto, Authentication authentication);
-    void upload(ImageDto imageDto, Long id);
+    void editUser(UserDto userDto, Long id, ImageDto imageDto, Authentication auth);
+    void upload(ImageDto imageDto, Authentication authentication);
     UserProfileDto getUser(Authentication authentication);
 }

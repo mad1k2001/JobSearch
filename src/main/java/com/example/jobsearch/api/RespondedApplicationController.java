@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/respondedApp")
+@RequestMapping("api/respondedApp")
 public class RespondedApplicationController {
     private final RespondedApplicationService respondedApplicationService;
 

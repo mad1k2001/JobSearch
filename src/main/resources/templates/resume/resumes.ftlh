@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vacancy Details</title>
+    <title>Resumes</title>
     <!-- Подключение стилей Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
@@ -12,7 +12,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">Job Search</a>
+        <a class="navbar-brand" href="/">Job Search</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -33,17 +33,16 @@
     </div>
 </nav>
 <div class="container">
-    <h1 class="mt-4 mb-4">Vacancy Details</h1>
+    <h1 class="mt-4 mb-4">Resume Detail</h1>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">${vacancy.name}</h5>
-            <p class="card-text">${vacancy.description}</p>
-            <p class="card-text">Category: ${vacancy.categoryId}</p>
-            <p class="card-text">Salary: ${vacancy.salary}</p>
-            <p class="card-text">Experience: ${vacancy.expFrom} - ${vacancy.expTo} years</p>
-            <p class="card-text">Author: ${vacancy.authorId}</p>
-            <p class="card-text">Created Date: ${vacancy.createdDate}</p>
-            <p class="card-text">Update Time: ${vacancy.updateTime}</p>
+            <h5 class="card-title">${resume.name}</h5>
+            <p class="card-text">Category: ${resume.categoryId}</p>
+            <p class="card-text">Salary: ${resume.salary}</p>
+            <p class="card-text">Active: ${resume.isActive?string('Yes', 'No')}</p>
+            <p class="card-text">Author: ${resume.applicantId}</p>
+            <p class="card-text">Created Date: ${resume.createdDate}</p>
+            <p class="card-text">Update Time: ${resume.updateTime}</p>
         </div>
     </div>
 </div>

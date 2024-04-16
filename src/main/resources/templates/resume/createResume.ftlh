@@ -33,7 +33,7 @@
 </nav>
 <div class="container">
     <h2 class="text-center mt-5">Create Resume</h2>
-    <form method="post" action="/create-resume">
+    <form method="post" action="/resume">
         <div class="form-group">
             <label for="name">Name:</label>
             <input placeholder="Enter the name" type="text" class="form-control" id="name" name="name" required>

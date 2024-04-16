@@ -33,14 +33,14 @@
 </nav>
 <div class="container">
     <h2 class="text-center mt-5">Create Vacancy</h2>
-    <form method="post" action="/create-vacancy">
+    <form method="post" action="/vacancy">
         <div class="form-group">
             <label for="name">Name:</label>
             <input placeholder="Enter the name" type="text" class="form-control" id="name" name="name" required minlength="2" maxlength="50">
         </div>
         <div class="form-group">
-            <label for="category">Category:</label>
-            <select class="form-control" id="category" name="category" required onchange="updateCategoryId(this)">
+            <label for="categoryId">Category:</label>
+            <select class="form-control" id="categoryId" name="categoryId" required onchange="updateCategoryId(this)">
                 <option value="" disabled selected>Select a category</option>
                 <#list categories as category>
                     <option value="${category.id}">${category.name}</option>
@@ -68,14 +68,12 @@
                 <input type="number" class="form-control" id="expTo" name="expTo" required min="0" max="60">
             </div>
         </div>
-
         <div class="form-group">
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="isActive" name="isActive" value="true" onchange="updateIsActivate()">
-                <label class="custom-control-label" for="isActive">Active</label>
+                <input type="checkbox" class="custom-control-input" id="isActivate" name="isActivate" value="true" onchange="updateIsActivate()">
+                <label class="custom-control-label" for="isActivate">Activate</label>
             </div>
         </div>
-        <input type="hidden" id="isActivateHidden" name="isActivate">
 
         <button type="submit" class="btn btn-primary btn-block mb-3">Submit</button>
     </form>

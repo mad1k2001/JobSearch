@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/resume")
+@RequestMapping("api/resume")
 public class ResumeController {
     private final ResumeService resumeService;
 

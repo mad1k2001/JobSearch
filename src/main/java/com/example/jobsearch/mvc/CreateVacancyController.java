@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/create-vacancy")
+@RequestMapping("/vacancy")
 @RequiredArgsConstructor
 public class CreateVacancyController {
     private final UserService userService;
@@ -39,6 +39,7 @@ public class CreateVacancyController {
         vacancyService.addVacancy(vacancyDto, authorId);
         return "redirect:/profile";
     }
+
     @GetMapping("/{id}")
     public String showVacancy(@PathVariable Long id, Model model) {
         Optional<VacancyDto> vacancyOptional = vacancyService.getVacancyById(id);

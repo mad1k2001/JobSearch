@@ -55,7 +55,7 @@
         <div class="col-1"></div>
         <div class="more row col-5 gx-2">
             <div class="create col-5 bg-danger border bg-opacity-25 rounded h-50 pt-2">
-                <a href="<#if user.accountType == "Applicant">/create-resume<#else>/create-vacancy</#if>" class="text-decoration-none text-dark">
+                <a href="<#if user.accountType == "Applicant">/resume<#else>/vacancy</#if>" class="text-decoration-none text-dark">
                     <h4 class="text-center">+</h4>
                     <h6 class="text-center p-auto">Create <#if user.accountType == "Applicant">resume<#else>vacancy</#if></h6>
                 </a>
@@ -78,7 +78,7 @@
                     <div class="row row-cols-2">
                         <#list resumes as resume>
                             <div class="col">
-                                <a href="/create-resume/${resume.id}" class="text-decoration-none text-dark">
+                                <a href="/resume/${resume.id}" class="text-decoration-none text-dark">
                                     <div class="card bg-secondary bg-opacity-25 mb-3">
                                         <div class="card-header">
                                             <h5 class="card-title">${resume.name}</h5>
@@ -112,7 +112,7 @@
                     <div class="row row-cols-2">
                         <#list vacancies as vacancy>
                             <div class="col">
-                                <a href="/create-vacancy/${vacancy.id}" class="text-decoration-none text-dark">
+                                <a href="/vacancy/${vacancy.id}" class="text-decoration-none text-dark">
                                     <div class="card bg-secondary bg-opacity-25 mb-3">
                                         <div class="card-header">
                                             <h5 class="card-title">${vacancy.name}</h5>
@@ -155,6 +155,7 @@
             </div>
             <div class="modal-body">
                 <form action="/profile" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="${user.id}">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name:</label>
                         <input type="text" id="name" name="name" value="${user.name}" class="form-control" required>
@@ -165,7 +166,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="age" class="form-label">Age:</label>
-                        <input type="text" id="age" name="age" value="${user.age}" class="form-control" required>
+                        <input type="number" id="age" name="age" value="${user.age}" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <label for="phoneNumber" class="form-label">PhoneNumber:</label>
@@ -173,7 +174,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="avatar" class="form-label">Avatar:</label>
-                        <input type="file" id="avatar" name="avatar" accept="image/*" class="form-control">
+                        <input type="file" name="avatar" accept="image/jpg">
                     </div>
                     <button type="submit" class="btn btn-success">Save Changes</button>
                 </form>

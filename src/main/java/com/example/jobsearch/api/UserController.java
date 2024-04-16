@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("api/users")
 public class UserController {
     private final UserService userService;
 
@@ -51,12 +52,12 @@ public class UserController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<?> addUser(@RequestBody @Valid UserDto userDto, ImageDto imageDto) {
+    public ResponseEntity<?> addUser(@RequestBody @Valid UserDto userDto, ImageDto imageDto, Authentication authentication) {
         if (userService.userExistsByEmail(userDto.getEmail())) {
             return ResponseEntity.badRequest().body("User with this email already exists");
         }
         if (userService.addUser(userDto) != 0) {
-            userService.upload(imageDto, userService.addUser(userDto));
+            userService.upload(imageDto, authentication);
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().body("Can't create user");
@@ -64,8 +65,9 @@ public class UserController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDto userDto, ImageDto imageDto) {
-        userService.upload(imageDto, id);
+    public ResponseEntity<?> updateUser(@RequestBody UserDto userDto, Long id, ImageDto imageDto, Authentication auth) {
+        userService.upload(imageDto, auth);
+        userService.editUser(userDto, id, imageDto, auth);
         return  ResponseEntity.status(HttpStatus.OK).build();
     }
 }

@@ -1,8 +1,6 @@
 package com.example.jobsearch.service;
 
 import com.example.jobsearch.dto.ResumeDto;
-import com.example.jobsearch.exeptions.ResumeNotFoundException;
-import com.example.jobsearch.model.Category;
 import com.example.jobsearch.model.Resume;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
