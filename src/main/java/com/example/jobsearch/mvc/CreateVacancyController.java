@@ -30,7 +30,7 @@ public class CreateVacancyController {
         List<Category> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
         model.addAttribute("vacancy", new VacancyDto());
-        return "createVacancy";
+        return "vacancy/createVacancy";
     }
 
     @PostMapping
@@ -47,7 +47,7 @@ public class CreateVacancyController {
             VacancyDto vacancy = vacancyOptional.get();
             model.addAttribute("vacancy", vacancy);
         }
-        return "vacancies";
+        return "vacancy/vacancies";
     }
 
 }
