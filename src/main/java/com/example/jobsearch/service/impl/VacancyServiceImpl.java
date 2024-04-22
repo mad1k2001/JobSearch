@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -64,6 +65,7 @@ public class VacancyServiceImpl implements VacancyService {
             return null;
         }
 
+        vacancyDto.setAuthorId(authorId);
         Vacancy vacancy = makeVacancy(vacancyDto);
         return vacancyDao.addVacancy(vacancy);
     }
@@ -149,10 +151,10 @@ public class VacancyServiceImpl implements VacancyService {
                 .salary(vacancyDto.getSalary())
                 .expFrom(vacancyDto.getExpFrom())
                 .expTo(vacancyDto.getExpTo())
-                .isActivate(vacancyDto.getIsActivate())
+                .isActivate(true)
                 .authorId(vacancyDto.getAuthorId())
-                .createdDate(vacancyDto.getCreatedDate())
-                .updateTime(vacancyDto.getUpdateTime())
+                .createdDate(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
                 .build();
     }
 

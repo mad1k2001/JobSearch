@@ -42,7 +42,11 @@
     <div class="row gx-4">
         <div class="user-info col-6 bg-secondary bg-opacity-25 rounded row p-4">
             <div class="avatar border rounded-circle col-6">
-                <img src="${user.avatar}" alt="avatar">
+                <#if user.avatar??>
+                    <img src="${user.avatar}" alt="User Avatar">
+                <#else>
+                    <p>No avatar available</p>
+                </#if>
             </div>
             <div class="bg-gray bg-opacity-25 col-6">
                 <h4>${user.name} ${user.surName}</h4>

@@ -75,8 +75,8 @@ public class VacancyDao {
 
     public Long addVacancy(Vacancy vacancy) {
         String sql = """
-                INSERT INTO vacancies (name, description, categoryId, salary, isActivate, EXPFROM, EXPTO, createdDate)
-                VALUES (?,?,?,?,?,?,?,?)
+                INSERT INTO VACANCIES(name, description, categoryid, salary, expfrom, expto, isactivate, authorid, createddate, updatetime)
+                VALUES (?,?,?,?,?,?,?,?,?,?)
                 """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -86,10 +86,12 @@ public class VacancyDao {
             ps.setString(2, vacancy.getDescription());
             ps.setLong(3, vacancy.getCategoryId());
             ps.setDouble(4, vacancy.getSalary());
-            ps.setBoolean(5, vacancy.getIsActivate());
-            ps.setLong(6, vacancy.getExpFrom());
-            ps.setLong(7, vacancy.getExpTo());
-            ps.setTimestamp(8, Timestamp.valueOf(vacancy.getCreatedDate()));
+            ps.setLong(5, vacancy.getExpFrom());
+            ps.setLong(6, vacancy.getExpTo());
+            ps.setBoolean(7, vacancy.getIsActivate());
+            ps.setLong(8, vacancy.getAuthorId());
+            ps.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now()));
             return ps;
         }, keyHolder);
 
