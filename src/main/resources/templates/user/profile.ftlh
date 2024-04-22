@@ -132,7 +132,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <a href="#" class="btn btn-success bg-opacity-25">Update</a>
-                                            <a href="#" class="btn btn-warning bg-opacity-25">Edit</a>
+                                            <a href="/vacancy/edit/${vacancy.id}" class="btn btn-warning bg-opacity-25">Edit</a>
                                         </div>
                                     </div>
                                 </a>

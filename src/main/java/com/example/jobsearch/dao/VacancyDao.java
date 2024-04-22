@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class VacancyDao {
     private final JdbcTemplate template;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public List<Vacancy> getVacancies() {
         String sql = """
@@ -108,15 +111,16 @@ public class VacancyDao {
                     expFrom = :expFrom,
                     expTo = :expTo,
                     isActivate = :isActivate,
-                    authorId = :authorId,
                     updateTime = :updateTime
                 WHERE id = :id
                 """;
-        template.update(sql, new MapSqlParameterSource()
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
                 .addValue("name", vacancy.getName())
                 .addValue("description", vacancy.getDescription())
                 .addValue("categoryId", vacancy.getCategoryId())
                 .addValue("salary", vacancy.getSalary())
+                .addValue("expFrom", vacancy.getExpFrom())
+                .addValue("expTo", vacancy.getExpTo())
                 .addValue("isActivate", vacancy.getIsActivate())
                 .addValue("updateTime", LocalDateTime.now())
                 .addValue("id", vacancy.getId()));

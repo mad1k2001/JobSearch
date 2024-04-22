@@ -26,7 +26,6 @@ public class ResumeServiceImpl implements ResumeService {
     private final WorkExperienceInfoDao workExperienceInfoDao;
     private final EducationInfoDao educationInfoDao;
     private final ContactInfoDao contactInfoDao;
-    private final CategoryDao categoryDao;
 
     @Override
     public List<ResumeDto> getResume(){

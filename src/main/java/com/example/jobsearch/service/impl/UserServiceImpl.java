@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -142,7 +143,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserProfileDto getUser(Authentication authentication) {
-        User user = userDao.getUserByEmail(authentication.getName()).orElseThrow(()-> new IllegalArgumentException("User not found"));
+        User user = userDao.getUserByEmail(authentication.getName()).orElseThrow(()-> new NoSuchElementException("User not found"));
         String accountType = "Employer";
         if (user.getAccountType()==2){
             accountType = "Applicant";
