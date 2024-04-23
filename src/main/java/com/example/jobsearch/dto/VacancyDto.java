@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@NotNull
-@NotBlank
 public class VacancyDto {
     private Long id;
     @Size(min = 2, max = 50)

@@ -42,7 +42,11 @@
     <div class="row gx-4">
         <div class="user-info col-6 bg-secondary bg-opacity-25 rounded row p-4">
             <div class="avatar border rounded-circle col-6">
-                <img src="${user.avatar}" alt="avatar">
+                <#if user.avatar??>
+                    <img src="${user.avatar}" alt="User Avatar">
+                <#else>
+                    <p>No avatar available</p>
+                </#if>
             </div>
             <div class="bg-gray bg-opacity-25 col-6">
                 <h4>${user.name} ${user.surName}</h4>
@@ -55,7 +59,7 @@
         <div class="col-1"></div>
         <div class="more row col-5 gx-2">
             <div class="create col-5 bg-danger border bg-opacity-25 rounded h-50 pt-2">
-                <a href="<#if user.accountType == "Applicant">/resume<#else>/vacancy</#if>" class="text-decoration-none text-dark">
+                <a href="<#if user.accountType == "Applicant">/resume/create<#else>/vacancy</#if>" class="text-decoration-none text-dark">
                     <h4 class="text-center">+</h4>
                     <h6 class="text-center p-auto">Create <#if user.accountType == "Applicant">resume<#else>vacancy</#if></h6>
                 </a>
@@ -90,8 +94,8 @@
                                             </#if></p>
                                         </div>
                                         <div class="card-footer">
-                                            <a href="#" class="btn btn-success bg-opacity-25">Update</a>
-                                            <a href="#" class="btn btn-warning bg-opacity-25">Edit</a>
+                                            <a href="resume/update/${resume.id}" class="btn btn-success bg-opacity-25">Update</a>
+                                            <a href="resume/edit/${resume.id}" class="btn btn-warning bg-opacity-25">Edit</a>
                                         </div>
                                     </div>
                                 </a>
@@ -127,8 +131,8 @@
                                             </p>
                                         </div>
                                         <div class="card-footer">
-                                            <a href="#" class="btn btn-success bg-opacity-25">Update</a>
-                                            <a href="#" class="btn btn-warning bg-opacity-25">Edit</a>
+                                            <a href="/vacancy/update/${vacancy.id}" class="btn btn-success bg-opacity-25">Update</a>
+                                            <a href="/vacancy/edit/${vacancy.id}" class="btn btn-warning bg-opacity-25">Edit</a>
                                         </div>
                                     </div>
                                 </a>

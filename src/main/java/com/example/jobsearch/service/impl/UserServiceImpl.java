@@ -15,11 +15,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -27,9 +30,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
-    private final FileUtil fileUtil;
-    private final VacancyDao vacancyDao;
-    private final ResumeDao resumeDao;
+    private final PasswordEncoder passwordEncoder;
     private final AppConfig appConfig;
 
 
@@ -64,18 +65,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long addUser(UserDto userDto){
-        if (userDao.userExistsByEmail(userDto.getEmail())){
+    public Long addUser(UserDto userDto) {
+        if (userDao.userExistsByEmail(userDto.getEmail())) {
             log.error("User with email " + userDto.getEmail() + " already exists");
         }
 
-        if (userDto.getAge() < 18 || userDto.getAge() > 126){
+        if (userDto.getAge() < 18 || userDto.getAge() > 126) {
             log.error("Invalid age");
         }
 
         User user = makeUser(userDto);
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
         return userDao.addUser(user);
     }
+
 
     @Override
     public void editUser(UserDto userDto, Long id, ImageDto imageDto, Authentication auth) {
@@ -139,7 +143,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserProfileDto getUser(Authentication authentication) {
-        User user = userDao.getUserByEmail(authentication.getName()).get();
+        User user = userDao.getUserByEmail(authentication.getName()).orElseThrow(()-> new NoSuchElementException("User not found"));
         String accountType = "Employer";
         if (user.getAccountType()==2){
             accountType = "Applicant";

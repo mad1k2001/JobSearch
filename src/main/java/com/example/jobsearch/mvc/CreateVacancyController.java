@@ -30,14 +30,14 @@ public class CreateVacancyController {
         List<Category> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
         model.addAttribute("vacancy", new VacancyDto());
-        return "vacancy/createVacancy";
+        return "/createVacancy";
     }
 
     @PostMapping
     public String createVacancy(VacancyDto vacancyDto, Authentication authentication) {
         Long authorId = userService.getUser(authentication).getId();
         vacancyService.addVacancy(vacancyDto, authorId);
-        return "redirect:/profile";
+        return "redirect:/";
     }
 
     @GetMapping("/{id}")
@@ -47,7 +47,27 @@ public class CreateVacancyController {
             VacancyDto vacancy = vacancyOptional.get();
             model.addAttribute("vacancy", vacancy);
         }
-        return "vacancy/vacancies";
+        return "/vacancies";
     }
 
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Optional<VacancyDto> vacancyOptional = vacancyService.getVacancyById(id);
+        if (vacancyOptional.isPresent()) {
+            VacancyDto vacancy = vacancyOptional.get();
+            model.addAttribute("vacancy", vacancy);
+            List<Category> categories = categoryService.getAllCategories();
+            model.addAttribute("categories", categories);
+            return "/editVacancy";
+        } else {
+            return "redirect:/error";
+        }
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editVacancy(Authentication authentication, @PathVariable Long id, VacancyDto vacancyDto) {
+        Long authorId = userService.getUser(authentication).getId();
+        vacancyService.editVacancy(authorId, id, vacancyDto);
+        return "redirect:/vacancy/" + id;
+    }
 }

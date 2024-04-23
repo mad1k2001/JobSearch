@@ -26,7 +26,7 @@ public class ProfileController {
         model.addAttribute("user", userService.getUser(authentication));
         model.addAttribute("resumes",resumeService.getResumesByApplicant(authentication));
         model.addAttribute("vacancies", vacancyService.getVacanciesByEmployer(authentication));
-        return "user/profile";
+        return "/profile";
     }
 
     @PostMapping

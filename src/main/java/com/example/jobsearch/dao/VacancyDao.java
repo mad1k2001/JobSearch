@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class VacancyDao {
     private final JdbcTemplate template;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public List<Vacancy> getVacancies() {
         String sql = """
@@ -75,8 +78,8 @@ public class VacancyDao {
 
     public Long addVacancy(Vacancy vacancy) {
         String sql = """
-                INSERT INTO vacancies (name, description, categoryId, salary, isActivate, EXPFROM, EXPTO, createdDate)
-                VALUES (?,?,?,?,?,?,?,?)
+                INSERT INTO VACANCIES(name, description, categoryid, salary, expfrom, expto, isactivate, authorid, createddate, updatetime)
+                VALUES (?,?,?,?,?,?,?,?,?,?)
                 """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -86,10 +89,12 @@ public class VacancyDao {
             ps.setString(2, vacancy.getDescription());
             ps.setLong(3, vacancy.getCategoryId());
             ps.setDouble(4, vacancy.getSalary());
-            ps.setBoolean(5, vacancy.getIsActivate());
-            ps.setLong(6, vacancy.getExpFrom());
-            ps.setLong(7, vacancy.getExpTo());
-            ps.setTimestamp(8, Timestamp.valueOf(vacancy.getCreatedDate()));
+            ps.setLong(5, vacancy.getExpFrom());
+            ps.setLong(6, vacancy.getExpTo());
+            ps.setBoolean(7, vacancy.getIsActivate());
+            ps.setLong(8, vacancy.getAuthorId());
+            ps.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now()));
             return ps;
         }, keyHolder);
 
@@ -106,15 +111,16 @@ public class VacancyDao {
                     expFrom = :expFrom,
                     expTo = :expTo,
                     isActivate = :isActivate,
-                    authorId = :authorId,
                     updateTime = :updateTime
                 WHERE id = :id
                 """;
-        template.update(sql, new MapSqlParameterSource()
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
                 .addValue("name", vacancy.getName())
                 .addValue("description", vacancy.getDescription())
                 .addValue("categoryId", vacancy.getCategoryId())
                 .addValue("salary", vacancy.getSalary())
+                .addValue("expFrom", vacancy.getExpFrom())
+                .addValue("expTo", vacancy.getExpTo())
                 .addValue("isActivate", vacancy.getIsActivate())
                 .addValue("updateTime", LocalDateTime.now())
                 .addValue("id", vacancy.getId()));

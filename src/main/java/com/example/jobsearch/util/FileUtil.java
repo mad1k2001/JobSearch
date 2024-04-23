@@ -4,6 +4,7 @@ package com.example.jobsearch.util;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,20 @@ public class FileUtil {
         }
 
         return resultFileName;
+    }
+
+    public ResponseEntity<InputStreamResource> getOutputFile(String fileName, String subDir) {
+        try {
+            Path path = Paths.get(UPLOAD_DIR + subDir + "/" + fileName);
+            InputStreamResource resource = new InputStreamResource(Files.newInputStream(path));
+            MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(path));
+            return ResponseEntity.ok()
+                    .contentType(mediaType)
+                    .body(new InputStreamResource(resource.getInputStream()));
+        } catch (IOException e) {
+            log.error("No file found:", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     public ResponseEntity<?> getOutputFile(String filename, String subDir, MediaType mediaType){

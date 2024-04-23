@@ -34,8 +34,8 @@
             <input type="text" class="form-control" id="name" name="name" required>
         </div>
         <div class="form-group">
-            <label for="surname">Surname:</label>
-            <input type="text" class="form-control" id="surname" name="surname" required>
+            <label for="surName">Surname:</label>
+            <input type="text" class="form-control" id="surName" name="surName" required>
         </div>
         <div class="form-group">
             <label for="age">Age:</label>

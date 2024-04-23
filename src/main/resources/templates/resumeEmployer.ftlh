@@ -30,6 +30,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/profile">Profile</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Vacancies</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -45,23 +48,23 @@
         </select>
         <button class="btn btn-outline-dark text-dark" type="submit">Apply</button>
     </form>
-        <h1 class="text-center m-4">Vacancies</h1>
-        <#assign vacanciesList = vacancies.content>
-        <#if vacanciesList?size != 0>
+    <#if user.accountType == "Employer">
+        <h1 class="text-center mt-5 mb-4">Resumes</h1>
+        <#assign resumesList = resumes.content>
+        <#if resumesList?size != 0>
             <div class="row row-cols-1 row-cols-md-2 g-4">
-                <#list vacanciesList as vacancy>
+                <#list resumesList as resume>
                     <div class="col">
-                        <a href="/vacancy/${vacancy.id}" class="text-decoration-none text-dark">
+                        <a href="/resume/${resume.id}" class="text-decoration-none text-dark">
                             <div class="card shadow">
                                 <div class="card-body">
-                                    <h5 class="card-title">${vacancy.name}</h5>
-                                    <p class="card-text">${vacancy.description}</p>
-                                    <p class="card-text">СategoryId: ${vacancy.categoryId}</p>
-                                    <p class="card-text">Salary: ${vacancy.salary}</p>
-                                    <p class="card-text">Experience: ${vacancy.expFrom} - ${vacancy.expTo} years</p>
-                                    <p class="card-text">Author: ${vacancy.authorId}</p>
-                                    <p class="card-text">Created Date: ${vacancy.createdDate}</p>
-                                    <p class="card-text">Update Time: ${vacancy.updateTime}</p>
+                                    <h5 class="card-title">${resume.name}</h5>
+                                    <p class="card-text">Category: ${resume.categoryId}</p>
+                                    <p class="card-text">Salary: ${resume.salary}</p>
+                                    <p class="card-text">Active: ${resume.isActive?string('Yes', 'No')}</p>
+                                    <p class="card-text">Author: ${resume.applicantId}</p>
+                                    <p class="card-text">Created Date: ${resume.createdDate}</p>
+                                    <p class="card-text">Update Time: ${resume.updateTime}</p>
                                 </div>
                             </div>
                         </a>
@@ -69,8 +72,9 @@
                 </#list>
             </div>
         <#else>
-            <p class="text-center mt-5">No vacancy found.</p>
+            <p class="text-center mt-5">No resumes found.</p>
         </#if>
+    </#if>
 </div>
 
 <#if vacancies.totalPages?is_number && vacancies.totalPages?number gt 1>
