@@ -60,10 +60,10 @@ public class SecurityConfig {
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/profile").authenticated()
                         .requestMatchers("/").authenticated()
+                        .requestMatchers("/vacancies").permitAll()
+                        .requestMatchers("/resumes/**").hasAuthority("EMPLOYER")
+                        .requestMatchers("/vacancies/**").hasAuthority("APPLICANT")
                         .anyRequest().authenticated()
-//                        .requestMatchers("/vacancies").permitAll()
-//                        .requestMatchers("/resumes/**").hasAuthority("EMPLOYER")
-//                        .requestMatchers("/vacancies/**").hasAuthority("APPLICANT")
                 );
         return http.build();
     }

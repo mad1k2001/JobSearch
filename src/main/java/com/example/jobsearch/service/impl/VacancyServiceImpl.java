@@ -25,8 +25,7 @@ import java.util.*;
 public class VacancyServiceImpl implements VacancyService {
     private final VacancyDao vacancyDao;
     private final UserDao userDao;
-    private final ResumeDao resumeDao;
-    private final RespondedApplicationDao respondedApplicationDao;
+
     @Override
     public List<VacancyDto> getVacancies() {
         List<Vacancy> vacancies = vacancyDao.getVacancies();
@@ -69,7 +68,6 @@ public class VacancyServiceImpl implements VacancyService {
         Vacancy vacancy = makeVacancy(vacancyDto);
         return vacancyDao.addVacancy(vacancy);
     }
-
 
     @Override
     public void editVacancy(Long authorId, Long vacancyId, VacancyDto vacancyDto) {

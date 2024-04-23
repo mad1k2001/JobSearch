@@ -40,7 +40,6 @@
                 </#list>
             </select>
         </div>
-
         <div class="form-group">
             <label for="salary">Salary:</label>
             <input placeholder="Enter the salary" type="number" class="form-control" id="salary" name="salary" required min="0.0" step="0.01" value="${vacancy.salary}">

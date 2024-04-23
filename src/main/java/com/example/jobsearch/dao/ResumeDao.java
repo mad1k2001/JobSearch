@@ -7,12 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,6 +23,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ResumeDao {
     private final JdbcTemplate template;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
     public List<Resume> getResume(){
         String sql = """
                 select * from resumes
@@ -79,8 +83,8 @@ public class ResumeDao {
 
     public Long addResume(Resume resume) {
         String sql = """
-                INSERT INTO resumes (applicantId, name, categoryId, salary, isActive, createdDate)
-                VALUES (?,?,?,?,?,?)
+                INSERT INTO RESUMES (APPLICANTID, NAME, CATEGORYID, SALARY, ISACTIVE, CREATEDDATE, UPDATETIME)
+                VALUES (?,?,?,?,?,?,?)
                 """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -91,7 +95,8 @@ public class ResumeDao {
             ps.setLong(3, resume.getCategoryId());
             ps.setDouble(4, resume.getSalary());
             ps.setBoolean(5, resume.getIsActive());
-            ps.setTimestamp(6, Timestamp.valueOf(resume.getCreatedDate()));
+            ps.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
             return ps;
         }, keyHolder);
 
@@ -109,7 +114,7 @@ public class ResumeDao {
                     updateTime = :updateTime
                 WHERE id = :id
                 """;
-        template.update(sql, new MapSqlParameterSource()
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource()
                 .addValue("applicantId", resume.getApplicantId())
                 .addValue("name", resume.getName())
                 .addValue("categoryId", resume.getCategoryId())

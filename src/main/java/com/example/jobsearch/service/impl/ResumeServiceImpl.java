@@ -62,6 +62,7 @@ public class ResumeServiceImpl implements ResumeService {
         }
 
         User user = userOptional.get();
+        resumeDto.setApplicantId(applicantId);
 
         Resume resume = makeResume(resumeDto);
 
