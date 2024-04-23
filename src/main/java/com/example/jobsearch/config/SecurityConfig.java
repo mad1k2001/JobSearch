@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/profile").authenticated()
-                        .requestMatchers("/").authenticated()
+                        .requestMatchers("/").permitAll()
                         .requestMatchers("/vacancies").permitAll()
                         .requestMatchers("/resumes/**").hasAuthority("EMPLOYER")
                         .requestMatchers("/vacancies/**").hasAuthority("APPLICANT")

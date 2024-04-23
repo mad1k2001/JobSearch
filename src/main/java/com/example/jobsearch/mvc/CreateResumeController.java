@@ -26,8 +26,9 @@ public class CreateResumeController {
     private final ResumeService resumeService;
     private final CategoryService categoryService;
     private final UserService userService;
+    private static final String PAGE_TITLE = "Resume";
 
-    @GetMapping
+    @GetMapping("/create")
     public String showCreateForm(Model model) {
         List<Category> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
@@ -35,7 +36,7 @@ public class CreateResumeController {
         return "/createResume";
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public String createResume(ResumeDto resumeDto, Authentication authentication) {
         Long authorId = userService.getUser(authentication).getId();
         resumeService.addResume(resumeDto, authorId);
@@ -73,4 +74,13 @@ public class CreateResumeController {
         return "redirect:/resume/" + id;
     }
 
+    @GetMapping()
+    public String resumesGet(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page, Authentication authentication) {
+        model.addAttribute("user", userService.getUser(authentication));
+        model.addAttribute(PAGE_TITLE, "Resume");
+        model.addAttribute("page", page);
+        model.addAttribute("resumes", resumeService.getActiveResumes(page));
+        model.addAttribute("categories",  categoryService.getAllCategories());
+        return "resumeEmployer";
+    }
 }

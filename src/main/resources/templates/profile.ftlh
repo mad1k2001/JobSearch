@@ -59,7 +59,7 @@
         <div class="col-1"></div>
         <div class="more row col-5 gx-2">
             <div class="create col-5 bg-danger border bg-opacity-25 rounded h-50 pt-2">
-                <a href="<#if user.accountType == "Applicant">/resume<#else>/vacancy</#if>" class="text-decoration-none text-dark">
+                <a href="<#if user.accountType == "Applicant">/resume/create<#else>/vacancy</#if>" class="text-decoration-none text-dark">
                     <h4 class="text-center">+</h4>
                     <h6 class="text-center p-auto">Create <#if user.accountType == "Applicant">resume<#else>vacancy</#if></h6>
                 </a>

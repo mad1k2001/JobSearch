@@ -30,12 +30,9 @@ public class MainController {
     private static final String PAGE_TITLE_V = "Vacancy";
 
     @GetMapping()
-    public String resumesGet(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page, Authentication authentication) {
-        model.addAttribute("user", userService.getUser(authentication));
-        model.addAttribute(PAGE_TITLE, "Resume");
+    public String resumesGet(Model model, @RequestParam(name = "page", defaultValue = "0") Integer page) {
         model.addAttribute(PAGE_TITLE_V, "Vacancy");
         model.addAttribute("page", page);
-        model.addAttribute("resumes", resumeService.getActiveResumes(page));
         model.addAttribute("vacancies", vacancyService.getActiveVacancies(page));
         model.addAttribute("categories",  categoryService.getAllCategories());
         return "index";

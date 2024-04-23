@@ -33,7 +33,7 @@
 </nav>
 <div class="container">
     <h2 class="text-center mt-5">Create Resume</h2>
-    <form method="post" action="/resume">
+    <form method="post" action="/resume/create">
         <div class="form-group">
             <label for="name">Name:</label>
             <input placeholder="Enter the name" type="text" class="form-control" id="name" name="name" required>
@@ -72,12 +72,12 @@
             <div class="card-body">
                 <h5 class="card-title">Contacts info</h5>
                 <div class="mb-3">
-                    <label for="instagram" class="form-label">Contact type: </label>
-                    <input type="text" value="Instagram" class="form-control" id="instagram" name="contacts[0].type">
+                    <label for="email" class="form-label">Contact type: </label>
+                    <input type="text" value="email" class="form-control" id="email" name="contacts[0].type">
                 </div>
                 <div class="mb-3">
-                    <label for="instagramValue" class="form-label">Contact Value</label>
-                    <input type="text" value="Instagram" class="form-control" id="instagramValue" name="contacts[0].infoValue">
+                    <label for="emailValue" class="form-label">Contact Value</label>
+                    <input type="text" value="emailValue" class="form-control" id="emailValue" name="contacts[0].infoValue">
                 </div>
             </div>
             <div id="contacts" class="d-flex justify-content-center">
